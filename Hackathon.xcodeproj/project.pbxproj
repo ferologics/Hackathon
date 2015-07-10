@@ -103,9 +103,9 @@
 		AF559AAF1B4CF65000114F80 /* Hackathon */ = {
 			isa = PBXGroup;
 			children = (
+				AFD8827F1B4D0C0A005B751D /* projectMastermind */,
 				AF559AB21B4CF65000114F80 /* AppDelegate.swift */,
 				AF559AB41B4CF65000114F80 /* ViewController.swift */,
-				AFD8827F1B4D0C0A005B751D /* projectMastermind */,
 				AF559AB61B4CF65000114F80 /* Main.storyboard */,
 				AF559AB91B4CF65000114F80 /* Images.xcassets */,
 				AF559ABB1B4CF65000114F80 /* LaunchScreen.xib */,

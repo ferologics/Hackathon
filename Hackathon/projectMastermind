@@ -7,11 +7,103 @@ This file serves as a todo list and a note-taking place for the project
 #programming related
 - recap propery list driven programming (plist) from Quest
 - learn how to work with json files
+- create an algorithm to map all the data from json files and store it to Parse
+- make mapkit display data from Parse
+- info view about the hackathon
+- pin coloring
 
 #other
 - find top 10ish sites with hackathon lists
 - finish my google survey
 - try to get critical feedback
-- get clear on the design and purpose of the app
+- create a sketch mockup
+
+#Welcome to the Hackathon wiki!
+-------------------------------
+
+google survey - https://docs.google.com/forms/d/1H7XW10QdnCPWP0Npu91RAzlIeMs7Pp2_EBWj_d4OMwQ/viewform?usp=send_form
+
+This serves for project notes and visualization
+
+#Objective
+T1: Let's you find and track hackathons so you never miss one.
+
+T3: Display all the relevant hackathons to you on map, either around you or global, keep track them so you never miss one, see what hackathons are your friends going to, join them and have fun!
+
+
+#Audience
+
+Every code geek, nerd and tech related person that wants to get in or already is in the hackathon scene. Virtually anyone but mostly coders, hackathon organizers and sponsors.
+
+**age** - all categories
+**interests** - programming, design, ux, social networking, computer science, you get it
+**circumstances** - you are new to the city and you want go to the nearest hackathon? you want people to know about your hackathon? sure, you can create/add yours. You want to see what hackathons are your friends going to? just open the app. Can't find a hackathon to go to? easy as that. Are there any other worthwhile hackathons than the one I plan on going to? You don't want to spend hours googling for info? Etc.. I'll add more later
+
+
+#Experience
+What do I want the user to experience?
+
+The ease of finding the nearest and most relevant hackathon(s) and not having to worry about missing it, at the same time getting together with their friends which makes them have more fun and enables them to find teams.
+
+#Technical
+
+* External Services
+
+**APIs** - Mapkit, Parse, Github/FB/Twitter/Linkedin/etc.., Kimono.com, New Relic (maybe), Bond, ConvenienceKit, something with json and probably AFNetworking if there isn't a better framework for it, https://cocoapods.org/pods/ObjectMapper maybe this one, looks great.
+
+* Screens
+
+Map screen - local display of hackathons
+Upcoming h. screen - list of hackathons you plan on attending
+Profile screen - skills/programming languages
+Search screen - find friends
+Hackathon info screen
+create hackathon screen
+login screen
+share screen
+import friends screen?
+search hackathons screen
+feedback screen/report bug
+
+some container views and stuff
+
+* View/View Controllers/Classes
+
+map view controller
+profile view controller
+search view controller 2x most likely
+login is going to be in app delegate probably
+info view controller
+
+
+* Data Models
+Flowchart of the app, how it works, it's logic
+
+#MVP
+Define features, lay out the development plan
+
+* week 3
+Focus on getting feedback, define the MVP version of app and start developing
+
+//TODO: google form, compile list of hackathons, learn mapkit, working with json files, plists,
+
+
+* week 4
+
+
+
+* week 5
+
+
+
+* week 6
+
+
+
+* week 7
+
+
+
+* week 8
 
 */
