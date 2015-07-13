@@ -14,6 +14,16 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-HackathonTests-BubbleTransition.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-HackathonTests-Cartography.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-HackathonTests-ConvenienceKit-ConvenienceKit.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -24,12 +34,32 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-HackathonTests-EasyAnimation.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-HackathonTests-FBSDKCoreKit.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
 		<key>Pods-HackathonTests-FBSDKLoginKit.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-HackathonTests-Mirror.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-HackathonTests-ObjectMapper.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-HackathonTests-Pages.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -49,6 +79,16 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-HackathonTests-Presentation.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-HackathonTests-ZLSwipeableViewSwift.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-HackathonTests.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -57,52 +97,92 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>0CB2F0A97708DCD4E89A1E38</key>
+		<key>0834E81AA6E7E5A5B2A529C0</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>1180E52FF95151DC76ADEC68</key>
+		<key>0B9B23A029E2B164CD06C8E2</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>6F25408EBDAA5F1D05A832D3</key>
+		<key>23A094C5B4EB71BF48E16261</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>947C05F3631002B85B6EF3EF</key>
+		<key>406C0D8A429725F3DE33177F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A3230674A5D9967B642C0876</key>
+		<key>474454309A8FEA4598576073</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>AD5A733785A5020DFE2635DA</key>
+		<key>5ABBE292E306E27713F345EB</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C1C452FBC551BE6CBDB4D099</key>
+		<key>5EAE4636885F0044BC15ED7C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>CD734C6E16B5113B758EC802</key>
+		<key>6FA61DFF8B661508FAC8D297</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D4D0BD3D3AE1BC27F2962F31</key>
+		<key>77FD4D18333FB800D554A7AD</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>DB5EC66E3D33105053FF3DFB</key>
+		<key>791E3E93B88E02698AE284B2</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>7A87484D224C519755E91C69</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C4157E792EFF7A9A05D2A53D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D4F68DEF25F04373EC9AE777</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D94A80DC10244BE9839C16B1</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E6EB86F0EE52845F80C6CE2D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E9774A617172EB5FDDD30395</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FC4922DCEB5B1AE09524EAFF</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FFFB5EC41E9BC133A237CF35</key>
 		<dict>
 			<key>primary</key>
 			<true/>

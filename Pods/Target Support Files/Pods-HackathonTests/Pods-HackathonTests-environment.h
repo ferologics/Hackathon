@@ -30,35 +30,71 @@
 #define COCOAPODS_VERSION_MINOR_Bond 9
 #define COCOAPODS_VERSION_PATCH_Bond 0
 
+// BubbleTransition
+#define COCOAPODS_POD_AVAILABLE_BubbleTransition
+#define COCOAPODS_VERSION_MAJOR_BubbleTransition 0
+#define COCOAPODS_VERSION_MINOR_BubbleTransition 2
+#define COCOAPODS_VERSION_PATCH_BubbleTransition 0
+
+// Cartography
+#define COCOAPODS_POD_AVAILABLE_Cartography
+#define COCOAPODS_VERSION_MAJOR_Cartography 0
+#define COCOAPODS_VERSION_MINOR_Cartography 5
+#define COCOAPODS_VERSION_PATCH_Cartography 0
+
 // ConvenienceKit
 #define COCOAPODS_POD_AVAILABLE_ConvenienceKit
 #define COCOAPODS_VERSION_MAJOR_ConvenienceKit 0
 #define COCOAPODS_VERSION_MINOR_ConvenienceKit 1
 #define COCOAPODS_VERSION_PATCH_ConvenienceKit 0
 
+// EasyAnimation
+#define COCOAPODS_POD_AVAILABLE_EasyAnimation
+#define COCOAPODS_VERSION_MAJOR_EasyAnimation 0
+#define COCOAPODS_VERSION_MINOR_EasyAnimation 7
+#define COCOAPODS_VERSION_PATCH_EasyAnimation 0
+
 // FBSDKCoreKit
 #define COCOAPODS_POD_AVAILABLE_FBSDKCoreKit
 #define COCOAPODS_VERSION_MAJOR_FBSDKCoreKit 4
-#define COCOAPODS_VERSION_MINOR_FBSDKCoreKit 3
+#define COCOAPODS_VERSION_MINOR_FBSDKCoreKit 4
 #define COCOAPODS_VERSION_PATCH_FBSDKCoreKit 0
 
 // FBSDKCoreKit/arc
 #define COCOAPODS_POD_AVAILABLE_FBSDKCoreKit_arc
 #define COCOAPODS_VERSION_MAJOR_FBSDKCoreKit_arc 4
-#define COCOAPODS_VERSION_MINOR_FBSDKCoreKit_arc 3
+#define COCOAPODS_VERSION_MINOR_FBSDKCoreKit_arc 4
 #define COCOAPODS_VERSION_PATCH_FBSDKCoreKit_arc 0
 
 // FBSDKCoreKit/no-arc
 #define COCOAPODS_POD_AVAILABLE_FBSDKCoreKit_no_arc
 #define COCOAPODS_VERSION_MAJOR_FBSDKCoreKit_no_arc 4
-#define COCOAPODS_VERSION_MINOR_FBSDKCoreKit_no_arc 3
+#define COCOAPODS_VERSION_MINOR_FBSDKCoreKit_no_arc 4
 #define COCOAPODS_VERSION_PATCH_FBSDKCoreKit_no_arc 0
 
 // FBSDKLoginKit
 #define COCOAPODS_POD_AVAILABLE_FBSDKLoginKit
 #define COCOAPODS_VERSION_MAJOR_FBSDKLoginKit 4
-#define COCOAPODS_VERSION_MINOR_FBSDKLoginKit 3
+#define COCOAPODS_VERSION_MINOR_FBSDKLoginKit 4
 #define COCOAPODS_VERSION_PATCH_FBSDKLoginKit 0
+
+// Mirror
+#define COCOAPODS_POD_AVAILABLE_Mirror
+#define COCOAPODS_VERSION_MAJOR_Mirror 0
+#define COCOAPODS_VERSION_MINOR_Mirror 2
+#define COCOAPODS_VERSION_PATCH_Mirror 3
+
+// ObjectMapper
+#define COCOAPODS_POD_AVAILABLE_ObjectMapper
+#define COCOAPODS_VERSION_MAJOR_ObjectMapper 0
+#define COCOAPODS_VERSION_MINOR_ObjectMapper 12
+#define COCOAPODS_VERSION_PATCH_ObjectMapper 0
+
+// Pages
+#define COCOAPODS_POD_AVAILABLE_Pages
+#define COCOAPODS_VERSION_MAJOR_Pages 0
+#define COCOAPODS_VERSION_MINOR_Pages 6
+#define COCOAPODS_VERSION_PATCH_Pages 1
 
 // Parse
 #define COCOAPODS_POD_AVAILABLE_Parse
@@ -77,4 +113,16 @@
 #define COCOAPODS_VERSION_MAJOR_ParseUI 1
 #define COCOAPODS_VERSION_MINOR_ParseUI 1
 #define COCOAPODS_VERSION_PATCH_ParseUI 4
+
+// Presentation
+#define COCOAPODS_POD_AVAILABLE_Presentation
+#define COCOAPODS_VERSION_MAJOR_Presentation 1
+#define COCOAPODS_VERSION_MINOR_Presentation 0
+#define COCOAPODS_VERSION_PATCH_Presentation 0
+
+// ZLSwipeableViewSwift
+#define COCOAPODS_POD_AVAILABLE_ZLSwipeableViewSwift
+#define COCOAPODS_VERSION_MAJOR_ZLSwipeableViewSwift 0
+#define COCOAPODS_VERSION_MINOR_ZLSwipeableViewSwift 0
+#define COCOAPODS_VERSION_PATCH_ZLSwipeableViewSwift 2
 

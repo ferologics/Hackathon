@@ -103,6 +103,8 @@
 		AF559AAF1B4CF65000114F80 /* Hackathon */ = {
 			isa = PBXGroup;
 			children = (
+				AFBE80511B4FD2DE009A7EF3 /* ViewConrollers */,
+				AFBE80501B4FD2D6009A7EF3 /* Views */,
 				AFD8827F1B4D0C0A005B751D /* projectMastermind */,
 				AF559AB21B4CF65000114F80 /* AppDelegate.swift */,
 				AF559AB41B4CF65000114F80 /* ViewController.swift */,
@@ -137,6 +139,20 @@
 				AF559AC71B4CF65000114F80 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		AFBE80501B4FD2D6009A7EF3 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		AFBE80511B4FD2DE009A7EF3 /* ViewConrollers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = ViewConrollers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

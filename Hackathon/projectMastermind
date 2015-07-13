@@ -53,7 +53,7 @@ The ease of finding the nearest and most relevant hackathon(s) and not having to
 
 * Screens
 
-Map screen - local display of hackathons
+//Map screen - local display of hackathons
 Upcoming h. screen - list of hackathons you plan on attending
 Profile screen - skills/programming languages
 Search screen - find friends
@@ -69,7 +69,7 @@ some container views and stuff
 
 * View/View Controllers/Classes
 
-map view controller
+//map view controller
 profile view controller
 search view controller 2x most likely
 login is going to be in app delegate probably

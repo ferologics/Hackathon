@@ -6,18 +6,24 @@ PODS:
     - Bolts/Tasks
   - Bolts/Tasks (1.2.0)
   - Bond (3.9.0)
+  - BubbleTransition (0.2)
+  - Cartography (0.5.0)
   - ConvenienceKit (0.1.0)
-  - FBSDKCoreKit (4.3.0):
+  - EasyAnimation (0.7.0)
+  - FBSDKCoreKit (4.4.0):
     - Bolts (~> 1.1)
-    - FBSDKCoreKit/arc (= 4.3.0)
-    - FBSDKCoreKit/no-arc (= 4.3.0)
-  - FBSDKCoreKit/arc (4.3.0):
+    - FBSDKCoreKit/arc (= 4.4.0)
+    - FBSDKCoreKit/no-arc (= 4.4.0)
+  - FBSDKCoreKit/arc (4.4.0):
     - Bolts (~> 1.1)
-  - FBSDKCoreKit/no-arc (4.3.0):
+  - FBSDKCoreKit/no-arc (4.4.0):
     - Bolts (~> 1.1)
     - FBSDKCoreKit/arc
-  - FBSDKLoginKit (4.3.0):
+  - FBSDKLoginKit (4.4.0):
     - FBSDKCoreKit
+  - Mirror (0.2.3)
+  - ObjectMapper (0.12)
+  - Pages (0.6.1)
   - Parse (1.7.5):
     - Bolts/Tasks (>= 1.2.0)
   - ParseFacebookUtilsV4 (1.7.5):
@@ -27,23 +33,41 @@ PODS:
     - Parse (~> 1.7.5)
   - ParseUI (1.1.4):
     - Parse (~> 1.7)
+  - Presentation (1.0.0):
+    - Cartography (~> 0.5.0)
+    - Pages (~> 0.6.1)
+  - ZLSwipeableViewSwift (0.0.2)
 
 DEPENDENCIES:
   - Bond
+  - BubbleTransition (~> 0.1)
   - ConvenienceKit
+  - EasyAnimation
   - FBSDKCoreKit
+  - Mirror
+  - ObjectMapper (~> 0.11)
   - Parse
   - ParseFacebookUtilsV4
   - ParseUI
+  - Presentation
+  - ZLSwipeableViewSwift
 
 SPEC CHECKSUMS:
   Bolts: d176cb1e0012175589e389a9db49b85e27787576
   Bond: 994ccc56aebfe2707d7b5e76f6d665a5beefa45b
+  BubbleTransition: 6ee83cedb8b9eb2a9489e11b0e0c666f3916bb2c
+  Cartography: 774e5cc446f5a6bca5d4345c5aa6af9a1fe74dc6
   ConvenienceKit: 083548558dedc22a586c1e1fbf3aa217728715af
-  FBSDKCoreKit: a3a60225a84abeace291d0fe71cae29a627382c2
-  FBSDKLoginKit: 6bc2f8f2628c3b6d2e346762fff8cb55cfd3a58d
+  EasyAnimation: ddc49f0eaf034f6d47a95bf805d9e95e84908053
+  FBSDKCoreKit: 75bdd75c980e811db218488d99dd93b7740f4474
+  FBSDKLoginKit: 02a9254a4c132412fa03577b0d53e936d068a7fb
+  Mirror: b855e09b83e0d10fd751dcffb60986f78a035afa
+  ObjectMapper: ef4a369cbab75546029ceb7e8155772b5f8e8841
+  Pages: 515a8ec7396cfb7cdacc28c0beceb2ce39c065cb
   Parse: 7c0f115eff3e0cea3fac08d50bda47154edb8832
   ParseFacebookUtilsV4: 3107725c6f2b69e3a03afe9c3aff35d6ee3e9ba5
   ParseUI: d1228541b02a36a7354c8f47747f5f7a89cf1ff0
+  Presentation: 983b35662805253b6141e589edb6685a4d1724a5
+  ZLSwipeableViewSwift: 28b161ea3445ee380b684dd828a4d4bebc2a1f95
 
 COCOAPODS: 0.37.2

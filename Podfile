@@ -2,12 +2,17 @@
 # platform :ios, '8.0'
 
 target 'HackathonTests' do
-use_frameworks!
+pod 'Mirror'
+pod 'Presentation'
 pod 'Parse'
 pod 'ParseUI'
 pod 'FBSDKCoreKit'
 pod 'ParseFacebookUtilsV4'
 pod 'ConvenienceKit'
 pod 'Bond'
-
+pod 'ObjectMapper', '~> 0.11'
+pod 'BubbleTransition', '~> 0.1'
+pod 'ZLSwipeableViewSwift'
+pod 'EasyAnimation'
+use_frameworks!
 end

@@ -1,0 +1,6 @@
+framework module Mirror {
+  umbrella header "Pods-HackathonTests-Mirror-umbrella.h"
+
+  export *
+  module * { export * }
+}
