@@ -1,4 +1,8 @@
 PODS:
+  - Alamofire (1.2.3)
+  - AlamofireObjectMapper (0.2):
+    - Alamofire (~> 1.2)
+    - ObjectMapper (~> 0.10)
   - Bolts (1.2.0):
     - Bolts/AppLinks (= 1.2.0)
     - Bolts/Tasks (= 1.2.0)
@@ -39,13 +43,13 @@ PODS:
   - ZLSwipeableViewSwift (0.0.2)
 
 DEPENDENCIES:
+  - AlamofireObjectMapper (~> 0.2)
   - Bond
   - BubbleTransition (~> 0.1)
   - ConvenienceKit
   - EasyAnimation
   - FBSDKCoreKit
   - Mirror
-  - ObjectMapper (~> 0.11)
   - Parse
   - ParseFacebookUtilsV4
   - ParseUI
@@ -53,6 +57,8 @@ DEPENDENCIES:
   - ZLSwipeableViewSwift
 
 SPEC CHECKSUMS:
+  Alamofire: 5550bf0b575ed1a4bf9be572f9463e1015cc169e
+  AlamofireObjectMapper: 0ed3f7b154a9b35bded72b2fa6adeee7ac49a9a2
   Bolts: d176cb1e0012175589e389a9db49b85e27787576
   Bond: 994ccc56aebfe2707d7b5e76f6d665a5beefa45b
   BubbleTransition: 6ee83cedb8b9eb2a9489e11b0e0c666f3916bb2c

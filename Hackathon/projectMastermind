@@ -71,8 +71,8 @@ some container views and stuff
 
 //map view controller
 profile view controller
-search view controller 2x most likely
-login is going to be in app delegate probably
+search view controller 2x most likely (friends, hackathon)
+//login is going to be in app delegate
 info view controller
 
 

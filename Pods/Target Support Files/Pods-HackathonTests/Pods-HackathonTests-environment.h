@@ -6,6 +6,18 @@
 // project.
 
 
+// Alamofire
+#define COCOAPODS_POD_AVAILABLE_Alamofire
+#define COCOAPODS_VERSION_MAJOR_Alamofire 1
+#define COCOAPODS_VERSION_MINOR_Alamofire 2
+#define COCOAPODS_VERSION_PATCH_Alamofire 3
+
+// AlamofireObjectMapper
+#define COCOAPODS_POD_AVAILABLE_AlamofireObjectMapper
+#define COCOAPODS_VERSION_MAJOR_AlamofireObjectMapper 0
+#define COCOAPODS_VERSION_MINOR_AlamofireObjectMapper 2
+#define COCOAPODS_VERSION_PATCH_AlamofireObjectMapper 0
+
 // Bolts
 #define COCOAPODS_POD_AVAILABLE_Bolts
 #define COCOAPODS_VERSION_MAJOR_Bolts 1
