@@ -2,67 +2,78 @@
 // Use Parse.Cloud.define to define as many cloud functions as you want.
 // For example:
 
-var cities = ["San Francisco, CA, United States", "London, United Kingdom"];
+// VARUABLES AND SUCH
 
+// search parameters
+var searchKeyword = "hackathon";
+var searchURL = 'https://www.eventbriteapi.com/v3/events/search/';
+var token = "FWMDQSTTDTI5EJRD6VUH";
+var cities = ["San Francisco", "London"];
 
-Parse.Cloud.define("hello", function(request, response) {
-  response.success("Hello world!");
-});
+// arrays to store to
+var namesArray = [""];
+var descriptionsArray = [""];
+var capacitiesArray = [""];
+var iconsArray = [""];
+var idsArray = [""];
+var ticketClassesArray = [""];
+var isOnlineEventArray = [""];
+var statusesArray = [""];
+var logoURLsArray = [""];
+var resourceURIsArray = [""];
+var eventsArray = [""];
+
+// PARSE COUD CODE FUNCTIONS
 
 Parse.Cloud.define("q", function(request, response) {
 
-for (var j = 0; j <= cities.length; j++) {
-
-  Parse.Cloud.httpRequest({
-      url: 'https://www.eventbriteapi.com/v3/events/search/',
-        params: {
-          q : "hackathon",
-          "venue.city" : cities[j],
-          token : "FWMDQSTTDTI5EJRD6VUH"
-        }
-    }).then(function(httpResponse) {
-      //
-      var array = JSON.parse(httpResponse.text)["events"];
-      var uriArray = [""];
-      var nameArray = [""];
-      //var item = JSON.parse(httpResponse.text)["events"][0]["resource_uri"];
-
-      for (var i = 0; i < array.length; i++) {
-        console.log(array[i]["name"]["text"]);
-        uriArray.push(array[i]["resource_uri"]);
-        nameArray.push(array[i]["name"]["text"]);
-      }
-
-      //console.log(item);
-      if (j === 0) {response.success(uriArray)};
-      // MARK : here I'll upload to Parse
-    },function(httpResponse) {
-      // error
-    console.error('Request failed with response code ' + httpResponse.status);
-    response.success(httpResponse.text);
-  });
-
-//   Parse.Cloud.beforeSave("Review", function(request, response) {
-//   var comment = request.object.get("comment");
-//   if (comment.length > 140) {
-//     // Truncate and add a ...
-//     request.object.set("comment", comment.substring(0, 137) + "...");
-//   }
-//   response.success();
-// });
-
-// Parse.Cloud.afterSave("Comment", function(request) {
-//   query = new Parse.Query("Post");
-//   query.get(request.object.get("post").id, {
-//     success: function(post) {
-//       post.increment("comments");
-//       post.save();
-//     },
-//     error: function(error) {
-//       console.error("Got an error " + error.code + " : " + error.message);
-//     }
-//   });
-// });
-
-}
+   loopCities();
+   response.success("hell yea!");
+   //response.error("RIP");
 });
+// Parse.Cloud.job("whatever", function (request, status) {
+// })
+
+// HELPER FUNCTIONS
+function loopCities() {
+
+   for (var i = 0; i <= cities.length; i++) {
+      Parse.Cloud.httpRequest({ // CORE SEARCH FUNCTION
+         url: searchURL,
+           params: {
+             q : searchKeyword,
+             "venue.city" : cities[i],
+             token : token
+           }
+       }).then(function(httpResponse) {
+
+         console.log(httpResponse.text);
+
+         eventsArray = JSON.parse(httpResponse.text)["events"];
+
+         loopEvents(eventsArray);
+
+         // PREUPLOAD/PRESAVE FUNCTIONS
+
+         // UPLOAD FUNCTIONS
+
+         // POST UPLOAD FUNCTIONS
+
+         //if (i == cities.length) {response.success(resourceURIsArray)};
+
+       },function(httpResponse) {
+         // error
+       console.error('Request failed with response code ' + httpResponse.status);
+       //response.success(httpResponse.text);
+     });
+
+   }
+}
+
+function loopEvents(events) {
+   for (var i = 0; i < events.length; i++) {
+      console.log("started assigning properties");
+      resourceURIsArray.push(eventsArray[i]["resource_uri"]);
+      namesArray.push(eventsArray[i]["name"]["text"]);
+   }
+}
