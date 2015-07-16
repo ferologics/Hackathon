@@ -5,12 +5,13 @@ This file serves as a todo list and a note-taking place for the project
 // TODO:
 
 #programming related
+
 - recap propery list driven programming (plist) from Quest
 - learn how to work with json files
 - create an algorithm to map all the data from json files and store it to Parse
-- make mapkit display data from Parse
+- API - eventbrite, parse
 - info view about the hackathon
-- pin coloring
+
 
 #other
 - find top 10ish sites with hackathon lists
