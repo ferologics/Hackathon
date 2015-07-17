@@ -2,31 +2,20 @@
 // Use Parse.Cloud.define to define as many cloud functions as you want.
 // For example:
 
-// VARUABLES AND SUCH
-
+// REQUIRED
 var _ = require('underscore');
+var moment = require('moment');
 
 // misc
 var j = 0;
 
 // search parameters
+var eventsArray = [""];
+var ticketClassesArray = [""];
 var searchKeyword = "hackathon";
 var searchURL = 'https://www.eventbriteapi.com/v3/events/search/';
 var token = "FWMDQSTTDTI5EJRD6VUH";
 var cities = ["San Francisco", "London"];
-
-// arrays to store to
-var namesArray = [""];
-var descriptionsArray = [""];
-var capacitiesArray = [""];
-var iconsArray = [""];
-var idsArray = [""];
-var ticketClassesArray = [""];
-var isOnlineEventArray = [""];
-var statusesArray = [""];
-var logoURLsArray = [""];
-var resourceURIsArray = [""];
-var eventsArray = [""];
 
 // extending List class
 var List = Parse.Object.extend("List");
@@ -59,11 +48,13 @@ function loopCities(city) {
         params: {
           q : searchKeyword,
           "venue.city" : city,
-          token : token
+          token : token,
+          expand : "ticket_classes",
+          expand : "logo"
         }
     }).then(function(httpResponse) {
 
-      console.log(httpResponse.text);
+      console.log(JSON.parse(httpResponse.text)["resource_uri"]);
       console.log("been here, did that");
       eventsArray = JSON.parse(httpResponse.text)["events"];
 
@@ -75,9 +66,9 @@ function loopCities(city) {
 
       // POST UPLOAD FUNCTIONS
 
-      //if (i == cities.length) {response.success(resourceURIsArray)};
-   //if (i == cities.length) {response.success("hell yea!")};
-
+    },function(httpResponse) {
+        // success
+      console.log(httpResponse.text);
     },function(httpResponse) {
       // error
     console.error('Request failed with response code ' + httpResponse.status);
@@ -86,11 +77,55 @@ function loopCities(city) {
 }
 
 function loopEvents(events) {
+   console.log(events)
    if  (j == cities.length) {j=0};
    for (var i = 0; i < events.length; i++) {
+      Parse.Cloud.useMasterKey();
+      var list = new List();
       console.log("assigning properties for " + cities[j] + ".");
-      resourceURIsArray.push(eventsArray[i]["resource_uri"]);
-      namesArray.push(eventsArray[i]["name"]["text"] || 0);
+      list.save({
+         number:                      String(i),
+         uri:                         events[i]["resource_uri"],
+         url:                         events[i]["url"],
+         id:                          events[i]["id"],
+         name:                        events[i]["name"]["text"],
+         description:                 events[i]["description"]["text"] || "None provided.",
+         status:                      events[i]["status"],
+         capacity:                    String(events[i]["capacity"]),
+         logo:                        (events[i]["logo"] != undefined || events[i]["logo"] != null) ? events[i]["logo"]["url"] : "http://www.ecolabelindex.com/files/ecolabel-logos-sized/no-logo-provided.png",
+         start:                       moment(events[i]["start"]["utc"]),
+         end:                         moment(events[i]["end"]["utc"]),
+         online:                      events[i]["online_event"],
+         currency:                    events[i]["currency"],
+         ticketClassesNames:          assignTicketClassProperties(events[i], ["name"]),
+         ticketClassesCosts:          assignTicketClassProperties(events[i], ["cost"]["display"]),
+         ticketClassesFees:           assignTicketClassProperties(events[i], ["fee"]["display"]),
+         ticketClassesDescriptions:   assignTicketClassProperties(events[i], ["description"]),
+         ticketClassesOnSaleStatuses: assignTicketClassProperties(events[i], ["on_sale_status"]),
+         ticketClassesTaxes:          assignTicketClassProperties(events[i], ["tax"]["display"]),
+         ticketClassesDonations:      assignTicketClassProperties(events[i], ["donation"]),
+         ticketClassesFree:           assignTicketClassProperties(events[i], ["free"])
+      }, {
+         success: function(list) {
+            console.log("Successsss!");
+         },
+         error: function(list, error) {
+            console.log("u fcked up! with error: " + error.text + ", son.");
+         }
+      });
    }
    j++;
+}
+
+function assignTicketClassProperties(events, propertyName) {
+   if (events["ticket_classes"] != undefined) {
+      for (var l = 0; l < events["ticket_classes"].length; l++)
+      {
+         var a = String(events["ticket_classes"][l][propertyName]);
+         ticketClassesArray.push(a || "nill");
+      }
+   } else {
+      return "No ticket classes.";
+   }
+   return ticketClassesArray;
 }
