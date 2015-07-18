@@ -16,7 +16,7 @@ Parse.Cloud.job("tryMeCloudCode", function(request, status) {
    _.each(cities, function(city){
 
       Parse.Cloud.httpRequest({
-           url: searchURL,
+           url: searchURL
            params: {
              q : searchKeyword,
              "venue.city" : city,
@@ -59,9 +59,7 @@ Parse.Cloud.job("tryMeCloudCode", function(request, status) {
       });
 
    return Parse.Promise.when(promises).then(function(){
-      response.success("nice.");
-   }, function(error) {
-      response.error("FUUUUCK!~ ==> " + error.message);
+      request.success("nice.");
    });
 });
 
