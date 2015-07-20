@@ -84,30 +84,7 @@ function loopEvents(events) {
       promise = promise.then( function() {
          var list = new List();
          // console.log("assigning properties for " + city.text + ".");
-         return list.save(
-         {
-            number:                      String(i++),
-            uri:                         event["resource_uri"],
-            url:                         event["url"],
-            id:                          event["id"],
-            name:                        event["name"]["text"],
-            description:                 event["description"]["text"] || "None provided.",
-            status:                      event["status"],
-            capacity:                    String(event["capacity"]),
-            logo:                        (event["logo"] != undefined || event["logo"] != null) ? event["logo"]["url"] : "http://www.ecolabelindex.com/files/ecolabel-logos-sized/no-logo-provided.png",
-            start:                       moment(event["start"]["utc"]),
-            end:                         moment(event["end"]["utc"]),
-            online:                      event["online_event"],
-            currency:                    event["currency"],
-            ticketClassesNames:          assignTicketClassProperties(event, ["name"]),
-            ticketClassesCosts:          assignTicketClassProperties(event, ["cost"]["display"]),
-            ticketClassesFees:           assignTicketClassProperties(event, ["fee"]["display"]),
-            ticketClassesDescriptions:   assignTicketClassProperties(event, ["description"]),
-            ticketClassesOnSaleStatuses: assignTicketClassProperties(event, ["on_sale_status"]),
-            ticketClassesTaxes:          assignTicketClassProperties(event, ["tax"]["display"]),
-            ticketClassesDonations:      Boolean(assignTicketClassProperties(event, ["donation"])),
-            ticketClassesFree:           Boolean(assignTicketClassProperties(event, ["free"]))
-         }, {
+         , {
             success: function(list) {
                console.log("Successsss!");
             },
