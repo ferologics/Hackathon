@@ -48,8 +48,6 @@ code_sign() {
 
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
-  install_framework 'Alamofire.framework'
-  install_framework 'AlamofireObjectMapper.framework'
   install_framework 'Bolts.framework'
   install_framework 'Bond.framework'
   install_framework 'BubbleTransition.framework'
@@ -59,17 +57,16 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework 'FBSDKCoreKit.framework'
   install_framework 'FBSDKLoginKit.framework'
   install_framework 'Mirror.framework'
-  install_framework 'ObjectMapper.framework'
   install_framework 'Pages.framework'
   install_framework 'Parse.framework'
   install_framework 'ParseFacebookUtilsV4.framework'
   install_framework 'ParseUI.framework'
   install_framework 'Presentation.framework'
+  install_framework 'Shuffle.framework'
+  install_framework 'SwiftyJSON.framework'
   install_framework 'ZLSwipeableViewSwift.framework'
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
-  install_framework 'Alamofire.framework'
-  install_framework 'AlamofireObjectMapper.framework'
   install_framework 'Bolts.framework'
   install_framework 'Bond.framework'
   install_framework 'BubbleTransition.framework'
@@ -79,11 +76,12 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework 'FBSDKCoreKit.framework'
   install_framework 'FBSDKLoginKit.framework'
   install_framework 'Mirror.framework'
-  install_framework 'ObjectMapper.framework'
   install_framework 'Pages.framework'
   install_framework 'Parse.framework'
   install_framework 'ParseFacebookUtilsV4.framework'
   install_framework 'ParseUI.framework'
   install_framework 'Presentation.framework'
+  install_framework 'Shuffle.framework'
+  install_framework 'SwiftyJSON.framework'
   install_framework 'ZLSwipeableViewSwift.framework'
 fi

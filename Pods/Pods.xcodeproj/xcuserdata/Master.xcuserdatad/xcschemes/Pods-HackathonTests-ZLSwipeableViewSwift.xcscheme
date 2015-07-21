@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "E1DFE2D58CD5740A92CF871D"
+               BlueprintIdentifier = "23E6F8FBA3E41E4EBE79ED88"
                BuildableName = "ZLSwipeableViewSwift.framework"
                BlueprintName = "Pods-HackathonTests-ZLSwipeableViewSwift"
                ReferencedContainer = "container:Pods.xcodeproj">

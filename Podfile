@@ -1,5 +1,7 @@
 # Uncomment this line to define a global platform for your project
-# platform :ios, '8.0'
+source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, '8.0'
+use_frameworks!
 
 target 'HackathonTests' do
 pod 'Mirror'
@@ -10,9 +12,9 @@ pod 'FBSDKCoreKit'
 pod 'ParseFacebookUtilsV4'
 pod 'ConvenienceKit'
 pod 'Bond'
-pod 'AlamofireObjectMapper', '~> 0.2'
+pod 'SwiftyJSON', '~> 2.2.0'
 pod 'BubbleTransition', '~> 0.1'
 pod 'ZLSwipeableViewSwift'
+pod 'Shuffle', '~> 0.0.1'
 pod 'EasyAnimation'
-use_frameworks!
 end

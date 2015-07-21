@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "62527F406E077FEEA317F5B7"
+               BlueprintIdentifier = "B2AB615A6F6AB8E4A5D98F56"
                BuildableName = "Mirror.framework"
                BlueprintName = "Pods-HackathonTests-Mirror"
                ReferencedContainer = "container:Pods.xcodeproj">

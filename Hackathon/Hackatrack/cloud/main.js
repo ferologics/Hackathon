@@ -1,6 +1,6 @@
 /*
 Created 20th July 2015 by Fero Hetes with a heavy help of Jay without
-whom would my app never see the light ofthe day...
+       whom would my app never see the light ofthe day...
 (also thanks to amazing instructors Abdul and Warren <3)
   _________
  /         \

@@ -6,18 +6,6 @@
 // project.
 
 
-// Alamofire
-#define COCOAPODS_POD_AVAILABLE_Alamofire
-#define COCOAPODS_VERSION_MAJOR_Alamofire 1
-#define COCOAPODS_VERSION_MINOR_Alamofire 2
-#define COCOAPODS_VERSION_PATCH_Alamofire 3
-
-// AlamofireObjectMapper
-#define COCOAPODS_POD_AVAILABLE_AlamofireObjectMapper
-#define COCOAPODS_VERSION_MAJOR_AlamofireObjectMapper 0
-#define COCOAPODS_VERSION_MINOR_AlamofireObjectMapper 2
-#define COCOAPODS_VERSION_PATCH_AlamofireObjectMapper 0
-
 // Bolts
 #define COCOAPODS_POD_AVAILABLE_Bolts
 #define COCOAPODS_VERSION_MAJOR_Bolts 1
@@ -96,12 +84,6 @@
 #define COCOAPODS_VERSION_MINOR_Mirror 2
 #define COCOAPODS_VERSION_PATCH_Mirror 3
 
-// ObjectMapper
-#define COCOAPODS_POD_AVAILABLE_ObjectMapper
-#define COCOAPODS_VERSION_MAJOR_ObjectMapper 0
-#define COCOAPODS_VERSION_MINOR_ObjectMapper 12
-#define COCOAPODS_VERSION_PATCH_ObjectMapper 0
-
 // Pages
 #define COCOAPODS_POD_AVAILABLE_Pages
 #define COCOAPODS_VERSION_MAJOR_Pages 0
@@ -110,15 +92,17 @@
 
 // Parse
 #define COCOAPODS_POD_AVAILABLE_Parse
-#define COCOAPODS_VERSION_MAJOR_Parse 1
-#define COCOAPODS_VERSION_MINOR_Parse 7
-#define COCOAPODS_VERSION_PATCH_Parse 5
+// This library does not follow semantic-versioning,
+// so we were not able to define version macros.
+// Please contact the author.
+// Version: 1.7.5.3.
 
 // ParseFacebookUtilsV4
 #define COCOAPODS_POD_AVAILABLE_ParseFacebookUtilsV4
-#define COCOAPODS_VERSION_MAJOR_ParseFacebookUtilsV4 1
-#define COCOAPODS_VERSION_MINOR_ParseFacebookUtilsV4 7
-#define COCOAPODS_VERSION_PATCH_ParseFacebookUtilsV4 5
+// This library does not follow semantic-versioning,
+// so we were not able to define version macros.
+// Please contact the author.
+// Version: 1.7.5.3.
 
 // ParseUI
 #define COCOAPODS_POD_AVAILABLE_ParseUI
@@ -131,6 +115,18 @@
 #define COCOAPODS_VERSION_MAJOR_Presentation 1
 #define COCOAPODS_VERSION_MINOR_Presentation 0
 #define COCOAPODS_VERSION_PATCH_Presentation 0
+
+// Shuffle
+#define COCOAPODS_POD_AVAILABLE_Shuffle
+#define COCOAPODS_VERSION_MAJOR_Shuffle 0
+#define COCOAPODS_VERSION_MINOR_Shuffle 0
+#define COCOAPODS_VERSION_PATCH_Shuffle 1
+
+// SwiftyJSON
+#define COCOAPODS_POD_AVAILABLE_SwiftyJSON
+#define COCOAPODS_VERSION_MAJOR_SwiftyJSON 2
+#define COCOAPODS_VERSION_MINOR_SwiftyJSON 2
+#define COCOAPODS_VERSION_PATCH_SwiftyJSON 0
 
 // ZLSwipeableViewSwift
 #define COCOAPODS_POD_AVAILABLE_ZLSwipeableViewSwift
