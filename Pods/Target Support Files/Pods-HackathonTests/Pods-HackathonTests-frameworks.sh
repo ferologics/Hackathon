@@ -56,7 +56,6 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework 'EasyAnimation.framework'
   install_framework 'FBSDKCoreKit.framework'
   install_framework 'FBSDKLoginKit.framework'
-  install_framework 'Mirror.framework'
   install_framework 'Pages.framework'
   install_framework 'Parse.framework'
   install_framework 'ParseFacebookUtilsV4.framework'
@@ -64,7 +63,6 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework 'Presentation.framework'
   install_framework 'Shuffle.framework'
   install_framework 'SwiftyJSON.framework'
-  install_framework 'ZLSwipeableViewSwift.framework'
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework 'Bolts.framework'
@@ -75,7 +73,6 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework 'EasyAnimation.framework'
   install_framework 'FBSDKCoreKit.framework'
   install_framework 'FBSDKLoginKit.framework'
-  install_framework 'Mirror.framework'
   install_framework 'Pages.framework'
   install_framework 'Parse.framework'
   install_framework 'ParseFacebookUtilsV4.framework'
@@ -83,5 +80,4 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework 'Presentation.framework'
   install_framework 'Shuffle.framework'
   install_framework 'SwiftyJSON.framework'
-  install_framework 'ZLSwipeableViewSwift.framework'
 fi

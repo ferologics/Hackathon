@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "188545FF8C7E803878FFDB4C"
+               BlueprintIdentifier = "8A4D5E1A25323D112C237570"
                BuildableName = "Shuffle.framework"
                BlueprintName = "Pods-HackathonTests-Shuffle"
                ReferencedContainer = "container:Pods.xcodeproj">

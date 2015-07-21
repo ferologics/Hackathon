@@ -49,11 +49,6 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-HackathonTests-Mirror.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>Pods-HackathonTests-Pages.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -89,11 +84,6 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-HackathonTests-ZLSwipeableViewSwift.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>Pods-HackathonTests.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -101,102 +91,6 @@
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
-	<dict>
-		<key>188545FF8C7E803878FFDB4C</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>1F906FDC28BB080DC3F6F5FA</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>23E6F8FBA3E41E4EBE79ED88</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>3FF102FDA8E3943B9A42A07A</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>47618B9418969FAC72CAA40C</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>60668C2B9E1EE2E58996CD79</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>6E7557BC10E6298ED67A93A6</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>70A2BA2A0A59B31B0F099944</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>75B449CAB5FF7216E5AAE1CB</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>90EEA70864ACFC40E361956E</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>B2AB615A6F6AB8E4A5D98F56</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>B307BFB895556E72766D3CA5</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>B9208F0785EAD51F4104B021</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>C569213560F353D0723029E8</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>D43838B54569865A6B21A5AA</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>E16F6C6AC40D5749C501F6D0</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>E7CF6121858AA7BB7E9109DB</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>FBF8C21714B18CAE32AF388C</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>FDE711D094B9643AC6B15934</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-	</dict>
+	<dict/>
 </dict>
 </plist>

@@ -4,7 +4,6 @@ platform :ios, '8.0'
 use_frameworks!
 
 target 'HackathonTests' do
-pod 'Mirror'
 pod 'Presentation'
 pod 'Parse'
 pod 'ParseUI'
@@ -14,7 +13,6 @@ pod 'ConvenienceKit'
 pod 'Bond'
 pod 'SwiftyJSON', '~> 2.2.0'
 pod 'BubbleTransition', '~> 0.1'
-pod 'ZLSwipeableViewSwift'
 pod 'Shuffle', '~> 0.0.1'
 pod 'EasyAnimation'
 end
