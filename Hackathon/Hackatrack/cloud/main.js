@@ -1,24 +1,32 @@
+/*
+Created 20th July 2015 by Fero Hetes with a heavy help of Jay without
+whom would my app never see the light ofthe day...
+(also thanks to amazing instructors Abdul and Warren <3)
+  _________
+ /         \
+/    <3     \
+|           |
+| <0>   <0> |
+\   _____   /
+ \_________/
+     /|\
+      |
+      |
+     / \
+*/
+
+// required libraries
 var _ = require('underscore');
 var moment = require('moment');
 
 // variables
-
-// var eventsArray = [];
-// var Hackathon = Parse.Object.extend("Hackathon");
-// var hackathon = new hackathon;
-// var promises = [];
 var cities = ["San Francisco", "London"];
 var searchKeyword = "hackathon";
 var searchURL = 'https://www.eventbriteapi.com/v3/events/search/';
 var token = "FWMDQSTTDTI5EJRD6VUH";
-// var promises = [];
 
-
+// cloud code job
 Parse.Cloud.job("hopeThisWorks", function(request, status) {
-   // var H = Parse.Object.extend("Hackathon");
-   // var h = new H;
-   // h.set("name","asd");
-   // h.destroy();
 
    var query = new Parse.Query("Hackathon");
    var deletionPromise = query.find().then(function(results) {
@@ -39,40 +47,25 @@ Parse.Cloud.job("hopeThisWorks", function(request, status) {
 
          Parse.Object.saveAll(items, {
             success: function () {
-               // console.log(city + " saved all");
-               promise.resolve("is saved " + items.length)
+               promise.resolve();
             },
             error: function (error) {
                console.log(error.message);
             }
          });
-
-         // for (var i; i<items.length; i++) {
-         //    var a = items[i].save();
-         //    console.log("i:" + i);
-         //    console.log(Parse.Promise.is(a));
-         //    promise.resolve();
-         //    // if (i == items.length - 1) {promise.resolve()};
-         // }
-         // promise.resolve();
-         // _.each(items, function(hackathon){
-         //    hackathon.save();
-         // });
-
       });
       return promise;
-   }); // [promise, promise]
-
-   promises.unshift(deletionPromise);
-
-   Parse.Promise.when(promises).then(function (p1, p2) {
-      status.success("all is good " + promises.length + " p1: " + p1 + " p2: " + p2 );
    });
 
+   promises.unshift(deletionPromise); // add the deletion promise to the 1st place in promises array
+
+   Parse.Promise.when(promises).then(function (p1, p2) {
+      status.success("all is good");
+   });
 });
 
+// search code
 function getHTTPResponseForCity(city) {
-   // console.log("getHTTPResponseForCity city:" + city);
 
    return Parse.Cloud.httpRequest({
       url : searchURL,
@@ -80,22 +73,23 @@ function getHTTPResponseForCity(city) {
          q : searchKeyword,
          "venue.city" : city,
          token : token,
-         expand : "ticket_classes",
-         // expand : "logo"
+         expand : "ticket_classes"
+         // expand : "logo" ---> IDK why this fcks up the ticketclasses and how to make this work
       }
    });
 }
 
+// setting columns in Parse
 function hackathonForEvent(theEvent) {
-   //console.log(theEvent);
-   Parse.Cloud.useMasterKey();
+
+   Parse.Cloud.useMasterKey(); // not really needed I guess
    var hackathon = new Parse.Object("Hackathon");
 
    hackathon.set("uri",             theEvent["resource_uri"]);
    hackathon.set("url",             theEvent["url"]);
    hackathon.set("uniqueID",        theEvent["id"]);
    hackathon.set("name",            theEvent["name"]["text"]);
-   hackathon.set("description",    !theEvent["description"]["text"] ? "None provided." : theEvent["description"]["text"]);
+   hackathon.set("description",     theEvent["description"] ? theEvent["description"]["text"] : "None provided.");
    hackathon.set("status",          theEvent["status"]);
    hackathon.set("capacity", String(theEvent["capacity"]));
    hackathon.set("logo",           (theEvent["logo"] != undefined || theEvent["logo"] != null) ? theEvent["logo"]["url"] : "http://www.ecolabelindex.com/files/ecolabel-logos-sized/no-logo-provided.png");
@@ -104,7 +98,7 @@ function hackathonForEvent(theEvent) {
    hackathon.set("online",          theEvent["online_theEvent"]);
    hackathon.set("currency",        theEvent["currency"]);
 
-   var tickets = _.map(theEvent["ticket_classes"], function (item, index) {
+   var tickets = _.map(theEvent["ticket_classes"], function (item, index) { // creating a JSON object to Parse
       return {
          name:           item["name"],
          cost:          (item["cost"]        ? item["cost"]["display"] : "0.00"),
@@ -116,38 +110,8 @@ function hackathonForEvent(theEvent) {
          free:           item["free"]
       };
    });
-   // console.log(theEvent["ticket_classes"]);
 
    hackathon.set("ticketClasses", tickets);
 
-   // hackathon.set("ticketClassesNames",  assignTicketClassProperties(theEvent, ["name"]));
-   // hackathon.set("ticketClassesCosts",  assignTicketClassProperties(theEvent, ["cost"]["display"]));
-   // hackathon.set("ticketClassesFees",  assignTicketClassProperties(theEvent, ["fee"]["display"]));
-   // hackathon.set("ticketClassesDescriptions", assignTicketClassProperties(theEvent, ["description"]));
-   // hackathon.set("ticketClassesOnSaleStatuses",  assignTicketClassProperties(theEvent, ["on_sale_status"]));
-   // hackathon.set("ticketClassesTaxes",  assignTicketClassProperties(theEvent, ["tax"]["display"]));
-   // hackathon.set("ticketClassesDonations",  Boolean(assignTicketClassProperties(theEvent, ["donation"])));
-   // hackathon.set("ticketClassesFree", Boolean(assignTicketClassProperties(theEvent, ["free"])));
-
-   // console.log("returning hackathon - " + hackathon.get("name"));
-   // console.log(hackathon);
    return hackathon;
-}
-
-function assignTicketClassProperties(hackathon, propertyName) {
-   var ticketClassesArray = [];
-   var tickeClasses = hackathon["ticket_classes"];
-
-   if (tickeClasses != undefined) {
-      _.each(tickeClasses, function(ticketClass){
-
-         ticketClassesArray.push(String(ticketClass[propertyName]) || null);
-      }).then(function(){
-
-         console.log("returning ticketclassesAray - " + ticketClassesArray);
-         return ticketClassesArray;
-      });
-   } else {
-      return ticketClassesArray.push("No ticket classes.");
-   }
 }
