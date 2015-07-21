@@ -15,7 +15,13 @@ var token = "FWMDQSTTDTI5EJRD6VUH";
 
 
 Parse.Cloud.job("hopeThisWorks", function(request, status) {
-   Parse.Cloud.useMasterKey();
+   // var H = Parse.Object.extend("Hackathon");
+   // var h = new H;
+   // h.set("name","asd");
+   // h.destroy();
+
+   // var hackathon = new Parse.Object("Hackathon");
+   // hackathon.destroy();
 
    var promises = _.map(cities, function (city, index) {
 
@@ -32,13 +38,24 @@ Parse.Cloud.job("hopeThisWorks", function(request, status) {
                // console.log(city + " saved all");
                promise.resolve("is saved " + items.length)
             },
-            error: function () {
-               status.error(error);
+            error: function (error) {
+               console.log(error.message);
             }
          });
 
-      });
+         // for (var i; i<items.length; i++) {
+         //    var a = items[i].save();
+         //    console.log("i:" + i);
+         //    console.log(Parse.Promise.is(a));
+         //    promise.resolve();
+         //    // if (i == items.length - 1) {promise.resolve()};
+         // }
+         // promise.resolve();
+         // _.each(items, function(hackathon){
+         //    hackathon.save();
+         // });
 
+      });
       return promise;
    }); // [promise, promise]
 
@@ -61,24 +78,16 @@ function getHTTPResponseForCity(city) {
          expand : "logo"
       }
    });
-   // .then(function(httpResponse){
-   //    console.log(httpResponse.text);
-   //    console.log(httpResponse.data);
-   //    //console.log("surprise mothafucka " + httpResponse.data["resource_uri"]);
-   //    //return httpResponse;
-   // }, function() {
-   //    console.error("fail biach: " + httpResponse.status);
-   // });
 }
 
 function hackathonForEvent(theEvent) {
-   console.log(theEvent);
-
+   //console.log(theEvent);
+   Parse.Cloud.useMasterKey();
    var hackathon = new Parse.Object("Hackathon");
 
-   // hackathon.set("uri",  theEvent["resource_uri"]);
-   // hackathon.set("url",  theEvent["url"]);
-   // hackathon.set("id",  theEvent["id"]);
+   hackathon.set("uri",  theEvent["resource_uri"]);
+   hackathon.set("url",  theEvent["url"]);
+   hackathon.set("uniqueID",  theEvent["id"]);
    hackathon.set("name",  theEvent["name"]["text"]);
    // hackathon.set("description",  theEvent["description"]["text"] || "None provided.");
    // hackathon.set("status",  theEvent["status"]);
