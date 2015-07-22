@@ -90,7 +90,7 @@ static NSString *const PFLogInViewDefaultTwitterButtonImageName = @"twitter_icon
 
     _fields = otherFields;
 
-    _logo = [[UIImageView alloc] initWithImage:[PFImage imageNamed:PFLogInViewDefaultLogoImageName]];
+    _logo = [[UIImageView alloc] initWithImage:[PFImage imageNamed:PFLogInViewDefaultLogoImageName]]; // TODO: replace the logo with hackatrack
     _logo.contentMode = UIViewContentModeScaleAspectFit;
     [self addSubview:_logo];
 

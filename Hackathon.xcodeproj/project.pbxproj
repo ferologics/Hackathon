@@ -8,12 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		64DE873445F58BFABAADB412 /* Pods_Hackathon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B92AE9206A6458B56F3F2CA8 /* Pods_Hackathon.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		AF0EE6071B5F2A5A00E85C4D /* ErrorHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0EE6041B5F2A5A00E85C4D /* ErrorHandling.swift */; };
+		AF0EE6081B5F2A5A00E85C4D /* ParseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0EE6051B5F2A5A00E85C4D /* ParseHelper.swift */; };
+		AF0EE6091B5F2A5A00E85C4D /* ParseLoginHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0EE6061B5F2A5A00E85C4D /* ParseLoginHelper.swift */; };
+		AF0EE60D1B5F3C0300E85C4D /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0EE60C1B5F3C0300E85C4D /* SearchBarView.swift */; };
+		AF0EE60F1B5F3C2B00E85C4D /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0EE60E1B5F3C2B00E85C4D /* SearchViewController.swift */; };
+		AF0EE6111B5F448D00E85C4D /* CardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0EE6101B5F448D00E85C4D /* CardViewController.swift */; };
 		AF2EBB6B1B5EE88E00562B62 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2EBB6A1B5EE88E00562B62 /* ProfileViewController.swift */; };
 		AF2EBB6D1B5EE8AC00562B62 /* Hackathon.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2EBB6C1B5EE8AC00562B62 /* Hackathon.swift */; };
 		AF2EBB6F1B5EE8F200562B62 /* FilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2EBB6E1B5EE8F200562B62 /* FilterView.swift */; };
 		AF2EBB711B5EEDB700562B62 /* HackathonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2EBB701B5EEDB700562B62 /* HackathonTableViewCell.swift */; };
 		AF559AB31B4CF65000114F80 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF559AB21B4CF65000114F80 /* AppDelegate.swift */; };
-		AF559AB51B4CF65000114F80 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF559AB41B4CF65000114F80 /* ViewController.swift */; };
 		AF559AB81B4CF65000114F80 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AF559AB61B4CF65000114F80 /* Main.storyboard */; };
 		AF559ABA1B4CF65000114F80 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF559AB91B4CF65000114F80 /* Images.xcassets */; };
 		AF559ABD1B4CF65000114F80 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF559ABB1B4CF65000114F80 /* LaunchScreen.xib */; };
@@ -34,6 +39,12 @@
 /* Begin PBXFileReference section */
 		29594204DC49B863B82EC85D /* Pods-Hackathon.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hackathon.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Hackathon/Pods-Hackathon.debug.xcconfig"; sourceTree = "<group>"; };
 		80A4121BD1F6E738AAAB9812 /* Pods-Hackathon.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hackathon.release.xcconfig"; path = "Pods/Target Support Files/Pods-Hackathon/Pods-Hackathon.release.xcconfig"; sourceTree = "<group>"; };
+		AF0EE6041B5F2A5A00E85C4D /* ErrorHandling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ErrorHandling.swift; path = Helpers/ErrorHandling.swift; sourceTree = "<group>"; };
+		AF0EE6051B5F2A5A00E85C4D /* ParseHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ParseHelper.swift; path = Helpers/ParseHelper.swift; sourceTree = "<group>"; };
+		AF0EE6061B5F2A5A00E85C4D /* ParseLoginHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ParseLoginHelper.swift; path = Helpers/ParseLoginHelper.swift; sourceTree = "<group>"; };
+		AF0EE60C1B5F3C0300E85C4D /* SearchBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchBarView.swift; path = ViewControllers/SearchBarView.swift; sourceTree = SOURCE_ROOT; };
+		AF0EE60E1B5F3C2B00E85C4D /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchViewController.swift; path = ViewControllers/SearchViewController.swift; sourceTree = SOURCE_ROOT; };
+		AF0EE6101B5F448D00E85C4D /* CardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CardViewController.swift; path = ViewControllers/CardViewController.swift; sourceTree = SOURCE_ROOT; };
 		AF2EBB6A1B5EE88E00562B62 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileViewController.swift; path = ViewControllers/ProfileViewController.swift; sourceTree = SOURCE_ROOT; };
 		AF2EBB6C1B5EE8AC00562B62 /* Hackathon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Hackathon.swift; path = Models/Hackathon.swift; sourceTree = SOURCE_ROOT; };
 		AF2EBB6E1B5EE8F200562B62 /* FilterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilterView.swift; path = Views/Search/FilterView.swift; sourceTree = SOURCE_ROOT; };
@@ -42,7 +53,6 @@
 		AF559AAD1B4CF65000114F80 /* Hackathon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hackathon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF559AB11B4CF65000114F80 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AF559AB21B4CF65000114F80 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		AF559AB41B4CF65000114F80 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		AF559AB71B4CF65000114F80 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		AF559AB91B4CF65000114F80 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		AF559ABC1B4CF65000114F80 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -89,11 +99,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		AF2EBB661B5EE73C00562B62 /* Helpers */ = {
+		AF0EE6031B5F2A4300E85C4D /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				AF0EE6041B5F2A5A00E85C4D /* ErrorHandling.swift */,
+				AF0EE6051B5F2A5A00E85C4D /* ParseHelper.swift */,
+				AF0EE6061B5F2A5A00E85C4D /* ParseLoginHelper.swift */,
 			);
 			name = Helpers;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		AF2EBB671B5EE75300562B62 /* Models */ = {
@@ -114,6 +128,7 @@
 		AF2EBB691B5EE82400562B62 /* Search */ = {
 			isa = PBXGroup;
 			children = (
+				AF0EE60C1B5F3C0300E85C4D /* SearchBarView.swift */,
 				AF2EBB6E1B5EE8F200562B62 /* FilterView.swift */,
 				AF2EBB701B5EEDB700562B62 /* HackathonTableViewCell.swift */,
 			);
@@ -126,9 +141,9 @@
 				AF559AAF1B4CF65000114F80 /* Hackathon */,
 				AF559AC51B4CF65000114F80 /* HackathonTests */,
 				AF559AAE1B4CF65000114F80 /* Products */,
-				AF2EBB751B5EFB9F00562B62 /* Hackathon-Bridging-Header.h */,
 				10E685D8697D08FFAA99CA3F /* Pods */,
 				1C5D22B942C863C3F244039C /* Frameworks */,
+				AF2EBB751B5EFB9F00562B62 /* Hackathon-Bridging-Header.h */,
 			);
 			sourceTree = "<group>";
 		};
@@ -144,13 +159,11 @@
 		AF559AAF1B4CF65000114F80 /* Hackathon */ = {
 			isa = PBXGroup;
 			children = (
+				AF0EE6031B5F2A4300E85C4D /* Helpers */,
 				AF2EBB671B5EE75300562B62 /* Models */,
-				AF2EBB661B5EE73C00562B62 /* Helpers */,
-				AFBE80511B4FD2DE009A7EF3 /* ViewConrollers */,
 				AFBE80501B4FD2D6009A7EF3 /* Views */,
-				AFD8827F1B4D0C0A005B751D /* projectMastermind */,
+				AFBE80511B4FD2DE009A7EF3 /* ViewConrollers */,
 				AF559AB21B4CF65000114F80 /* AppDelegate.swift */,
-				AF559AB41B4CF65000114F80 /* ViewController.swift */,
 				AF559AB61B4CF65000114F80 /* Main.storyboard */,
 				AF559AB91B4CF65000114F80 /* Images.xcassets */,
 				AF559ABB1B4CF65000114F80 /* LaunchScreen.xib */,
@@ -162,6 +175,7 @@
 		AF559AB01B4CF65000114F80 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				AFD8827F1B4D0C0A005B751D /* projectMastermind */,
 				AF559AB11B4CF65000114F80 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -197,6 +211,8 @@
 			isa = PBXGroup;
 			children = (
 				AF2EBB6A1B5EE88E00562B62 /* ProfileViewController.swift */,
+				AF0EE60E1B5F3C2B00E85C4D /* SearchViewController.swift */,
+				AF0EE6101B5F448D00E85C4D /* CardViewController.swift */,
 			);
 			name = ViewConrollers;
 			sourceTree = "<group>";
@@ -354,11 +370,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				AF2EBB6B1B5EE88E00562B62 /* ProfileViewController.swift in Sources */,
-				AF559AB51B4CF65000114F80 /* ViewController.swift in Sources */,
+				AF0EE60F1B5F3C2B00E85C4D /* SearchViewController.swift in Sources */,
+				AF0EE6071B5F2A5A00E85C4D /* ErrorHandling.swift in Sources */,
 				AF559AB31B4CF65000114F80 /* AppDelegate.swift in Sources */,
 				AF2EBB711B5EEDB700562B62 /* HackathonTableViewCell.swift in Sources */,
+				AF0EE60D1B5F3C0300E85C4D /* SearchBarView.swift in Sources */,
 				AF2EBB6F1B5EE8F200562B62 /* FilterView.swift in Sources */,
+				AF0EE6111B5F448D00E85C4D /* CardViewController.swift in Sources */,
 				AF2EBB6D1B5EE8AC00562B62 /* Hackathon.swift in Sources */,
+				AF0EE6091B5F2A5A00E85C4D /* ParseLoginHelper.swift in Sources */,
+				AF0EE6081B5F2A5A00E85C4D /* ParseHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
