@@ -1,6 +1,0 @@
-framework module Bond {
-  umbrella header "Pods-HackathonTests-Bond-umbrella.h"
-
-  export *
-  module * { export * }
-}

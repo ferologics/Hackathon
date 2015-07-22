@@ -1,6 +1,0 @@
-framework module FBSDKLoginKit {
-  umbrella header "Pods-HackathonTests-FBSDKLoginKit-umbrella.h"
-
-  export *
-  module * { export * }
-}

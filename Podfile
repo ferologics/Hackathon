@@ -3,7 +3,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '8.0'
 use_frameworks!
 
-target 'HackathonTests' do
+target 'Hackathon' do
 pod 'Presentation'
 pod 'Parse'
 pod 'ParseUI'

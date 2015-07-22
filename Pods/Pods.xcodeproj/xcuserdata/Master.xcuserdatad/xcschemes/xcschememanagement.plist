@@ -4,93 +4,179 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Pods-HackathonTests-Bolts.xcscheme</key>
+		<key>Bolts.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-HackathonTests-Bond.xcscheme</key>
+		<key>Bond.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-HackathonTests-BubbleTransition.xcscheme</key>
+		<key>BubbleTransition.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-HackathonTests-Cartography.xcscheme</key>
+		<key>Cartography.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-HackathonTests-ConvenienceKit-ConvenienceKit.xcscheme</key>
+		<key>ConvenienceKit-ConvenienceKit.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-HackathonTests-ConvenienceKit.xcscheme</key>
+		<key>ConvenienceKit.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-HackathonTests-EasyAnimation.xcscheme</key>
+		<key>EasyAnimation.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-HackathonTests-FBSDKCoreKit.xcscheme</key>
+		<key>FBSDKCoreKit.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-HackathonTests-FBSDKLoginKit.xcscheme</key>
+		<key>FBSDKLoginKit.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-HackathonTests-Pages.xcscheme</key>
+		<key>Pages.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-HackathonTests-Parse.xcscheme</key>
+		<key>Parse.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-HackathonTests-ParseFacebookUtilsV4.xcscheme</key>
+		<key>ParseFacebookUtilsV4.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-HackathonTests-ParseUI.xcscheme</key>
+		<key>ParseUI.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-HackathonTests-Presentation.xcscheme</key>
+		<key>Pods-Hackathon.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-HackathonTests-Shuffle.xcscheme</key>
+		<key>Presentation.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-HackathonTests-SwiftyJSON.xcscheme</key>
+		<key>Shuffle.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-HackathonTests.xcscheme</key>
+		<key>SwiftyJSON.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
-	<dict/>
+	<dict>
+		<key>1F7BF97A65033555CC93FB1F066FEF34</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>25E0F0AEF3D0FF9A663EBD748DD275FD</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>324341B43E84469A1F143E6CC00A0382</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>36E5D2C39AEA4634E39EB7B112A8820E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>3EFEAB8B4141A97C376AD29E887B6C39</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>5369C31E20F149D8B4F2CBC8D0D532CE</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>584FF23BF1F70699079E8AE3339F6792</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>5E976ABED1EA55206CE7A8F9050818AB</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>86C0AFF55CFEE40E4F3E8B38E9D7B458</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>92BABA47C67AFDDB5867C31CCB62C2E6</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>9B3646E43E4B8D42DE1EDA7F4ED5CC56</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C1AA1FF4F3BAB73A608205DFCE85074B</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D28C26A2059B5185FA1C90E03DDADFD4</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>DA2D3067DDFCF5BEA3E82D06959132E1</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E3446D571F5D243EC5252B9E1907C79C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F579DC51033BA173E3F487735FFA549A</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F702920181058E97FE86F7F087410828</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+	</dict>
 </dict>
 </plist>

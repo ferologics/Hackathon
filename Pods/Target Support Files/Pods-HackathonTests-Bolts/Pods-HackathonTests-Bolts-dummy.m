@@ -1,5 +1,0 @@
-#import <Foundation/Foundation.h>
-@interface PodsDummy_Pods_HackathonTests_Bolts : NSObject
-@end
-@implementation PodsDummy_Pods_HackathonTests_Bolts
-@end

@@ -1,6 +1,0 @@
-framework module ConvenienceKit {
-  umbrella header "Pods-HackathonTests-ConvenienceKit-umbrella.h"
-
-  export *
-  module * { export * }
-}
