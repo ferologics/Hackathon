@@ -8,13 +8,18 @@
 
 import UIKit
 import BubbleTransition
+import QuartzCore
 
 class SearchViewController: UIViewController, UIViewControllerTransitioningDelegate {
 
+    @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var switchButton: UIButton!
+    @IBOutlet weak var searchBar: UISearchBar!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        updateButton()
+        updateSearchBar()
         // Do any additional setup after loading the view.
     }
 
@@ -22,9 +27,7 @@ class SearchViewController: UIViewController, UIViewControllerTransitioningDeleg
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
 
-    
     // MARK: - Navigation
 
     let transition = BubbleTransition()
@@ -51,5 +54,20 @@ class SearchViewController: UIViewController, UIViewControllerTransitioningDeleg
         transition.bubbleColor = switchButton.backgroundColor!
         return transition
     }
-
+    
+    // MARK: - custom methods
+    
+    func updateButton() {
+        switchButton.layer.cornerRadius = 22
+        switchButton.backgroundColor = secondaryColor
+    }
+    
+    func updateSearchBar() {
+        
+    }
+    
+    func updateTableView() {
+        tableView.backgroundColor = mainColor
+        
+    }
 }

@@ -4,6 +4,7 @@ platform :ios, '8.0'
 use_frameworks!
 
 target 'Hackathon' do
+pod 'FilterBar', '~>2.0.0'
 pod 'Presentation'
 pod 'Parse'
 pod 'ParseUI'

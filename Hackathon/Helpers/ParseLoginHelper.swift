@@ -75,7 +75,6 @@ extension ParseLoginHelper : PFLogInViewControllerDelegate {
       }
     }
   }
-  
 }
 
 extension ParseLoginHelper : PFSignUpViewControllerDelegate {
@@ -83,5 +82,4 @@ extension ParseLoginHelper : PFSignUpViewControllerDelegate {
   func signUpViewController(signUpController: PFSignUpViewController, didSignUpUser user: PFUser) {
     self.callback(user, nil)
   }
-  
 }

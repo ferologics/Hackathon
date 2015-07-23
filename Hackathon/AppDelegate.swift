@@ -31,7 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 // if login was successful, display the TabBarController
                 // 2
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                let tabBarController = storyboard.instantiateViewControllerWithIdentifier("TabBarController") as! UIViewController
+                let tabBarController = storyboard.instantiateViewControllerWithIdentifier("SearchViewController") as! UIViewController
                 // 3
                 self.window?.rootViewController!.presentViewController(tabBarController, animated:true, completion:nil)
             }
@@ -40,6 +40,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
 
+        UITableViewCell.appearance().backgroundColor = secondaryColor
+        UITableViewCell.appearance().layer.cornerRadius = 10.0
+        
+        UITableView.appearance().backgroundColor = lightColor
         Parse.setApplicationId("1kQEKpgZG525SU9GiCXl4xkrpbiwjy5OpZK9QKlA", clientKey: "XWXzoPY6cVmBPjzJwBkGaXUm6qvHjkjjLl9NLHYb")
         
         PFFacebookUtils.initializeFacebookWithApplicationLaunchOptions(launchOptions)
@@ -54,7 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // 3
             // if we have a user, set the TabBarController to be the initial View Controller
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            startViewController = storyboard.instantiateViewControllerWithIdentifier("TabBarController") as! UITabBarController
+            startViewController = storyboard.instantiateViewControllerWithIdentifier("SearchViewController") as! UIViewController
         } else {
             // 4
             // Otherwise set the LoginViewController to be the first

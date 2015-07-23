@@ -7,13 +7,17 @@
 //
 
 import UIKit
+import QuartzCore
 
 class ProfileViewController: UIViewController {
 
-    @IBOutlet weak var switchButtom: UIButton!
+    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var switchButton: UIButton!
     
     override func viewDidLoad() {
-        switchButtom.transform = CGAffineTransformMakeRotation(CGFloat(M_PI_4))
+        updateView()
+        updateTableView()
+        
     }
     
     @IBAction func closeAction(sender: AnyObject) {
@@ -28,4 +32,17 @@ class ProfileViewController: UIViewController {
         UIApplication.sharedApplication().setStatusBarStyle(.Default, animated: true)
     }
 
+    func updateView() {
+        view.backgroundColor = mainColor
+//        switchButton.transform = CGAffineTransformMakeRotation(CGFloat(M_PI_4))
+        switchButton.layer.cornerRadius = 22
+        switchButton.backgroundColor = secondaryColor
+    }
+    
+    func updateTableView() {
+//        self.navigationController?.setToolbarHidden(true, animated: false)
+        tableView.layer.cornerRadius = 10
+//        tableView.backgroundColor = lightColor
+    }
 }
+
