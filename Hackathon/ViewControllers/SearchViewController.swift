@@ -16,18 +16,37 @@ class SearchViewController: UIViewController, UIViewControllerTransitioningDeleg
     @IBOutlet weak var switchButton: UIButton!
     @IBOutlet weak var searchBar: UISearchBar!
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         updateButton()
         updateSearchBar()
         // Do any additional setup after loading the view.
     }
+    
+    // date button tapped -> set filter to Date
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
 
+    // MARK: - custom methods
+    
+    func updateButton() {
+        switchButton.layer.cornerRadius = 22
+        switchButton.backgroundColor = secondaryColor
+    }
+    
+    func updateSearchBar() {
+        
+    }
+    
+    func updateTableView() {
+        tableView.backgroundColor = mainColor
+        
+    }
+    
     // MARK: - Navigation
 
     let transition = BubbleTransition()
@@ -55,19 +74,5 @@ class SearchViewController: UIViewController, UIViewControllerTransitioningDeleg
         return transition
     }
     
-    // MARK: - custom methods
     
-    func updateButton() {
-        switchButton.layer.cornerRadius = 22
-        switchButton.backgroundColor = secondaryColor
-    }
-    
-    func updateSearchBar() {
-        
-    }
-    
-    func updateTableView() {
-        tableView.backgroundColor = mainColor
-        
-    }
 }

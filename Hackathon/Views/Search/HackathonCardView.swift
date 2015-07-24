@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HackathonTableViewCell: UITableViewCell {
+class HackathonCardView: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
