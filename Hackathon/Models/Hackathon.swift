@@ -8,20 +8,21 @@
 
 import Foundation
 
+/*
 struct Hackathon {
-    let id: String
-    let name: String
-    let description: String
-    let start: NSDate
-    let end: NSDate
-    let capacity: String
-    let currency: String
-    let logo: String
-    let status: String
-    let url: String
-    let ticketClasses: PFObject
+    let id: String?
+    let name: String?
+    let description: String?
+    let start: NSDate?
+    let end: NSDate?
+    let capacity: String?
+    let currency: String?
+    let logo: String?
+    let status: String?
+    let url: String?
+    let ticketClasses: PFObject?
     
-    init (id: String, name: String, description: String, start:NSDate, end: NSDate, capacity: String, currency: String, logo: String, status: String, url: String, ticketClasses: PFObject) {
+    init (id: String?, name: String?, description: String?, start:NSDate?, end: NSDate?, capacity: String?, currency: String?, logo: String?, status: String?, url: String?, ticketClasses: PFObject?) {
         
         self.id            = id
         self.name          = name
@@ -39,3 +40,4 @@ struct Hackathon {
     
     // 'TODO'
 }
+*/

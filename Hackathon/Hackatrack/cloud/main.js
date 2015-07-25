@@ -91,7 +91,7 @@ function hackathonForEvent(theEvent) {
    hackathon.set("name",            theEvent["name"]["text"]);
    hackathon.set("description",     theEvent["description"] ? theEvent["description"]["text"] : "None provided.");
    hackathon.set("status",          theEvent["status"]);
-   hackathon.set("capacity", String(theEvent["capacity"]));
+   hackathon.set("capacity",        theEvent["capacity"]);
    hackathon.set("logo",           (theEvent["logo"] != undefined || theEvent["logo"] != null) ? theEvent["logo"]["url"] : "http://www.ecolabelindex.com/files/ecolabel-logos-sized/no-logo-provided.png");
    hackathon.set("start",  new Date(theEvent["start"]["utc"]));
    hackathon.set("end",    new Date(theEvent["end"]["utc"]));

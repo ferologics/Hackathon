@@ -11,45 +11,83 @@ import Foundation
 import ConvenienceKit
 import Parse
 
-class HackathonModel: PFObject, PFSubclassing {
+class Hackathon : PFObject, PFSubclassing {
     
-    var query: PFQuery? {
-        didSet {
-            // whenever we assign a new query, cancel any previous requests
-            oldValue?.cancel()
-        }
-    }
+    @NSManaged var id: String?
+    @NSManaged var name: String?
+    @NSManaged var descript: String?
+    @NSManaged var start: NSDate?
+    @NSManaged var end: NSDate?
+    @NSManaged var capacity: String?
+    @NSManaged var currency: String?
+    @NSManaged var logo: String?
+    @NSManaged var status: String?
+    @NSManaged var url: String?
+    @NSManaged var ticketClasses: PFObject?
+    
+//    static var query: PFQuery? {
+//        didSet {
+//            // whenever we assign a new query, cancel any previous requests
+//            oldValue?.cancel()
+//        }
+//    }
     
     // MARK: instances
     // MARK: -
     
-    static func getHackathons(#className: String, category: SearchTableViewController.Category, withFilters:[SearchTableViewController.Filter]) -> Hackathon
-    {
-        
-
-        let filterCount = withFilters.count
-        
-        if ( filterCount == 1 ) {
-            // perform query
-//            query = PFQuery(className:className)
-//            query.
+//    static func getHackathons(#className   :String,
+//                               withCategory:Constants.Category,
+//                               withFilters :[Filter.Filter]) -> [Hackathon]
+//    {
+//        return (self.initHackathonsFromQuery(
+//                                query: self.getQuery(
+//                                                    className    : className,
+//                                                    withCategory : withCategory,
+//                                                    withFilters  : withFilters
+//                                                    )
+//                                            )
+//                )
+//    }
+//    
+//    static func getQuery(#className   :String,
+//                          withCategory:Constants.Category,
+//                          withFilters :[Filter.Filter]) -> PFQuery
+//    {
+//        
+//        let filterCount = withFilters.count
+//        
+//        if ( filterCount == 1 ) {
+//            // perform query
+//            //            query = PFQuery(className:className)
+//            //            query.
+//            
+////            query = PFQuery.
+//            
+//        } else if ( filterCount == 2 ) {
+//            
+//            
+//            
+//            
+//        } else if ( filterCount == 3 ) {
+//            
+//            
+//            
+//            
+//        } else if ( filterCount == 4 ) {
+//            
+//            
+//            
+//            
+//        }
+//        
+//        
+//    }
     
-        } else if ( filterCount == 2 ) {
-            
-            
-            
-            
-        } else if ( filterCount == 3 ) {
-            
-            
-            
-            
-        } else if ( filterCount == 4 ) {
-            
-            
-            
-            
-        }
+    static func initHackathonsFromQuery(#query: PFQuery) -> [Hackathon] {
+        
+        var hackathons:[Hackathon]?
+        
+        return []
     }
     
     @NSManaged var user: PFUser?
@@ -61,7 +99,7 @@ class HackathonModel: PFObject, PFSubclassing {
     }
 }
 
-extension HackathonModel {
+extension Hackathon {
     
     static func parseClassName() -> String {
         return "Hackathon"

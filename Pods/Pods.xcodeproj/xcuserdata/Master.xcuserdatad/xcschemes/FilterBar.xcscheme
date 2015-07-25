@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "61BFBF5C2B428A61886BF05E"
+               BlueprintIdentifier = "F3814021E555A57CDEF1CCAA"
                BuildableName = "FilterBar.framework"
                BlueprintName = "FilterBar"
                ReferencedContainer = "container:Pods.xcodeproj">

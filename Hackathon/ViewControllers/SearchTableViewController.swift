@@ -8,30 +8,76 @@
 
 import UIKit
 
+struct Sort {
+    var column: String?
+    var ascending = false
+    
+    init(column: String, ascending: Bool) {
+        self.column = column
+        self.ascending = ascending
+    }
+}
+
+struct SearchCriteria {
+    var searchString: String?
+    var primarySort: Sort?
+    var secondarySort: Sort?
+}
+
 class SearchTableViewController: UITableViewController {
     
-    var hackathonModel = HackathonModel()
+    var hackathons = [Hackathon]()
     
-    enum Filter {
-        case none
-        case name
-        case capacity
-        case date
-        case price
+    enum ClassName {
+        case Hackathon
+        case WatchList
+    }
+
+    static func queryForTable(tableName: String, searchCriteria: SearchCriteria) -> PFQuery {
         
+        let query = PFQuery(className: tableName)
+        
+        if searchCriteria.searchString != nil
+        {
+            query.whereKey("name", containsString: searchCriteria.searchString)
+        }
+        
+        if searchCriteria.primarySort != nil
+        {
+            if searchCriteria.primarySort!.ascending
+            {
+                query.orderByAscending(searchCriteria.primarySort!.column!)
+            }
+            else
+            {
+                query.orderByDescending(searchCriteria.primarySort!.column!)
+            }
+        }
+        
+        if searchCriteria.secondarySort != nil
+        {
+            if searchCriteria.secondarySort!.ascending
+            {
+                query.addAscendingOrder(searchCriteria.secondarySort!.column!)
+            }
+            else
+            {
+                query.addDescendingOrder(searchCriteria.secondarySort!.column!)
+            }
+        }
+
+        return query
     }
-    
-    enum Category {
-        case none
-        case global
-        case currentLocation
-        case city
-        case friends
-    }
+
+//    var filter = Filter.filters
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // TODO if previous search available, load that
+//        filter?.append(.None)
+//        HackathonModel.getHackathons(className: Constants.ClassHackathon, withCategory: Constants.Category.CurrentLocation, withFilters: filter!)
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 

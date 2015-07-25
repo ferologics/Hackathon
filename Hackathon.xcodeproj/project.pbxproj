@@ -13,6 +13,8 @@
 		AF559ABA1B4CF65000114F80 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF559AB91B4CF65000114F80 /* Images.xcassets */; };
 		AF559ABD1B4CF65000114F80 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF559ABB1B4CF65000114F80 /* LaunchScreen.xib */; };
 		AF559AC91B4CF65000114F80 /* HackathonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF559AC81B4CF65000114F80 /* HackathonTests.swift */; };
+		AF745E531B62CD57002AFA8E /* Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF745E521B62CD57002AFA8E /* Filter.swift */; };
+		AF7C638A1B63176900843733 /* CategroyButtonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF7C63891B63176900843733 /* CategroyButtonViewController.swift */; };
 		AFD882801B4D0C0A005B751D /* projectMastermind in Resources */ = {isa = PBXBuildFile; fileRef = AFD8827F1B4D0C0A005B751D /* projectMastermind */; };
 		AFE7FB421B60392700487624 /* HackathonModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE7FB411B60392700487624 /* HackathonModel.swift */; };
 		AFE7FB491B60393300487624 /* CustomSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE7FB431B60393300487624 /* CustomSearchBar.swift */; };
@@ -52,6 +54,8 @@
 		AF559AC21B4CF65000114F80 /* HackathonTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HackathonTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF559AC71B4CF65000114F80 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AF559AC81B4CF65000114F80 /* HackathonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HackathonTests.swift; sourceTree = "<group>"; };
+		AF745E521B62CD57002AFA8E /* Filter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Filter.swift; path = Hackathon/Helpers/Filter.swift; sourceTree = "<group>"; };
+		AF7C63891B63176900843733 /* CategroyButtonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CategroyButtonViewController.swift; path = ViewControllers/CategroyButtonViewController.swift; sourceTree = "<group>"; };
 		AFD8827F1B4D0C0A005B751D /* projectMastermind */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = projectMastermind; sourceTree = "<group>"; };
 		AFE7FB411B60392700487624 /* HackathonModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HackathonModel.swift; path = Models/HackathonModel.swift; sourceTree = "<group>"; };
 		AFE7FB431B60393300487624 /* CustomSearchBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomSearchBar.swift; path = Hackathon/Helpers/CustomSearchBar.swift; sourceTree = "<group>"; };
@@ -116,6 +120,7 @@
 				AFE7FB471B60393300487624 /* ParseHelper.swift */,
 				AFE7FB481B60393300487624 /* ParseLoginHelper.swift */,
 				AFF791C31B6180F00061D99F /* Constants.swift */,
+				AF745E521B62CD57002AFA8E /* Filter.swift */,
 			);
 			name = Helpers;
 			path = ..;
@@ -225,6 +230,7 @@
 				AFE7FB501B60394900487624 /* ProfileViewController.swift */,
 				AFE7FB511B60394900487624 /* SearchViewController.swift */,
 				AFF791C71B61B37D0061D99F /* SearchTableViewController.swift */,
+				AF7C63891B63176900843733 /* CategroyButtonViewController.swift */,
 			);
 			name = ViewConrollers;
 			sourceTree = "<group>";
@@ -382,6 +388,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AFE7FB4E1B60393300487624 /* ParseLoginHelper.swift in Sources */,
+				AF7C638A1B63176900843733 /* CategroyButtonViewController.swift in Sources */,
 				AFE7FB491B60393300487624 /* CustomSearchBar.swift in Sources */,
 				AFE7FB571B60395700487624 /* FilterView.swift in Sources */,
 				AFF791C81B61B37D0061D99F /* SearchTableViewController.swift in Sources */,
@@ -394,6 +401,7 @@
 				AFE7FB4D1B60393300487624 /* ParseHelper.swift in Sources */,
 				AFE7FB521B60394900487624 /* CardViewController.swift in Sources */,
 				AF559AB31B4CF65000114F80 /* AppDelegate.swift in Sources */,
+				AF745E531B62CD57002AFA8E /* Filter.swift in Sources */,
 				AFE7FB421B60392700487624 /* HackathonModel.swift in Sources */,
 				AFE7FB541B60394900487624 /* SearchViewController.swift in Sources */,
 			);

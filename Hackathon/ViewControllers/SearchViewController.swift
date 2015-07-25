@@ -10,18 +10,35 @@ import UIKit
 import BubbleTransition
 import QuartzCore
 
-class SearchViewController: UIViewController, UIViewControllerTransitioningDelegate {
+
+class SearchViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIViewControllerTransitioningDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var switchButton: UIButton!
     @IBOutlet weak var searchBar: UISearchBar!
+
     
+    var hackathons = [Hackathon]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         updateButton()
         updateSearchBar()
         // Do any additional setup after loading the view.
+        
+        
+        
+        var criteria = SearchCriteria()
+        criteria.searchString = "Hack"
+        criteria.primarySort = Sort(column: "start", ascending: true)
+        
+        let query = SearchTableViewController.queryForTable("Hackathon", searchCriteria: criteria)
+
+        query.findObjectsInBackgroundWithBlock({ (results, error) -> Void in
+            self.hackathons = results as! [Hackathon]
+            self.tableView.reloadData()
+        })
+
     }
     
     // date button tapped -> set filter to Date
@@ -32,6 +49,8 @@ class SearchViewController: UIViewController, UIViewControllerTransitioningDeleg
     }
 
     // MARK: - custom methods
+    
+    
     
     func updateButton() {
         switchButton.layer.cornerRadius = 22
@@ -73,6 +92,20 @@ class SearchViewController: UIViewController, UIViewControllerTransitioningDeleg
         transition.bubbleColor = switchButton.backgroundColor!
         return transition
     }
-    
-    
 }
+
+extension SearchViewController
+{
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return hackathons.count
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier("HackathonCell", forIndexPath: indexPath) as! UITableViewCell
+        var hackathon = hackathons[indexPath.row]
+        cell.textLabel?.text = hackathon.name
+        return cell
+    }
+}
+
+

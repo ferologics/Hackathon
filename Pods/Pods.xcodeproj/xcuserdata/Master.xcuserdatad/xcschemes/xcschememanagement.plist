@@ -54,6 +54,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>LGPlusButtonsView.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pages.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -97,12 +102,7 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>0184DF2D1C37E406AD01F7B929ECBBB9</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>0A96618E50A1EE34980371A18146F207</key>
+		<key>1D2900872E28C65A875021750C9C853B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -117,62 +117,72 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>54EA0B24897019DA000DD348B852738B</key>
+		<key>493798BBA365C1383518AF1A48DD96A1</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>5665D5DCB8C9A6F9F5E836D9DD3F9745</key>
+		<key>631BA3E1485A951D49812A4C997DFE57</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>6DBD81CA2581D4AC6EB39C656BF66841</key>
+		<key>675B78FFAAEE2E13BDA2D8A5AF769B95</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>71BB424371C4E50C408CC2F89E020E30</key>
+		<key>710DAEBD4DC906559E79B2D8C68FBA7B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>7B135D7CF8AD531CBCF4BC1574C92B04</key>
+		<key>714DC571704BE0374A55EDB2BD00B8CC</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>845C65C4835B22ADFA92E5681767B452</key>
+		<key>7958D70718C9F1BEF2498C6AA7609128</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>90718541515D4FBEB5DAAE98EF24607F</key>
+		<key>7A6D9A5D149BCCC324DD0D9D1ACA6C80</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>91AAAD94FA94577DF616D2372E46B740</key>
+		<key>84B5D58300524F822A586BCDEE84D377</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>9DD9654614F81408F4186EB609FC64C7</key>
+		<key>8D4C560E9784A690ACC72E109504C254</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>BA4A3D53C0F5C057C2DFCDF9DD6C27C9</key>
+		<key>9023EAE7AD4951E6432D5AFDD3C200CE</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D5556078B51121E8B3F30BFB611DB50C</key>
+		<key>B202CD0C9CB8C91A4388B41A84746379</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E75AF9C1C8F8691AE31D94FFFE4991F9</key>
+		<key>DF2EBCBA097F15D052BCA3B514B13DC6</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E4C154D5883FB77DDDE9B8C39D6E0E11</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F24C218B19FF2C84591BC055CAC02007</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -182,7 +192,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>F8602A9D33409601CF1053F0E438ACA4</key>
+		<key>FA42095950FA9898D9C9BAB18AB65F8B</key>
 		<dict>
 			<key>primary</key>
 			<true/>

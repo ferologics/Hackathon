@@ -40,8 +40,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
 
-        UITableViewCell.appearance().backgroundColor = secondaryColor
-        UITableViewCell.appearance().layer.cornerRadius = 10.0
+//        UITableViewCell.appearance().backgroundColor = secondaryColor
+//        UITableViewCell.appearance().layer.cornerRadius = 10.0
         
         UITableView.appearance().backgroundColor = lightColor
         Parse.setApplicationId("1kQEKpgZG525SU9GiCXl4xkrpbiwjy5OpZK9QKlA", clientKey: "XWXzoPY6cVmBPjzJwBkGaXUm6qvHjkjjLl9NLHYb")
