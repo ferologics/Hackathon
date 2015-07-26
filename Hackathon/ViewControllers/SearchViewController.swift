@@ -103,7 +103,7 @@ extension SearchViewController
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("HackathonCell", forIndexPath: indexPath) as! UITableViewCell
         var hackathon = hackathons[indexPath.row]
-        cell.textLabel?.text = hackathon.name
+        cell.configure(name: hackathon.name, ticketClasses: (hackathon.[ticketClassNames] as [String], [hackathon.[cost] as [Int]), capacity: hackathon.capacity as Int, date: hackathon.start as NSDate)
         return cell
     }
 }

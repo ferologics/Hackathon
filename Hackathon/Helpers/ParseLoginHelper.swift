@@ -18,8 +18,8 @@ typealias ParseLoginHelperCallback = (PFUser?, NSError?) -> Void
   it will call the callback function and provide a 'PFUser' object.
 */
 class ParseLoginHelper : NSObject, NSObjectProtocol {
-  static let errorDomain = "com.makeschool.parseloginhelpererrordomain"
-  static let usernameNotFoundErrorCode = 1
+  static let errorDomain                          = "com.makeschool.parseloginhelpererrordomain"
+  static let usernameNotFoundErrorCode            = 1
   static let usernameNotFoundLocalizedDescription = "Could not retrieve Facebook username"
 
   let callback: ParseLoginHelperCallback
@@ -64,10 +64,10 @@ extension ParseLoginHelper : PFLogInViewControllerDelegate {
             })
           } else {
             // cannot retrieve username? -> create error and hand it to callback
-            let userInfo = [NSLocalizedDescriptionKey : ParseLoginHelper.usernameNotFoundLocalizedDescription]
+            let userInfo        = [NSLocalizedDescriptionKey : ParseLoginHelper.usernameNotFoundLocalizedDescription]
             let noUsernameError = NSError(
-              domain: ParseLoginHelper.errorDomain,
-              code: ParseLoginHelper.usernameNotFoundErrorCode,
+              domain:   ParseLoginHelper.errorDomain,
+              code:     ParseLoginHelper.usernameNotFoundErrorCode,
               userInfo: userInfo
             )
             self.callback(nil, error)

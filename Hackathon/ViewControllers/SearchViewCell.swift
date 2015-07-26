@@ -8,10 +8,10 @@ class SearchViewCell: UITableViewCell {
 	@IBOutlet weak var capacityField: UITextField
 	@IBOutlet weak var dateField:     UITextField
 
-	public func configure(#name: Strig?, ticketClasses:([String], [Int]), capacity:Int?, date:NSDate?) {
+	public func configure(#name: Strig?, ticketClasses:(names:[String], costs:[Int]), capacity:Int?, date:NSDate?) {
 
 	nameField.text     = name
-	costField.text     = 
+	costField.text     = regularTicketClass(ticketClasses)
 	capacityField.text = String(Int)
 	dateField.text     = utcToString(date)
 
@@ -32,12 +32,12 @@ class SearchViewCell: UITableViewCell {
 	}
 
 	// get ticketclass names array and cost array for hackathon, then find the on ewith "regular" name and returm its name + cost as a tuple
-	func regularTicketClass(ticketClasses:(names: [String], costs: [Int])) ->  (String,String) {
+	func regularTicketClass(ticketClasses:(names: [String], costs: [Int])) ->  String {
 
 		let regularTicketClassCost = String(ticketClasses.cost.sort(<)[0])
 		let regularTicketClassName = filter(ticketClasses.names) { $0.name == "regular" }
-		
-		return (regularTicketClassCost,regularTicketClassName)
+		let unifiedString = regularTicketClassName + ": " + regularTicketClassCost
+		return unifiedString
 
 	}
 
