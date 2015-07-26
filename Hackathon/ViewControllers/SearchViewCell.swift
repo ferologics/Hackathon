@@ -3,6 +3,7 @@ import UIKit
 
 class SearchViewCell: UITableViewCell {
 
+	// TODO link textfields from the main storyboard
 	@IBOutlet weak var nameField:     UITextField
 	@IBOutlet weak var costField:     UITextField
 	@IBOutlet weak var capacityField: UITextField
