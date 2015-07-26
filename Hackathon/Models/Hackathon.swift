@@ -2,42 +2,118 @@
 //  Hackathon.swift
 //  Hackathon
 //
-//  Created by master on 7/23/15.
+//  Created by master on 7/21/15.
 //  Copyright (c) 2015 ferologics. All rights reserved.
 //
 
+import UIKit
 import Foundation
+import ConvenienceKit
+import Parse
 
-/*
-struct Hackathon {
-    let id: String?
-    let name: String?
-    let description: String?
-    let start: NSDate?
-    let end: NSDate?
-    let capacity: String?
-    let currency: String?
-    let logo: String?
-    let status: String?
-    let url: String?
-    let ticketClasses: PFObject?
+class Hackathon : PFObject, PFSubclassing {
     
-    init (id: String?, name: String?, description: String?, start:NSDate?, end: NSDate?, capacity: String?, currency: String?, logo: String?, status: String?, url: String?, ticketClasses: PFObject?) {
+    @NSManaged var id:            String?
+    @NSManaged var name:          String?
+    @NSManaged var descript:      String?
+    @NSManaged var start:         NSDate?
+    @NSManaged var end:           NSDate?
+    @NSManaged var capacity:      String?
+    @NSManaged var currency:      String?
+    @NSManaged var logo:          String?
+    @NSManaged var status:        String?
+    @NSManaged var url:           String?
+    @NSManaged var ticketClasses: PFObject?
+    
+    
+    
+//    static var query: PFQuery? {
+//        didSet {
+//            // whenever we assign a new query, cancel any previous requests
+//            oldValue?.cancel()
+//        }
+//    }
+    
+    // MARK: instances
+    // MARK: -
+    
+//    static func getHackathons(#className   :String,
+//                               withCategory:Constants.Category,
+//                               withFilters :[Filter.Filter]) -> [Hackathon]
+//    {
+//        return (self.initHackathonsFromQuery(
+//                                query: self.getQuery(
+//                                                    className    : className,
+//                                                    withCategory : withCategory,
+//                                                    withFilters  : withFilters
+//                                                    )
+//                                            )
+//                )
+//    }
+//    
+//    static func getQuery(#className   :String,
+//                          withCategory:Constants.Category,
+//                          withFilters :[Filter.Filter]) -> PFQuery
+//    {
+//        
+//        let filterCount = withFilters.count
+//        
+//        if ( filterCount == 1 ) {
+//            // perform query
+//            //            query = PFQuery(className:className)
+//            //            query.
+//            
+////            query = PFQuery.
+//            
+//        } else if ( filterCount == 2 ) {
+//            
+//            
+//            
+//            
+//        } else if ( filterCount == 3 ) {
+//            
+//            
+//            
+//            
+//        } else if ( filterCount == 4 ) {
+//            
+//            
+//            
+//            
+//        }
+//        
+//        
+//    }
+    
+    static func initHackathonsFromQuery(#query: PFQuery) -> [Hackathon] {
         
-        self.id            = id
-        self.name          = name
-        self.description   = description
-        self.start         = start
-        self.end           = end
-        self.capacity      = capacity
-        self.currency      = currency
-        self.logo          = logo
-        self.status        = status
-        self.url           = url
-        self.ticketClasses = ticketClasses
-
+        var hackathons:[Hackathon]?
+        
+        return []
     }
     
-    // 'TODO'
+    @NSManaged var user: PFUser?
+               var hackathon: PFObject?
+    
+    override init () {
+        super.init()
+        
+    }
 }
-*/
+
+extension Hackathon {
+    
+    static func parseClassName() -> String {
+        return "Hackathon"
+    }
+    
+    override class func initialize() {
+        
+        var onceToken : dispatch_once_t = 0;
+        dispatch_once(&onceToken) {
+            // inform Parse about this subclass
+            self.registerSubclass()
+            //            Hackathon.cellCache = NSCacheSwift<String, UIImage>()
+        }
+    }
+}
