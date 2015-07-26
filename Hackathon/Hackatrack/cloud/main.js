@@ -70,11 +70,11 @@ function getHTTPResponseForCity(city) {
    return Parse.Cloud.httpRequest({
       url : searchURL,
       params : {
-         q : searchKeyword,
-         "venue.city" : city,
-         token : token,
-         expand : "ticket_classes"
-         // expand : "logo" ---> IDK why this fcks up the ticketclasses and how to make this work
+         q:            searchKeyword,
+         "venue.city": city,
+         token:        token,
+         expand:       "ticket_classes"
+         // expand:    "logo" ---> IDK why this fcks up the ticketclasses and how to make this work
       }
    });
 }
@@ -92,26 +92,41 @@ function hackathonForEvent(theEvent) {
    hackathon.set("description",     theEvent["description"] ? theEvent["description"]["text"] : "None provided.");
    hackathon.set("status",          theEvent["status"]);
    hackathon.set("capacity",        theEvent["capacity"]);
-   hackathon.set("logo",           (theEvent["logo"] != undefined || theEvent["logo"] != null) ? theEvent["logo"]["url"] : "http://www.ecolabelindex.com/files/ecolabel-logos-sized/no-logo-provided.png");
-   hackathon.set("start",  new Date(theEvent["start"]["utc"]));
-   hackathon.set("end",    new Date(theEvent["end"]["utc"]));
+   hackathon.set("logo",          ( theEvent["logo"] != undefined || theEvent["logo"] != null) ? theEvent["logo"]["url"] : "http://www.ecolabelindex.com/files/ecolabel-logos-sized/no-logo-provided.png");
+   hackathon.set("start", new Date( theEvent["start"]["utc"]));
+   hackathon.set("end",   new Date( theEvent["end"]["utc"]));
    hackathon.set("online",          theEvent["online_theEvent"]);
    hackathon.set("currency",        theEvent["currency"]);
 
    var tickets = _.map(theEvent["ticket_classes"], function (item, index) { // creating a JSON object to Parse
       return {
          name:           item["name"],
-         cost:          (item["cost"]        ? item["cost"]["display"] : "0.00"),
-         fee:           (item["fee"]         ? item["fee"]["display"]  : "0.00"),
-         tax:           (item["tax"]         ? item["tax"]["display"]  : "0.00"),
-         description:   (item["description"] ? item["description"]     : "No description"),
+         cost:         ( item["cost"]        ? item["cost"]["display"] : "0.00" ),
+         fee:          ( item["fee"]         ? item["fee"]["display"]  : "0.00" ),
+         tax:          ( item["tax"]         ? item["tax"]["display"]  : "0.00" ),
+         description:  ( item["description"] ? item["description"]     : "No description" ),
          onSaleStatus:   item["on_sale_status"],
          donations:      item["donation"],
          free:           item["free"]
       };
    });
 
-   hackathon.set("ticketClasses", tickets);
+   hackathon.set("ticketClassesNames",          assignTicketClassesProperties( tickets, [name] );
+   hackathon.set("ticketClassesCosts",          assignTicketClassesProperties( tickets, [cost] );
+   hackathon.set("ticketClassesFees",           assignTicketClassesProperties( tickets, [fee]) ;
+   hackathon.set("ticketClassesTaxes",          assignTicketClassesProperties( tickets, [tax]) ;
+   hackathon.set("ticketClassesOnSaleStatuses", assignTicketClassesProperties( tickets, [onSaleStatus] );
+   hackathon.set("ticketClassesDescriptions",   assignTicketClassesProperties( tickets, [description] );
+   hackathon.set("ticketClassesDonations",      assignTicketClassesProperties( tickets, [donations] );
+   hackathon.set("ticketClassesFree",           assignTicketClassesProperties( tickets, [free] );
 
    return hackathon;
+}
+
+function assignTicketClassesProperties(ticketClasses, property) {
+   var propertyArray = []
+   for (i = 0; i < ticketClasses.length; i++ ) {
+      propertyArray.pop(ticketClasses[i][property]);
+   }
+   return propertyArray
 }
