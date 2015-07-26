@@ -29,10 +29,11 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         
         
         var criteria          = SearchCriteria()
+        criteria.category     = .CurrentLocation
         criteria.searchString = "Hack"
         criteria.primarySort  = Sort(column: "start", ascending: true)
         
-        let query = SearchTableViewController.queryForTable("Hackathon", searchCriteria: criteria)
+        let query = SearchTableViewController.queryForTable(searchCriteria: criteria)
 
         query.findObjectsInBackgroundWithBlock({ (results, error) -> Void in
             self.hackathons = results as! [Hackathon]
@@ -52,10 +53,10 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     // MARK: delegate methods or what
     // TODO change this as a extension
 
-    func filterContentForSearchText(searchText: String) {
+    func filterContentForSearchText(searchText: String, category: ) {
       // Filter the array using the filter method
       self.filteredCandies = self.hackathons.filter({( hackathon: Hackathon) -> Bool in
-        let name = (scope == "All") || (candy.category == scope)
+        let name = (scope == "All") || (hackathon.city == scope)
         let stringMatch = candy.name.rangeOfString(searchText)
         return categoryMatch && (stringMatch != nil)
       })

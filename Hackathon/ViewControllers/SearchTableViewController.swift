@@ -18,25 +18,52 @@ struct Sort {
     }
 }
 
-struct SearchCriteria {
+enum Category {
+    case CurrentLocation
+    case City
+    case Friends
+    case Global
+}
+
+class SearchCriteria {
     var searchString:  String?
+    var category:      Category?
     var primarySort:   Sort?
     var secondarySort: Sort?
+    var tertiarySort:  Sort?
 }
 
 class SearchTableViewController: UITableViewController {
     
     var hackathons = [Hackathon]()
-    
-    enum ClassName {
-        case Hackathon
-        case WatchList
-    }
+/*
 
-    static func queryForTable(tableName: String, searchCriteria: SearchCriteria) -> PFQuery {
+if in 
+
+friends -> searchCriteria.category = .Friends
+        -> let query = PFQuery(className: "Watchlist")
+        -> filter query for hackathons involving just your friends
+        -> present in table view cell
+
+currentLocation -> searchCriteria.category = .CurrentLocation
+                -> searchCriteria.tableName = "Hackathon"
+                -> query.whereKey("city", containsString: searchCriteria.searchString)
+                -> get the city from users current location and compare with the events city
+
+*/
+
+    static func queryForTable(searchCriteria: SearchCriteria) -> PFQuery {
+
+        if searchCriteria.category == .Friends {
+            let query = PFQuery(className: "Watchlist")
+        } else {
+            let query = PFQuery(className: "Hackathon")
+        }
         
-        let query = PFQuery(className: tableName)
-        
+        if searchCriteria.category == .CurrentLocation {
+
+        }
+
         if searchCriteria.searchString != nil
         {
             query.whereKey("name", containsString: searchCriteria.searchString)
@@ -63,6 +90,18 @@ class SearchTableViewController: UITableViewController {
             else
             {
                 query.addDescendingOrder(searchCriteria.secondarySort!.column!)
+            }
+        }
+
+        if searchCriteria.tertiarySort != nil
+        {
+            if searchCriteria.tertiarySort!.ascending
+            {
+                query.addAscendingOrder(searchCriteria.tertiarySort!.column!)
+            }
+            else
+            {
+                query.addDescendingOrder(searchCriteria.tertiarySort!.column!)
             }
         }
 
