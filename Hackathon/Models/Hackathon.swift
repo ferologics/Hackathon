@@ -25,7 +25,7 @@ class Hackathon : PFObject, PFSubclassing {
     @NSManaged var url:           String?
     @NSManaged var ticketClasses: PFObject?
     
-    
+    // TODO clean this code
     
 //    static var query: PFQuery? {
 //        didSet {

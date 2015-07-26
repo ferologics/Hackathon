@@ -10,6 +10,8 @@ import UIKit
 import BubbleTransition
 import QuartzCore
 
+// TODO setup categories button, filter bar and search bar here
+// TODO customize search bar to animate constrains and such... read mindmaps
 
 class SearchViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIViewControllerTransitioningDelegate, UISearchBarDelegate, UISearchDisplayDelegate {
 
@@ -18,21 +20,21 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     @IBOutlet weak var searchBar:    UISearchBar!
 
     
-    var hackathons = [Hackathon]()
-    
+    var hackathons               = [Hackathon]()
+    var filterContentForCategory = [Hackathon]()
+    var criteria                 = SearchCriteria()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         updateButton()
         updateSearchBar()
         // Do any additional setup after loading the view.
         
-        
-        
-        var criteria          = SearchCriteria()
         criteria.category     = .CurrentLocation
-        criteria.searchString = "Hack"
-        criteria.primarySort  = Sort(column: "start", ascending: true)
-        
+        criteria.searchString = "Hack" // TODO text from searchbar
+        criteria.primarySort  = Sort(column: "start", ascending: true) // TODO not setting this here at all but in IBAction button pressed or whatnot when filter is added
+        // TODO increment i on each touch, based on that set color of the button and set the sort order to 
+
         let query = SearchTableViewController.queryForTable(searchCriteria: criteria)
 
         query.findObjectsInBackgroundWithBlock({ (results, error) -> Void in
@@ -51,16 +53,24 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
 
     // MARK: -
     // MARK: delegate methods or what
-    // TODO change this as a extension
+    // TODO set this up as an extension
 
-    func filterContentForSearchText(searchText: String, category: ) {
+    func filterContentForSearchTextOrCategory(searchText: String, category: Category) {
       // Filter the array using the filter method
-      self.filteredCandies = self.hackathons.filter({( hackathon: Hackathon) -> Bool in
-        let name = (scope == "All") || (hackathon.city == scope)
-        let stringMatch = candy.name.rangeOfString(searchText)
-        return categoryMatch && (stringMatch != nil)
+      self.filteredHackathons = self.hackathons.filter({( hackathon: Hackathon) -> Bool in
+        let categoryMatch = (category == .CurrentLocation) || (searchCriteria.category == category)
+        let stringMatch   = hackathon.name.rangeOfString(searchText)
+        return (categoryMatch && (stringMatch != nil)) || categoryMatch
       })
     }
+
+    // func filterContentForCategory(category: Category) {
+    //     self.filteredHackathons = self.hackathons.filter({( hackathon: Hackathon) -> Bool in
+    //     // let categoryMatch = (scope == .CurrentLocation) || (searchCriteria.category == scope)
+        
+    //     return /*categoryMatch &&*/ categoryMatch
+    //   })
+    // }
 
     func searchDisplayController(controller: UISearchDisplayController!, shouldReloadTableForSearchString searchString: String!) -> Bool {
       self.filterContentForSearchText(searchString)
@@ -94,7 +104,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let controller = segue.destinationViewController as? UIViewController {
-            controller.transitioningDelegate = self
+            controller.transitioningDelegate  = self
             controller.modalPresentationStyle = .Custom
         }
     }
@@ -103,15 +113,15 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     
     func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         transition.transitionMode = .Present
-        transition.startingPoint = switchButton.center
-        transition.bubbleColor = switchButton.backgroundColor!
+        transition.startingPoint  = switchButton.center
+        transition.bubbleColor    = switchButton.backgroundColor!
         return transition
     }
     
     func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         transition.transitionMode = .Dismiss
-        transition.startingPoint = switchButton.center
-        transition.bubbleColor = switchButton.backgroundColor!
+        transition.startingPoint  = switchButton.center
+        transition.bubbleColor    = switchButton.backgroundColor!
         return transition
     }
 }
@@ -123,7 +133,7 @@ extension SearchViewController
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("HackathonCell", forIndexPath: indexPath) as! UITableViewCell
+        let cell      = tableView.dequeueReusableCellWithIdentifier("HackathonCell", forIndexPath: indexPath) as! UITableViewCell
         var hackathon = hackathons[indexPath.row]
         cell.configure(name: hackathon.name, ticketClasses: (hackathon.[ticketClassNames] as [String], [hackathon.[cost] as [Int]), capacity: hackathon.capacity as Int, date: hackathon.start as NSDate)
         return cell

@@ -47,8 +47,10 @@ friends -> searchCriteria.category = .Friends
 
 currentLocation -> searchCriteria.category = .CurrentLocation
                 -> searchCriteria.tableName = "Hackathon"
-                -> query.whereKey("city", containsString: searchCriteria.searchString)
                 -> get the city from users current location and compare with the events city
+                -> query.whereKey("city", containsString: USERS_CURRENT_CITY)
+                -> 
+
 
 */
 
@@ -61,7 +63,8 @@ currentLocation -> searchCriteria.category = .CurrentLocation
         }
         
         if searchCriteria.category == .CurrentLocation {
-
+            //get current location
+            
         }
 
         if searchCriteria.searchString != nil
