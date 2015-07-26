@@ -11,11 +11,11 @@ import BubbleTransition
 import QuartzCore
 
 
-class SearchViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIViewControllerTransitioningDelegate {
+class SearchViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIViewControllerTransitioningDelegate, UISearchBarDelegate, UISearchDisplayDelegate {
 
-    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var tableView:    UITableView!
     @IBOutlet weak var switchButton: UIButton!
-    @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var searchBar:    UISearchBar!
 
     
     var hackathons = [Hackathon]()
@@ -28,9 +28,9 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         
         
         
-        var criteria = SearchCriteria()
+        var criteria          = SearchCriteria()
         criteria.searchString = "Hack"
-        criteria.primarySort = Sort(column: "start", ascending: true)
+        criteria.primarySort  = Sort(column: "start", ascending: true)
         
         let query = SearchTableViewController.queryForTable("Hackathon", searchCriteria: criteria)
 
@@ -48,13 +48,34 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         // Dispose of any resources that can be recreated.
     }
 
+    // MARK: -
+    // MARK: delegate methods or what
+    // TODO change this as a extension
+
+    func filterContentForSearchText(searchText: String) {
+      // Filter the array using the filter method
+      self.filteredCandies = self.hackathons.filter({( hackathon: Hackathon) -> Bool in
+        let name = (scope == "All") || (candy.category == scope)
+        let stringMatch = candy.name.rangeOfString(searchText)
+        return categoryMatch && (stringMatch != nil)
+      })
+    }
+
+    func searchDisplayController(controller: UISearchDisplayController!, shouldReloadTableForSearchString searchString: String!) -> Bool {
+      self.filterContentForSearchText(searchString)
+      return true
+    }
+ 
+    func searchDisplayController(controller: UISearchDisplayController!, shouldReloadTableForSearchScope searchOption: Int) -> Bool {
+      self.filterContentForSearchText(self.searchDisplayController!.searchBar.text)
+      return true
+    }
+
     // MARK: - custom methods
-    
-    
     
     func updateButton() {
         switchButton.layer.cornerRadius = 22
-        switchButton.backgroundColor = secondaryColor
+        switchButton.backgroundColor    = secondaryColor
     }
     
     func updateSearchBar() {
