@@ -85,8 +85,8 @@ function getHTTPResponseForVenueID(venueID) {
    return Parse.Cloud.httpRequest({
       url : venueURL,
       params : {
-         ":         id":   venueID,
-         token:     token
+         ":id": venueID,
+         token: token
          // expand: "logo" ---> IDK why this fcks up the ticketclasses and how to make this work
       }
    });
@@ -98,16 +98,20 @@ function hackathonForEvent(theEvent) {
    Parse.Cloud.useMasterKey(); // not really needed I guess
    var hackathon = new Parse.Object("Hackathon");
    var responseForVenueID = getHTTPResponseForVenueID(theEvent["venue_id"])
+/*
 
+MIGHT NEED TO USE PROMISES MOST LIKELY AS HTTPRESPONSE IS ASYNCH, NO IDEA HOW TO RESTRUCTURE THIS, FUCK.
+
+*/
    hackathon.set("uri",           ( theEvent["resource_uri"] + "?token=" + token));
    hackathon.set("url",             theEvent["url"]);
    hackathon.set("uniqueID",        theEvent["id"]);
    hackathon.set("name",            theEvent["name"]["text"]);
-   hackathon.set("city"),           venueFromHTTPResponseForVenueID(responseForVenueID)["adress"]["city"];
-   hackathon.set("adres_1"),        venueFromHTTPResponseForVenueID(responseForVenueID)["adresss"]["address_1"];
-   hackathon.set("adress_2"),       venueFromHTTPResponseForVenueID(responseForVenueID)["adresss"]["address_2"];
-   hackathon.set("latitude"),       venueFromHTTPResponseForVenueID(responseForVenueID)["adresss"]["latitude"];
-   hackathon.set("longitude"),      venueFromHTTPResponseForVenueID(responseForVenueID)["adresss"]["longitude"];
+   hackathon.set("city",            responseForVenueID["adress"]["city"]);
+   hackathon.set("adres_1",         responseForVenueID["adresss"]["address_1"]);
+   hackathon.set("adress_2",        responseForVenueID["adresss"]["address_2"]);
+   hackathon.set("latitude",        responseForVenueID["adresss"]["latitude"]);
+   hackathon.set("longitude",       responseForVenueID["adresss"]["longitude"]);
    hackathon.set("description",     theEvent["description"] ? theEvent["description"]["text"] : "None provided.");
    hackathon.set("status",          theEvent["status"]);
    hackathon.set("capacity",        theEvent["capacity"]);
