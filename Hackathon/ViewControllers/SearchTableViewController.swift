@@ -13,14 +13,14 @@ struct Sort {
     var ascending = false
     
     init(column: String, ascending: Bool) {
-        self.column = column
+        self.column    = column
         self.ascending = ascending
     }
 }
 
 struct SearchCriteria {
-    var searchString: String?
-    var primarySort: Sort?
+    var searchString:  String?
+    var primarySort:   Sort?
     var secondarySort: Sort?
 }
 
