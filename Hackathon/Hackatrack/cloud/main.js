@@ -124,24 +124,24 @@ MIGHT NEED TO USE PROMISES MOST LIKELY AS HTTPRESPONSE IS ASYNCH, NO IDEA HOW TO
    var tickets = _.map(theEvent["ticket_classes"], function (item, index) { // creating a JSON object to Parse
       return {
          name:           item["name"],
-         cost:         ( item["cost"]        ? item["cost"]["display"] : "0.00" ),
-         fee:          ( item["fee"]         ? item["fee"]["display"]  : "0.00" ),
-         tax:          ( item["tax"]         ? item["tax"]["display"]  : "0.00" ),
+         cost:         ( item["cost"]        ? item["cost"]["display"] : 0.00 ),
+         fee:          ( item["fee"]         ? item["fee"]["display"]  : 0.00 ),
+         tax:          ( item["tax"]         ? item["tax"]["display"]  : 0.00 ),
          description:  ( item["description"] ? item["description"]     : "No description" ),
          onSaleStatus:   item["on_sale_status"],
          donations:      item["donation"],
          free:           item["free"]
       };
    });
-
-   hackathon.set("ticketClassesNames",          assignTicketClassesProperties( tickets, [name] );
-   hackathon.set("ticketClassesCosts",          assignTicketClassesProperties( tickets, [cost] );
-   hackathon.set("ticketClassesFees",           assignTicketClassesProperties( tickets, [fee] );
-   hackathon.set("ticketClassesTaxes",          assignTicketClassesProperties( tickets, [tax] );
-   hackathon.set("ticketClassesOnSaleStatuses", assignTicketClassesProperties( tickets, [onSaleStatus] );
-   hackathon.set("ticketClassesDescriptions",   assignTicketClassesProperties( tickets, [description] );
-   hackathon.set("ticketClassesDonations",      assignTicketClassesProperties( tickets, [donations] );
-   hackathon.set("ticketClassesFree",           assignTicketClassesProperties( tickets, [free] );
+   
+   hackathon.set("ticketClassesNames",          assignTicketClassesProperties( tickets, ["name"] );
+   hackathon.set("ticketClassesCosts",          assignTicketClassesProperties( tickets, ["cost"] );
+   hackathon.set("ticketClassesFees",           assignTicketClassesProperties( tickets, ["fee"] );
+   hackathon.set("ticketClassesTaxes",          assignTicketClassesProperties( tickets, ["tax"] );
+   hackathon.set("ticketClassesOnSaleStatuses", assignTicketClassesProperties( tickets, ["onSaleStatus"] );
+   hackathon.set("ticketClassesDescriptions",   assignTicketClassesProperties( tickets, ["description"]["text"] );
+   hackathon.set("ticketClassesDonations",      assignTicketClassesProperties( tickets, ["donations"] );
+   hackathon.set("ticketClassesFree",           assignTicketClassesProperties( tickets, ["free"] );
 
    return hackathon;
 }
