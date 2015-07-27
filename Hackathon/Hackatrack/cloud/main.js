@@ -146,10 +146,6 @@ MIGHT NEED TO USE PROMISES MOST LIKELY AS HTTPRESPONSE IS ASYNCH, NO IDEA HOW TO
    return hackathon;
 }
 
-function venueFromHTTPResponseForVenueID(venue) {
-
-}
-
 function assignTicketClassesProperties(ticketClasses, property) {
    var propertyArray = []
    for (i = 0; i < ticketClasses.length; i++ ) {

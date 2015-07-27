@@ -27,6 +27,7 @@ enum Category {
 
 class SearchCriteria {
     var searchString:  String?
+    var cityString:    String?
     var category:      Category?
     var primarySort:   Sort?
     var secondarySort: Sort?
@@ -38,7 +39,7 @@ class SearchTableViewController: UITableViewController {
     var hackathons = [Hackathon]()
 /*
 
-if in 
+if in Category --->
 
 friends -> searchCriteria.category = .Friends
         -> let query = PFQuery(className: "Watchlist")
@@ -46,10 +47,15 @@ friends -> searchCriteria.category = .Friends
         -> present in table view cell
 
 currentLocation -> searchCriteria.category = .CurrentLocation
-                -> searchCriteria.tableName = "Hackathon"
+                -> let query = PFQuery(className: "Hackathon")
                 -> get the city from users current location and compare with the events city
                 -> query.whereKey("city", containsString: USERS_CURRENT_CITY)
                 -> 
+
+city -> searchCriteria.category = .City
+     -> let query = PFQuery(className: "Hackathon")
+     -> prompt user with another tableviewcell with search and constrain them to use only cities inside the Parse database
+     -> set searchCriteria.cityString to current sity
 
 
 */
@@ -60,11 +66,11 @@ currentLocation -> searchCriteria.category = .CurrentLocation
             let query = PFQuery(className: "Watchlist")
         } else {
             let query = PFQuery(className: "Hackathon")
-        }
-        
-        if searchCriteria.category == .CurrentLocation {
-            //get current location
-            
+            if ( ( searchCriteria.category == .CurrentLocation ) || ( searchCriteria.category == .City ) ) {
+                // TODO pass in the users current city before
+                
+                query.whereKey("city", containsString: searchCriteria.cityString) 
+            }
         }
 
         if searchCriteria.searchString != nil
@@ -80,7 +86,7 @@ currentLocation -> searchCriteria.category = .CurrentLocation
             }
             else
             {
-                query.orderByDescending(searchCriteria.primarySort!.column!)
+                query.orderByDescending(searchCriteria.primarySort!.column!) // TODO setup BUTTONS so that the 1st touch sets this to true -> orderByAscending first, then orderByDescending
             }
         }
         

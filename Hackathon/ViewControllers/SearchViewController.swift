@@ -33,7 +33,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         criteria.category     = .CurrentLocation
         criteria.searchString = "Hack" // TODO text from searchbar
         criteria.primarySort  = Sort(column: "start", ascending: true) // TODO not setting this here at all but in IBAction button pressed or whatnot when filter is added
-        // TODO increment i on each touch, based on that set color of the button and set the sort order to 
+        // TODO increment i on each touch, based on that set color of the button and set the sort order to asc/desc
 
         let query = SearchTableViewController.queryForTable(searchCriteria: criteria)
 
@@ -58,9 +58,10 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     func filterContentForSearchTextOrCategory(searchText: String, category: Category) {
       // Filter the array using the filter method
       self.filteredHackathons = self.hackathons.filter({( hackathon: Hackathon) -> Bool in
+
         let categoryMatch = (category == .CurrentLocation) || (searchCriteria.category == category)
         let stringMatch   = hackathon.name.rangeOfString(searchText)
-        return (categoryMatch && (stringMatch != nil)) || categoryMatch
+        return (categoryMatch && (stringMatch != nil)) || categoryMatch //  either filter for search text and category or just category 
       })
     }
 
@@ -72,7 +73,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     //   })
     // }
 
-    func searchDisplayController(controller: UISearchDisplayController!, shouldReloadTableForSearchString searchString: String!) -> Bool {
+    func searchDisplayController(controller: UISearchDisplayController!, shouldReloadTableForSearchString searchString: String!) -> Bool { // TODO setup similar methods for categories through lgbutton
       self.filterContentForSearchText(searchString)
       return true
     }
@@ -129,6 +130,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
 extension SearchViewController
 {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        // TODO filtered hackathons???
         return hackathons.count
     }
     

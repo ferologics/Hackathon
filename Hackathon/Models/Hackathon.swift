@@ -23,74 +23,16 @@ class Hackathon : PFObject, PFSubclassing {
     @NSManaged var logo:          String?
     @NSManaged var status:        String?
     @NSManaged var url:           String?
-    @NSManaged var ticketClasses: PFObject?
+    @NSManaged var ticketClasses: PFObject?// TODO add new properties for the location, city and such
     
     // TODO clean this code
     
-//    static var query: PFQuery? {
-//        didSet {
-//            // whenever we assign a new query, cancel any previous requests
-//            oldValue?.cancel()
-//        }
-//    }
-    
-    // MARK: instances
-    // MARK: -
-    
-//    static func getHackathons(#className   :String,
-//                               withCategory:Constants.Category,
-//                               withFilters :[Filter.Filter]) -> [Hackathon]
-//    {
-//        return (self.initHackathonsFromQuery(
-//                                query: self.getQuery(
-//                                                    className    : className,
-//                                                    withCategory : withCategory,
-//                                                    withFilters  : withFilters
-//                                                    )
-//                                            )
-//                )
-//    }
-//    
-//    static func getQuery(#className   :String,
-//                          withCategory:Constants.Category,
-//                          withFilters :[Filter.Filter]) -> PFQuery
-//    {
-//        
-//        let filterCount = withFilters.count
-//        
-//        if ( filterCount == 1 ) {
-//            // perform query
-//            //            query = PFQuery(className:className)
-//            //            query.
-//            
-////            query = PFQuery.
-//            
-//        } else if ( filterCount == 2 ) {
-//            
-//            
-//            
-//            
-//        } else if ( filterCount == 3 ) {
-//            
-//            
-//            
-//            
-//        } else if ( filterCount == 4 ) {
-//            
-//            
-//            
-//            
-//        }
-//        
-//        
-//    }
-    
-    static func initHackathonsFromQuery(#query: PFQuery) -> [Hackathon] {
+    // static func initHackathonsFromQuery(#query: PFQuery) -> [Hackathon] {
         
-        var hackathons:[Hackathon]?
+    //     var hackathons:[Hackathon]?
         
-        return []
-    }
+    //     return []
+    // }
     
     @NSManaged var user: PFUser?
                var hackathon: PFObject?
