@@ -11,27 +11,46 @@ import BubbleTransition
 import QuartzCore
 import LGPlusButtonsView
 
-class SearchViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIViewControllerTransitioningDelegate {
+// TODO setup categories button, filter bar and search bar here
+// TODO customize search bar to animate constrains and such... read mindmaps
 
-    @IBOutlet weak var tableView: UITableView!
+class SearchViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIViewControllerTransitioningDelegate, UISearchBarDelegate, UISearchDisplayDelegate
+{
+    @IBOutlet weak var tableView:    UITableView!
     @IBOutlet weak var switchButton: UIButton!
     @IBOutlet weak var categoryButton: UIButton!
     @IBOutlet weak var searchButton: UIButton!
     @IBOutlet weak var sortSegment: UISegmentedControl!
     
-    var sortNameInc:Int = 0, sortDateInc:Int = 0, sortCapacityInc:Int = 0
+    var sortNameInc:Int = 0, sortDateInc:Int = 0, sortCapacityInc:Int = 0 // uisegmentController sort tracking variables (asc, desc, off)
     
     var plusButtonView: LGPlusButtonsView!
-    
-    var hackathons = [Hackathon]()
-    
-    override func viewDidLoad() {
+//    @IBOutlet weak var searchBar:    UISearchBar! // TODO searchBar
+    let transition = BubbleTransition()
+    var hackathons               = [Hackathon]()
+    var filterContentForCategory = [Hackathon]()
+    var filteredHackathons       = [Hackathon]()
+    var criteria                 = SearchCriteria()
+
+    override func viewDidLoad()
+    {
         
         super.viewDidLoad()
         updateButton()
-        updateSearchBar()
-        // Do any additional setup after loading the view.
+//        updateSearchBar()
         
+        criteria.category     = .CurrentLocation
+        criteria.searchString = "Hack" // TODO text from searchbar
+        criteria.primarySort  = Sort(column: "start", ascending: true) // TODO not setting this here at all but in IBAction button pressed or whatnot when filter is added
+        // TODO increment i on each touch, based on that set color of the button and set the sort order to asc/desc
+        
+        let query = SearchTableViewController.queryForTable(criteria)
+        
+        query.findObjectsInBackgroundWithBlock(
+        { (results, error) -> Void in
+            self.hackathons = results as! [Hackathon]
+            self.tableView.reloadData()
+        })
         
         self.initPlusButtonView()
 
@@ -40,33 +59,28 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     override func viewWillLayoutSubviews()
     {
         super.viewWillLayoutSubviews()
-        
         self.setupPlusButtons()
     
     }
     
-    @IBAction func sortTapped(sender: AnyObject) {
+    @IBAction func sortTapped(sender: AnyObject)
+    {
         let selectedSegmentIndex = sortSegment.selectedSegmentIndex
         segmentAtIndexTouched(selectedSegmentIndex)
     }
     
-    @IBAction func categoryTapped(sender: AnyObject) {
-        
-        if (plusButtonView.showing) {
-        plusButtonView.hideAnimated(true, completionHandler:nil);
-        } else {
-        plusButtonView.showAnimated(true, completionHandler:nil);
-        }
-    }
-    @IBAction func searchTapped(sender: AnyObject)
+    @IBAction func categoryTapped(sender: AnyObject)
     {
-        if ( categoryButton.touchInside )
-        {
-            // searchBar overlay animation, setup the searchViewController 'n stuff
-            
-            
-        }
+        showOrHideCategories() // TODO change the searchCriteria category
     }
+    
+//    @IBAction func searchTapped(sender: AnyObject)
+//    {
+//        if ( categoryButton.touchInside )
+//        {
+//            // TODO searchBar overlay animation, present the searchViewController 'n stuff
+//        }
+//    }
     
     // date button tapped -> set filter to Date
 
@@ -75,71 +89,94 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         // Dispose of any resources that can be recreated.
     }
 
-    // MARK: - custom methods
-    
-    
-    
-    func updateButton() {
-        switchButton.layer.cornerRadius = 22
-        switchButton.backgroundColor = secondaryColor
-    }
-    
-    func updateSearchBar() {
+    // func filterContentForCategory(category: Category) {
+    //     self.filteredHackathons = self.hackathons.filter({( hackathon: Hackathon) -> Bool in
+    //     // let categoryMatch = (scope == .CurrentLocation) || (searchCriteria.category == scope)
         
-    }
+    //     return /*categoryMatch &&*/ categoryMatch
+    //   })
+    // }
     
-    func updateTableView() {
-        tableView.backgroundColor = mainColor
-        
-    }
-    
-    // MARK: - Navigation
+//    func searchcontroller
+//    
+//    func searchDisplayController(controller: UISearchController, shouldReloadTableForSearchString searchString: String!) -> Bool { // TODO setup similar methods for categories through lgbutton
+//
+//        self.filterContentForSearchText(searchString)
+//        return true
+//    }
+// 
+//    func searchDisplayController(controller: UISearchController, shouldReloadTableForSearchScope searchOption: Int) -> Bool {
+//      self.filterContentForSearchText(self.searchDisplayController!.searchBar.text)
+//      return true
+//    }
 
-    let transition = BubbleTransition()
+    // MARK: - custom methods
+    func updateButton() // TODO change this function name to updateSwitchButton
+    {
+        switchButton.layer.cornerRadius = 22
+        switchButton.backgroundColor    = secondaryColor
+    }
     
+    func updateTableView()
+    {
+        tableView.backgroundColor = mainColor
+    }
+   
+}
+
+// MARK: -
+// MARK: bubbleTransitionMethods and helpers
+extension SearchViewController
+{
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let controller = segue.destinationViewController as? UIViewController {
-            controller.transitioningDelegate = self
+            controller.transitioningDelegate  = self
             controller.modalPresentationStyle = .Custom
         }
     }
     
+    // MARK: -
     // MARK: UIViewControllerTransitioningDelegate
     
     func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         transition.transitionMode = .Present
-        transition.startingPoint = switchButton.center
-        transition.bubbleColor = switchButton.backgroundColor!
+        transition.startingPoint  = switchButton.center
+        transition.bubbleColor    = switchButton.backgroundColor!
         return transition
     }
     
     func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         transition.transitionMode = .Dismiss
-        transition.startingPoint = switchButton.center
-        transition.bubbleColor = switchButton.backgroundColor!
+        transition.startingPoint  = switchButton.center
+        transition.bubbleColor    = switchButton.backgroundColor!
         return transition
     }
 }
 
 extension SearchViewController
 {
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
+    {
+        // TODO return filtered hackathons count instead?
         return hackathons.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("HackathonCell", forIndexPath: indexPath) as! ProfileTableViewCell
-        let hackathon = hackathons[indexPath.row]
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
+    {
+        let cell      = tableView.dequeueReusableCellWithIdentifier("HackathonCell", forIndexPath: indexPath) as! ProfileTableViewCell
+        var hackathon = hackathons[indexPath.row]
         cell.nameLabel?.text = hackathon.name
 //        cell.dateLabel?.text = hackathon.start
 //        cell.capacityLabel?.text = hackathon.capacity
-        return cell
+//        cell.configure(name: hackathon.name, ticketClasses: hackathon.ticketClassNames as [String], hackathon.cost] as [Int]), capacity: hackathon.capacity as Int, date: hackathon.start as NSDate)
+        return cell // TODO setup hackathon custom cell
     }
 }
 
 // MARK: -
 // MARK: LGPlusButtonSetup
-extension SearchViewController {
+extension SearchViewController
+{
     
     
     func setupPlusButtons()
@@ -194,24 +231,25 @@ extension SearchViewController {
         plusButtonView.appearingAnimationType = LGPlusButtonsAppearingAnimationTypeCrossDissolveAndPop
         plusButtonView.setButtonsTitleColor(UIColor.whiteColor(), forState:UIControlState.Normal)
         plusButtonView.setButtonsAdjustsImageWhenHighlighted(false)
-        
-        var criteria = SearchCriteria()
-        criteria.searchString = "Hack"
-        criteria.primarySort = Sort(column: "start", ascending: true)
-        
-        let query = SearchTableViewController.queryForTable("Hackathon", searchCriteria: criteria)
-        
-        query.findObjectsInBackgroundWithBlock({ (results, error) -> Void in
-            self.hackathons = results as! [Hackathon]
-            self.tableView.reloadData()
-        })
+    } // TODO iset the whole view so it's under the categories button
+            
+    func showOrHideCategories()
+    {
+        if (plusButtonView.showing)
+        {
+            plusButtonView.hideAnimated(true, completionHandler:nil);
+        }
+        else
+        {
+            plusButtonView.showAnimated(true, completionHandler:nil);
+        }
     }
 }
 
 // MARK: -
-// MARK: UISEGMENT HELPERS - UIImage form a UIColor and handling segment changes based on index of segment
-
-extension SearchViewController {
+// MARK: UISEGMENT HELPERS logic - UIImage form a UIColor and handling segment changes based on index of segment
+extension SearchViewController
+{
     
     func getImageWithColor(color: UIColor, size: CGSize) -> UIImage
     {
@@ -248,7 +286,23 @@ extension SearchViewController {
         if      ( index == 0 ) { sortNameInc++ }
         else if ( index == 1 ) { sortDateInc++ }
         else if ( index == 2 ) { sortCapacityInc++ }
-    }
+    } // TODO implement icon change and searchCriteria change
 }
 
+// MARK: -
+// MARK: FILTERING HELPERS logic
+extension SearchViewController
+{
+    func filterContentForSearchTextOrCategory(searchText: String, category: Category)
+    {
+        // Filter the array using the filter method
+        self.filteredHackathons = self.hackathons.filter(
+        {( hackathon: Hackathon) -> Bool in
+            
+            let categoryMatch = (category == .CurrentLocation) || (self.criteria.category == category)
+            let stringMatch   = hackathon.name!.rangeOfString(searchText)
+            return (categoryMatch && (stringMatch != nil)) || categoryMatch //  either filter for search text and category or just category
+        })
+    } // TODO revisit this when implementing search bar, reimplement probably
+}
 

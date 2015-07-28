@@ -8,6 +8,8 @@
 
 import UIKit
 
+// TODO integrate deeplinking HOKO framework with cardview
+
 class CardViewController: UIViewController {
 
     override func viewDidLoad() {

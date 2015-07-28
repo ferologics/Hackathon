@@ -23,6 +23,7 @@ var moment = require('moment');
 var cities = ["San Francisco", "London"];
 var searchKeyword = "hackathon";
 var searchURL = 'https://www.eventbriteapi.com/v3/events/search/';
+var venueURL = 'https://www.eventbriteapi.com/v3//venues/';
 var token = "FWMDQSTTDTI5EJRD6VUH";
 
 // cloud code job
@@ -70,11 +71,23 @@ function getHTTPResponseForCity(city) {
    return Parse.Cloud.httpRequest({
       url : searchURL,
       params : {
-         q : searchKeyword,
-         "venue.city" : city,
-         token : token,
-         expand : "ticket_classes"
-         // expand : "logo" ---> IDK why this fcks up the ticketclasses and how to make this work
+         q:            searchKeyword,
+         "venue.city": city,
+         token:        token,
+         expand:       "ticket_classes"
+         // expand:    "logo" ---> IDK why this fcks up the ticketclasses and how to make this work
+      }
+   });
+}
+
+function getHTTPResponseForVenueID(venueID) {
+
+   return Parse.Cloud.httpRequest({
+      url : venueURL,
+      params : {
+         ":id": venueID,
+         token: token
+         // expand: "logo" ---> IDK why this fcks up the ticketclasses and how to make this work
       }
    });
 }
@@ -84,34 +97,59 @@ function hackathonForEvent(theEvent) {
 
    Parse.Cloud.useMasterKey(); // not really needed I guess
    var hackathon = new Parse.Object("Hackathon");
+   var responseForVenueID = getHTTPResponseForVenueID(theEvent["venue_id"])
+/*
 
-   hackathon.set("uri",             theEvent["resource_uri"]);
+MIGHT NEED TO USE PROMISES MOST LIKELY AS HTTPRESPONSE IS ASYNCH, NO IDEA HOW TO RESTRUCTURE THIS, FUCK.
+
+*/
+   hackathon.set("uri",           ( theEvent["resource_uri"] + "?token=" + token));
    hackathon.set("url",             theEvent["url"]);
    hackathon.set("uniqueID",        theEvent["id"]);
    hackathon.set("name",            theEvent["name"]["text"]);
+   hackathon.set("city",            responseForVenueID["adress"]["city"]);
+   hackathon.set("adres_1",         responseForVenueID["adresss"]["address_1"]);
+   hackathon.set("adress_2",        responseForVenueID["adresss"]["address_2"]);
+   hackathon.set("latitude",        responseForVenueID["adresss"]["latitude"]);
+   hackathon.set("longitude",       responseForVenueID["adresss"]["longitude"]);
    hackathon.set("description",     theEvent["description"] ? theEvent["description"]["text"] : "None provided.");
    hackathon.set("status",          theEvent["status"]);
    hackathon.set("capacity",        theEvent["capacity"]);
-   hackathon.set("logo",           (theEvent["logo"] != undefined || theEvent["logo"] != null) ? theEvent["logo"]["url"] : "http://www.ecolabelindex.com/files/ecolabel-logos-sized/no-logo-provided.png");
-   hackathon.set("start",  new Date(theEvent["start"]["utc"]));
-   hackathon.set("end",    new Date(theEvent["end"]["utc"]));
+   hackathon.set("logo",          ( theEvent["logo"] != undefined || theEvent["logo"] != null) ? theEvent["logo"]["url"] : "http://www.ecolabelindex.com/files/ecolabel-logos-sized/no-logo-provided.png");
+   hackathon.set("start", new Date( theEvent["start"]["utc"]));
+   hackathon.set("end",   new Date( theEvent["end"]["utc"]));
    hackathon.set("online",          theEvent["online_theEvent"]);
    hackathon.set("currency",        theEvent["currency"]);
 
    var tickets = _.map(theEvent["ticket_classes"], function (item, index) { // creating a JSON object to Parse
       return {
          name:           item["name"],
-         cost:          (item["cost"]        ? item["cost"]["display"] : "0.00"),
-         fee:           (item["fee"]         ? item["fee"]["display"]  : "0.00"),
-         tax:           (item["tax"]         ? item["tax"]["display"]  : "0.00"),
-         description:   (item["description"] ? item["description"]     : "No description"),
+         cost:         ( item["cost"]        ? item["cost"]["display"] : 0.00 ),
+         fee:          ( item["fee"]         ? item["fee"]["display"]  : 0.00 ),
+         tax:          ( item["tax"]         ? item["tax"]["display"]  : 0.00 ),
+         description:  ( item["description"] ? item["description"]     : "No description" ),
          onSaleStatus:   item["on_sale_status"],
          donations:      item["donation"],
          free:           item["free"]
       };
    });
 
-   hackathon.set("ticketClasses", tickets);
+   hackathon.set("ticketClassesNames",          assignTicketClassesProperties( tickets, ["name"] );
+   hackathon.set("ticketClassesCosts",          assignTicketClassesProperties( tickets, ["cost"] );
+   hackathon.set("ticketClassesFees",           assignTicketClassesProperties( tickets, ["fee"] );
+   hackathon.set("ticketClassesTaxes",          assignTicketClassesProperties( tickets, ["tax"] );
+   hackathon.set("ticketClassesOnSaleStatuses", assignTicketClassesProperties( tickets, ["onSaleStatus"] );
+   hackathon.set("ticketClassesDescriptions",   assignTicketClassesProperties( tickets, ["description"]["text"] );
+   hackathon.set("ticketClassesDonations",      assignTicketClassesProperties( tickets, ["donations"] );
+   hackathon.set("ticketClassesFree",           assignTicketClassesProperties( tickets, ["free"] );
 
    return hackathon;
+}
+
+function assignTicketClassesProperties(ticketClasses, property) {
+   var propertyArray = []
+   for (i = 0; i < ticketClasses.length; i++ ) {
+      propertyArray.pop(ticketClasses[i][property]);
+   }
+   return propertyArray
 }
