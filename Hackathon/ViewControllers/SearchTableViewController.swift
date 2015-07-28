@@ -18,8 +18,17 @@ struct Sort {
     }
 }
 
+enum Category {
+    case Global
+    case CurrentLocation
+    case City
+    case Friends
+}
+
 struct SearchCriteria {
     var searchString: String?
+    var cityString: String?
+    var category: Category?
     var primarySort: Sort?
     var secondarySort: Sort?
 }
