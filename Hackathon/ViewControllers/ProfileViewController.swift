@@ -20,10 +20,6 @@ class ProfileViewController: UIViewController {
         
     }
     
-    @IBAction func closeAction(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
-    }
-    
     override func viewWillAppear(animated: Bool) {
         UIApplication.sharedApplication().setStatusBarStyle(.LightContent, animated: true)
     }
@@ -46,3 +42,11 @@ class ProfileViewController: UIViewController {
     }
 }
 
+// MARK: -
+// MARK: BubbleTransition methods and such
+extension ProfileViewController
+{
+    @IBAction func closeAction(sender: AnyObject) {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+}

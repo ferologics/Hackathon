@@ -21,7 +21,7 @@
                                 <rect key="frame" x="0.0" y="60" width="600" height="540"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="HackathonCell" rowHeight="86" id="bqx-zH-86u" customClass="ProfileTableViewCell" customModule="Hackathon" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="HackathonCell" rowHeight="86" id="bqx-zH-86u" customClass="SearchTableViewCell" customModule="Hackathon" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bqx-zH-86u" id="SVX-Sr-DFL">
@@ -115,14 +115,14 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="capacityImage" destination="kSo-Oc-iXi" id="LOg-gL-133"/>
-                                            <outlet property="capacityLabel" destination="jXK-pJ-txc" id="qER-5E-M6o"/>
-                                            <outlet property="costImage" destination="wqN-o2-7yy" id="Vqx-F7-lrV"/>
-                                            <outlet property="costLabel" destination="HHc-65-487" id="ggu-Lp-eGw"/>
-                                            <outlet property="dateImage" destination="NDz-N7-dVv" id="mlg-Pr-KOl"/>
-                                            <outlet property="dateLabel" destination="h8C-nh-xzS" id="hHG-VM-Vtt"/>
-                                            <outlet property="logoImage" destination="TAk-m4-W1N" id="5v1-9Q-3qc"/>
-                                            <outlet property="nameLabel" destination="bxF-gq-2FL" id="hMv-JU-Bu5"/>
+                                            <outlet property="capacityImage" destination="kSo-Oc-iXi" id="EBt-sQ-Gkq"/>
+                                            <outlet property="capacityLabel" destination="jXK-pJ-txc" id="rMY-45-gfU"/>
+                                            <outlet property="costImage" destination="wqN-o2-7yy" id="LpZ-f2-BJu"/>
+                                            <outlet property="costLabel" destination="HHc-65-487" id="Ade-5l-Wcg"/>
+                                            <outlet property="dateImage" destination="NDz-N7-dVv" id="vdH-QC-MGg"/>
+                                            <outlet property="dateLabel" destination="h8C-nh-xzS" id="5yM-to-03c"/>
+                                            <outlet property="logoImage" destination="TAk-m4-W1N" id="bOC-Pm-w9B"/>
+                                            <outlet property="nameLabel" destination="bxF-gq-2FL" id="n8m-Z6-7Vb"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -175,7 +175,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="categoryTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="14b-o3-PWv"/>
+                                    <action selector="categoryTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Kxx-EP-B2R"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ofe-K3-LwM">

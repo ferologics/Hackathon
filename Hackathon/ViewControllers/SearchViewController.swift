@@ -34,23 +34,21 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
 
     override func viewDidLoad()
     {
-        
-        
-        
         super.viewDidLoad()
         updateButton()
 //        updateSearchBar()
         
         criteria.category     = .CurrentLocation
-        criteria.searchString = "Hack" // TODO text from searchbar
+        criteria.cityString = "London" // TODO text from searchbar
         criteria.primarySort  = Sort(column: "start", ascending: true) // TODO not setting this here at all but in IBAction button pressed or whatnot when filter is added
         // TODO increment i on each touch, based on that set color of the button and set the sort order to asc/desc
         
-        let query = SearchTableViewController.queryForTable(criteria)
+        let query = HackathonHelper.queryForTable(criteria)
         
         query.findObjectsInBackgroundWithBlock(
         { (results, error) -> Void in
             self.hackathons = results as! [Hackathon]
+            println()
             self.tableView.reloadData()
         })
         
@@ -73,7 +71,8 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     
     @IBAction func categoryTapped(sender: AnyObject)
     {
-        showOrHideCategories() // TODO change the searchCriteria category
+//        showOrHideCategories() // TODO change the searchCriteria category
+        self.plusButtonsViewPlusButtonPressed(plusButtonView)
     }
     
 //    @IBAction func searchTapped(sender: AnyObject)
@@ -118,6 +117,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     {
         switchButton.layer.cornerRadius = 22
         switchButton.backgroundColor    = secondaryColor
+        
     }
     
     func updateTableView()
@@ -168,8 +168,9 @@ extension SearchViewController
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
     {
-        let cell      = tableView.dequeueReusableCellWithIdentifier("HackathonCell", forIndexPath: indexPath) as! ProfileTableViewCell
+        let cell      = tableView.dequeueReusableCellWithIdentifier("HackathonCell", forIndexPath: indexPath) as! SearchTableViewCell
         var hackathon = hackathons[indexPath.row]
+        println(hackathon.name)
         cell.nameLabel?.text = hackathon.name
 //        cell.dateLabel?.text = hackathon.start
 //        cell.capacityLabel?.text = hackathon.capacity
@@ -180,8 +181,39 @@ extension SearchViewController
 
 // MARK: -
 // MARK: LGPlusButtonSetup
-extension SearchViewController
+extension SearchViewController: LGPlusButtonsViewDelegate
 {
+    func plusButtonsViewPlusButtonPressed(plusButtonsView: LGPlusButtonsView!) {
+        showOrHideCategories()
+    }
+    
+    func plusButtonsView(plusButtonsView: LGPlusButtonsView!, buttonPressedWithTitle title: String!, description: String!, index: UInt)
+    {
+        switch index
+        {
+            case 0:
+                criteria.category = .CurrentLocation
+                showOrHideCategories()
+                println("current location")
+                
+            case 1:
+                criteria.category = .City
+                showOrHideCategories()
+                println("city")
+                
+            case 2:
+                criteria.category = .Global
+                showOrHideCategories()
+                println("global")
+                
+            case 3:
+                criteria.category = .Friends
+                showOrHideCategories()
+                println("friends")
+                
+            default: println("whoops")
+        }
+    }
     
     func setupPlusButtons()
     {
