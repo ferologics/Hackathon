@@ -29,7 +29,7 @@ import Parse
 class Hackathon : PFObject, PFSubclassing
 { // TODO change this to struct?
     
-    @NSManaged var id:                          String?
+    @NSManaged var uniqueID:                    String?
     @NSManaged var name:                        String?
     @NSManaged var descript:                    String?
     @NSManaged var city:                        String?
@@ -43,11 +43,12 @@ class Hackathon : PFObject, PFSubclassing
     @NSManaged var currency:                    String?
     @NSManaged var logo:                        String?
     @NSManaged var status:                      String?
+    @NSManaged var online:                      NSNumber? // Bool
     @NSManaged var url:                         String?
     @NSManaged var ticketClassesNames:          [String]? // TODO fix this in cloudcode
     @NSManaged var ticketClassesCosts:          [Int]?
-    @NSManaged var ticketClassesFees:           [Int]?
-    @NSManaged var ticketClassesTaxes:          [Int]?
+//    @NSManaged var ticketClassesFees:           [Int]?
+//    @NSManaged var ticketClassesTaxes:          [Int]?
     @NSManaged var ticketClassesOnSaleStatuses: [String]?
     @NSManaged var ticketClassesDescriptions:   [String]?
     @NSManaged var ticketClassesDonations:      [Bool]?

@@ -1,18 +1,18 @@
 /*
 Created 20th July 2015 by Fero Hetes with a heavy help of Jay without
-       whom would my app never see the light ofthe day...
-(also thanks to amazing instructors Abdul and Warren <3)
-  _________
- /         \
-/    <3     \
-|           |
-| <0>   <0> |
-\   _____   /
- \_________/
-     /|\
-      |
-      |
-     / \
+       whom would my app never see the light of the day...
+(also thanks to amazing instructors Abdul, Simon and mostly Warren <3)
+                             _________
+                            /         \
+                           /    <3     \
+                           |           |
+                           | <0>   <0> |
+                           \   _____   /
+                            \_________/
+                                /|\
+                                 |
+                                 |
+                                / \
 */
 
 // required libraries
@@ -23,7 +23,7 @@ var moment = require('moment');
 var cities = ["San Francisco", "London"];
 var searchKeyword = "hackathon";
 var searchURL = 'https://www.eventbriteapi.com/v3/events/search/';
-var venueURL = 'https://www.eventbriteapi.com/v3//venues/';
+var venueURL = 'https://www.eventbriteapi.com/v3/venues/';
 var token = "FWMDQSTTDTI5EJRD6VUH";
 
 // cloud code job
@@ -42,17 +42,22 @@ Parse.Cloud.job("hopeThisWorks", function(request, status) {
 
       getHTTPResponseForCity(city)
       .then(function(httpResponse) {
-         var items = _.map(JSON.parse(httpResponse.text)["events"], function (item, index) {
+         /*var items = */
+         Parse.Promise.when(_.map(JSON.parse(httpResponse.text)["events"], function (item, index) {
             return hackathonForEvent(item);
-         });
+         })).then(function() {
+            var hackathons = arguments
+            console.log(hackathons.length);
 
-         Parse.Object.saveAll(items, {
-            success: function () {
-               promise.resolve();
-            },
-            error: function (error) {
-               console.log(error.message);
-            }
+            Parse.Object.saveAll(hackathons, {
+               success: function () {
+                  promise.resolve();
+               },
+               error: function (error) {
+                  console.log(error.message);
+               }
+            });
+
          });
       });
       return promise;
@@ -81,75 +86,88 @@ function getHTTPResponseForCity(city) {
 }
 
 function getHTTPResponseForVenueID(venueID) {
-
    return Parse.Cloud.httpRequest({
-      url : venueURL,
+      url : venueURL + venueID,
       params : {
-         ":id": venueID,
-         token: token
-         // expand: "logo" ---> IDK why this fcks up the ticketclasses and how to make this work
-      }
+               token : token
+      },
+      followRedirects : true
    });
 }
 
 // setting columns in Parse
-function hackathonForEvent(theEvent) {
-
+function hackathonForEvent(theEvent)
+{
    Parse.Cloud.useMasterKey(); // not really needed I guess
    var hackathon = new Parse.Object("Hackathon");
-   var responseForVenueID = getHTTPResponseForVenueID(theEvent["venue_id"])
 /*
-
 MIGHT NEED TO USE PROMISES MOST LIKELY AS HTTPRESPONSE IS ASYNCH, NO IDEA HOW TO RESTRUCTURE THIS, FUCK.
-
 */
-   hackathon.set("uri",           ( theEvent["resource_uri"] + "?token=" + token));
-   hackathon.set("url",             theEvent["url"]);
-   hackathon.set("uniqueID",        theEvent["id"]);
-   hackathon.set("name",            theEvent["name"]["text"]);
-   hackathon.set("city",            responseForVenueID["adress"]["city"]);
-   hackathon.set("adres_1",         responseForVenueID["adresss"]["address_1"]);
-   hackathon.set("adress_2",        responseForVenueID["adresss"]["address_2"]);
-   hackathon.set("latitude",        responseForVenueID["adresss"]["latitude"]);
-   hackathon.set("longitude",       responseForVenueID["adresss"]["longitude"]);
-   hackathon.set("description",     theEvent["description"] ? theEvent["description"]["text"] : "None provided.");
-   hackathon.set("status",          theEvent["status"]);
-   hackathon.set("capacity",        theEvent["capacity"]);
-   hackathon.set("logo",          ( theEvent["logo"] != undefined || theEvent["logo"] != null) ? theEvent["logo"]["url"] : "http://www.ecolabelindex.com/files/ecolabel-logos-sized/no-logo-provided.png");
-   hackathon.set("start", new Date( theEvent["start"]["utc"]));
-   hackathon.set("end",   new Date( theEvent["end"]["utc"]));
-   hackathon.set("online",          theEvent["online_theEvent"]);
-   hackathon.set("currency",        theEvent["currency"]);
+   //var promise = new Parse.Promise();
 
-   var tickets = _.map(theEvent["ticket_classes"], function (item, index) { // creating a JSON object to Parse
-      return {
-         name:           item["name"],
-         cost:         ( item["cost"]        ? item["cost"]["display"] : 0.00 ),
-         fee:          ( item["fee"]         ? item["fee"]["display"]  : 0.00 ),
-         tax:          ( item["tax"]         ? item["tax"]["display"]  : 0.00 ),
-         description:  ( item["description"] ? item["description"]     : "No description" ),
-         onSaleStatus:   item["on_sale_status"],
-         donations:      item["donation"],
-         free:           item["free"]
-      };
-   });
+     return getHTTPResponseForVenueID(theEvent["venue_id"])
+     .then(function(httpResponse)
+     {
+         console.log("Got details for venue " + theEvent["venue_id"]);
+         var venue = JSON.parse(httpResponse.text);
+         // console.log("httpresponse - " + venue["name"]);
+         console.log("httpresponse - " + venue);
 
-   hackathon.set("ticketClassesNames",          assignTicketClassesProperties( tickets, ["name"] );
-   hackathon.set("ticketClassesCosts",          assignTicketClassesProperties( tickets, ["cost"] );
-   hackathon.set("ticketClassesFees",           assignTicketClassesProperties( tickets, ["fee"] );
-   hackathon.set("ticketClassesTaxes",          assignTicketClassesProperties( tickets, ["tax"] );
-   hackathon.set("ticketClassesOnSaleStatuses", assignTicketClassesProperties( tickets, ["onSaleStatus"] );
-   hackathon.set("ticketClassesDescriptions",   assignTicketClassesProperties( tickets, ["description"]["text"] );
-   hackathon.set("ticketClassesDonations",      assignTicketClassesProperties( tickets, ["donations"] );
-   hackathon.set("ticketClassesFree",           assignTicketClassesProperties( tickets, ["free"] );
+         hackathon.set("uri",             theEvent["resource_uri"] + "?token=" + token);
+         hackathon.set("url",             theEvent["url"]);
+         hackathon.set("uniqueID",        theEvent["id"]);
+         hackathon.set("name",            theEvent["name"]["text"]);
 
-   return hackathon;
+         hackathon.set("venueName",       venue["name"]);
+         hackathon.set("city",          ( venue["address"] != null ) ? venue["address"]["city"]      : "No city" );
+         hackathon.set("addres_1",      ( venue["address"] != null ) ? venue["address"]["address_1"] : "No address_1" );
+         hackathon.set("address_2",     ( venue["address"] != null ) ? venue["address"]["address_2"] : "No address_2" );
+         hackathon.set("latitude",      ( venue["address"] != null ) ? venue["address"]["latitude"]  : "No latitude" );
+         hackathon.set("longitude",     ( venue["address"] != null ) ? venue["address"]["longitude"] : "No longitude" );
+
+         hackathon.set("description",     theEvent["description"] ? theEvent["description"]["text"] : "None provided.");
+         hackathon.set("status",          theEvent["status"]);
+         hackathon.set("capacity",        theEvent["capacity"]);
+         hackathon.set("logo",          ( theEvent["logo"] != undefined || theEvent["logo"] != null ) ? theEvent["logo"]["url"] : "http://www.ecolabelindex.com/files/ecolabel-logos-sized/no-logo-provided.png");
+         hackathon.set("start", new Date( theEvent["start"]["utc"]));
+         hackathon.set("end",   new Date( theEvent["end"]["utc"]));
+         hackathon.set("online",          theEvent["online_theEvent"]);
+         hackathon.set("currency",        theEvent["currency"]);
+
+         var tickets = _.map(theEvent["ticket_classes"], function (item, index) { // creating a JSON object to Parse
+            return {
+               name:           item["name"],
+               cost:         ( item["cost"]        ? item["cost"]["display"] : 0.00 ),
+               fee:          ( item["fee"]         ? item["fee"]["display"]  : 0.00 ),
+               tax:          ( item["tax"]         ? item["tax"]["display"]  : 0.00 ),
+               description:  ( item["description"] ? item["description"]     : "No description" ),
+               onSaleStatus:   item["on_sale_status"],
+               donations:      item["donation"],
+               free:           item["free"]
+            };
+         });
+
+         hackathon.set("ticketClassesNames",          assignTicketClassesProperties( tickets, ["name"] ));
+         hackathon.set("ticketClassesCosts",          assignTicketClassesProperties( tickets, ["cost"] ));
+         hackathon.set("ticketClassesFees",           assignTicketClassesProperties( tickets, ["fee"] ));
+         hackathon.set("ticketClassesTaxes",          assignTicketClassesProperties( tickets, ["tax"] ));
+         hackathon.set("ticketClassesOnSaleStatuses", assignTicketClassesProperties( tickets, ["onSaleStatus"] ));
+         hackathon.set("ticketClassesDescriptions",   assignTicketClassesProperties( tickets, ["description"]["text"] ));
+         hackathon.set("ticketClassesDonations",      assignTicketClassesProperties( tickets, ["donations"] ));
+         hackathon.set("ticketClassesFree",           assignTicketClassesProperties( tickets, ["free"] ));
+
+         return hackathon
+     });
 }
 
 function assignTicketClassesProperties(ticketClasses, property) {
-   var propertyArray = []
+   var propertyArray = [];
    for (i = 0; i < ticketClasses.length; i++ ) {
-      propertyArray.pop(ticketClasses[i][property]);
+
+      var temp = ticketClasses[i][property];
+      console.log(temp);
+      propertyArray.push(temp);
    }
-   return propertyArray
+   console.log(propertyArray);
+   return propertyArray;
 }

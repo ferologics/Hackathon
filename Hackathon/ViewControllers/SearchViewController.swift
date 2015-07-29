@@ -26,7 +26,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     
     var plusButtonView: LGPlusButtonsView!
 //    @IBOutlet weak var searchBar:    UISearchBar! // TODO searchBar
-    let transition = BubbleTransition()
+    let transition               = BubbleTransition()
     var hackathons               = [Hackathon]()
     var filterContentForCategory = [Hackathon]()
     var filteredHackathons       = [Hackathon]()
@@ -34,6 +34,8 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
 
     override func viewDidLoad()
     {
+        
+        
         
         super.viewDidLoad()
         updateButton()
@@ -84,7 +86,8 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     
     // date button tapped -> set filter to Date
 
-    override func didReceiveMemoryWarning() {
+    override func didReceiveMemoryWarning()
+    {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
@@ -128,24 +131,26 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
 // MARK: bubbleTransitionMethods and helpers
 extension SearchViewController
 {
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if let controller = segue.destinationViewController as? UIViewController {
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?)
+    {
+        if let controller = segue.destinationViewController as? UIViewController
+        {
             controller.transitioningDelegate  = self
             controller.modalPresentationStyle = .Custom
         }
     }
     
-    // MARK: -
     // MARK: UIViewControllerTransitioningDelegate
-    
-    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning?
+    {
         transition.transitionMode = .Present
         transition.startingPoint  = switchButton.center
         transition.bubbleColor    = switchButton.backgroundColor!
         return transition
     }
     
-    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning?
+    {
         transition.transitionMode = .Dismiss
         transition.startingPoint  = switchButton.center
         transition.bubbleColor    = switchButton.backgroundColor!
@@ -178,7 +183,6 @@ extension SearchViewController
 extension SearchViewController
 {
     
-    
     func setupPlusButtons()
     {
         if plusButtonView.buttons == nil { return }
@@ -201,7 +205,7 @@ extension SearchViewController
         let plusButtonFontSize:CGFloat = buttonsFontSize*1.5
         
         plusButtonView.buttonInset = UIEdgeInsetsMake(inset, inset, inset, inset)
-        plusButtonView.contentInset = UIEdgeInsetsMake(inset, inset, inset, inset)
+        plusButtonView.contentInset = UIEdgeInsetsMake(50.0, 0.0, 0.0, 0.0)
         
         plusButtonView.setButtonsTitleFont(UIFont.boldSystemFontOfSize(buttonsFontSize))
         
