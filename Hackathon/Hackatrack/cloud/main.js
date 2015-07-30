@@ -47,7 +47,7 @@ Parse.Cloud.job("hopeThisWorks", function(request, status) {
             return hackathonForEvent(item);
          })).then(function() {
             var hackathons = arguments
-            console.log(hackathons.length);
+            console.log(hackathons.length + " hackathons in - " + city);
 
             Parse.Object.saveAll(hackathons, {
                success: function () {
@@ -86,6 +86,7 @@ function getHTTPResponseForCity(city) {
 }
 
 function getHTTPResponseForVenueID(venueID) {
+
    return Parse.Cloud.httpRequest({
       url : venueURL + venueID,
       params : {
@@ -108,10 +109,9 @@ MIGHT NEED TO USE PROMISES MOST LIKELY AS HTTPRESPONSE IS ASYNCH, NO IDEA HOW TO
      return getHTTPResponseForVenueID(theEvent["venue_id"])
      .then(function(httpResponse)
      {
-         console.log("Got details for venue " + theEvent["venue_id"]);
+         /*console.log("Got details for venue " + theEvent["venue_id"]);*/
          var venue = JSON.parse(httpResponse.text);
-         // console.log("httpresponse - " + venue["name"]);
-         console.log("httpresponse - " + venue);
+         /*console.log("httpresponse - " + venue);*/
 
          hackathon.set("uri",             theEvent["resource_uri"] + "?token=" + token);
          hackathon.set("url",             theEvent["url"]);
@@ -122,8 +122,8 @@ MIGHT NEED TO USE PROMISES MOST LIKELY AS HTTPRESPONSE IS ASYNCH, NO IDEA HOW TO
          hackathon.set("city",          ( venue["address"] != null ) ? venue["address"]["city"]      : "No city" );
          hackathon.set("addres_1",      ( venue["address"] != null ) ? venue["address"]["address_1"] : "No address_1" );
          hackathon.set("address_2",     ( venue["address"] != null ) ? venue["address"]["address_2"] : "No address_2" );
-         hackathon.set("latitude",      ( venue["address"] != null ) ? venue["address"]["latitude"]  : "No latitude" );
-         hackathon.set("longitude",     ( venue["address"] != null ) ? venue["address"]["longitude"] : "No longitude" );
+
+         hackathon.set("geoPoint",    new Parse.GeoPoint( venue["address"]["latitude"],venue["address"]["longitude"] ) );
 
          hackathon.set("description",     theEvent["description"] ? theEvent["description"]["text"] : "None provided.");
          hackathon.set("status",          theEvent["status"]);
@@ -152,7 +152,7 @@ MIGHT NEED TO USE PROMISES MOST LIKELY AS HTTPRESPONSE IS ASYNCH, NO IDEA HOW TO
          hackathon.set("ticketClassesFees",           assignTicketClassesProperties( tickets, ["fee"] ));
          hackathon.set("ticketClassesTaxes",          assignTicketClassesProperties( tickets, ["tax"] ));
          hackathon.set("ticketClassesOnSaleStatuses", assignTicketClassesProperties( tickets, ["onSaleStatus"] ));
-         hackathon.set("ticketClassesDescriptions",   assignTicketClassesProperties( tickets, ["description"]["text"] ));
+         hackathon.set("ticketClassesDescriptions",   assignTicketClassesProperties( tickets, ["description"]["text"] )); // TODO might be some kind of problem in here
          hackathon.set("ticketClassesDonations",      assignTicketClassesProperties( tickets, ["donations"] ));
          hackathon.set("ticketClassesFree",           assignTicketClassesProperties( tickets, ["free"] ));
 
@@ -165,9 +165,9 @@ function assignTicketClassesProperties(ticketClasses, property) {
    for (i = 0; i < ticketClasses.length; i++ ) {
 
       var temp = ticketClasses[i][property];
-      console.log(temp);
+      /*console.log(temp);*/
       propertyArray.push(temp);
    }
-   console.log(propertyArray);
+   /*console.log(propertyArray);*/
    return propertyArray;
 }

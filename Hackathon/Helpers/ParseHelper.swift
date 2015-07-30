@@ -33,63 +33,6 @@ class ParseHelper {
     // User Relation
     static let ParseUserUsername      = "username"
     
-/*      static func likePost(user:PFUser, post: Post) {
-        
-        let likeObject                = PFObject(className: ParseLikeClass)
-        likeObject[ParseLikeFromUser] = user
-        likeObject[ParseLikeToPost]   = post
-        
-        likeObject.saveInBackgroundWithBlock(ErrorHandling.errorHandlingCallback)
-    }
-    
-    static func unlikePost(user: PFUser, post: Post) {
-        
-        let query = PFQuery(className: ParseLikeClass)
-        query.whereKey(ParseLikeFromUser, equalTo: user)
-        query.whereKey(ParseLikeToPost, equalTo: post)
-        
-        query.findObjectsInBackgroundWithBlock {
-            (results: [AnyObject]?, error: NSError?) -> Void in
-            
-            if let error = error { ErrorHandling.defaultErrorHandler(error) }
-            
-            if let results = results as? [PFObject] { for likes in results /*this is fun*/ { likes.deleteInBackgroundWithBlock(ErrorHandling.errorHandlingCallback) } }
-        }
-    }
-    
-    static func likesForPost(post: Post, completionBlock: PFArrayResultBlock) {
-        
-        let query = PFQuery(className: ParseLikeClass)
-        query.whereKey(ParseLikeToPost, equalTo: post)
-        
-        query.includeKey(ParseLikeFromUser)
-        query.findObjectsInBackgroundWithBlock(completionBlock)
-    }
-    
-    static func timelineRequestForCurrentUser(range: Range<Int>, completionBlock: PFArrayResultBlock) {
-        
-        let followingQuery         = PFQuery(className: ParseFollowClass)
-        let postsFromFollowedUsers = Post.query()
-        let postsFromThisUser      = Post.query()
-        let likesFromThisUser      = Post.query()
-        
-
-        
-        followingQuery         .whereKey(ParseLikeFromUser, equalTo:PFUser.currentUser()!)
-        postsFromFollowedUsers?.whereKey(ParsePostUser, matchesKey: ParseFollowToUser, inQuery: followingQuery)
-        postsFromThisUser?     .whereKey(ParsePostUser, equalTo: PFUser.currentUser()!)
-    
-        
-        let query = PFQuery.orQueryWithSubqueries([postsFromFollowedUsers!, postsFromThisUser!])
-        query.includeKey(ParsePostUser)
-        query.orderByDescending(ParsePostCreatedAt)
-        
-        query.skip  = range.startIndex
-        query.limit = range.endIndex
-        query.findObjectsInBackgroundWithBlock(completionBlock)
-    }
-*/
-    
     
     // MARK: Following
     

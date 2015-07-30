@@ -588,6 +588,16 @@ LGPlusButtonDescriptionsPosition;
     }
 }
 
+- (void)setOffset:(CGPoint)offset
+{
+    if (!CGPointEqualToPoint(_offset, offset))
+    {
+        _offset = offset;
+        
+        [self layoutInvalidate];
+    }
+}
+
 #pragma mark -
 
 - (void)layoutInvalidate
@@ -677,6 +687,8 @@ LGPlusButtonDescriptionsPosition;
             selfOrigin = CGPointMake(parentInset.left+parentOffset.x,
                                      parentInset.top+parentOffset.y);
         }
+        selfOrigin.x += _offset.x;
+        selfOrigin.y += _offset.y;
         
         CGRect selfFrame = CGRectMake(selfOrigin.x, selfOrigin.y, selfSize.width, selfSize.height);
         if ([UIScreen mainScreen].scale == 1.f) selfFrame = CGRectIntegral(selfFrame);
@@ -877,18 +889,10 @@ LGPlusButtonDescriptionsPosition;
 
 - (void)plusButtonAction:(LGPlusButton *)button
 {
-    _plusButton.selected = !_plusButton.isSelected;
-    
     if (_plusButton.isSelected)
-    {
-        [self selectPlusButtonViewWithAnimationType:_plusButtonAnimationType animated:YES completionHandler:nil];
-        [self showButtonsAnimated:YES completionHandler:nil];
-    }
-    else
-    {
-        [self deselectPlusButtonViewWithAnimationType:_plusButtonAnimationType animated:YES completionHandler:nil];
         [self hideButtonsAnimated:YES completionHandler:nil];
-    }
+    else
+        [self showButtonsAnimated:YES completionHandler:nil];
     
     if (_plusButtonActionHandler) _plusButtonActionHandler(self);
     
@@ -1026,6 +1030,10 @@ LGPlusButtonDescriptionsPosition;
 {
     if (self.isShowsPlusButton)
     {
+        _plusButton.selected = YES;
+        
+        [self selectPlusButtonViewWithAnimationType:_plusButtonAnimationType animated:YES completionHandler:nil];
+        
         NSTimeInterval delay = 0.03;
         
         for (NSInteger i=1; i<_buttons.count; i++)
@@ -1067,6 +1075,10 @@ LGPlusButtonDescriptionsPosition;
 {
     if (self.isShowsPlusButton)
     {
+        _plusButton.selected = NO;
+        
+        [self deselectPlusButtonViewWithAnimationType:_plusButtonAnimationType animated:YES completionHandler:nil];
+        
         NSTimeInterval delay = 0.03;
         
         for (NSInteger i=1; i<_buttons.count; i++)
@@ -1299,7 +1311,8 @@ LGPlusButtonDescriptionsPosition;
             [UIView transitionWithView:plusButtonWrapperView2
                               duration:0.2
                                options:UIViewAnimationOptionTransitionCrossDissolve
-                            animations:nil completion:completionHandler];
+                            animations:nil
+                            completion:completionHandler];
     }
     else if (type == LGPlusButtonAnimationTypeRotate)
     {
@@ -1335,7 +1348,8 @@ LGPlusButtonDescriptionsPosition;
             [UIView transitionWithView:plusButtonWrapperView2
                               duration:0.2
                                options:UIViewAnimationOptionTransitionCrossDissolve
-                            animations:nil completion:completionHandler];
+                            animations:nil
+                            completion:completionHandler];
     }
     else if (type == LGPlusButtonAnimationTypeRotate)
     {

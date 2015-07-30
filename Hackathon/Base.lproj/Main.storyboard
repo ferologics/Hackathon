@@ -73,7 +73,7 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" restorationIdentifier="Cost" text="Cost" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HHc-65-487" userLabel="Cost">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" restorationIdentifier="Cost" text="Distance" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HHc-65-487" userLabel="Cost">
                                                     <rect key="frame" x="313" y="55" width="279" height="25"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="25" id="gob-Fu-855"/>
@@ -118,9 +118,9 @@
                                             <outlet property="capacityImage" destination="kSo-Oc-iXi" id="EBt-sQ-Gkq"/>
                                             <outlet property="capacityLabel" destination="jXK-pJ-txc" id="rMY-45-gfU"/>
                                             <outlet property="costImage" destination="wqN-o2-7yy" id="LpZ-f2-BJu"/>
-                                            <outlet property="costLabel" destination="HHc-65-487" id="Ade-5l-Wcg"/>
                                             <outlet property="dateImage" destination="NDz-N7-dVv" id="vdH-QC-MGg"/>
                                             <outlet property="dateLabel" destination="h8C-nh-xzS" id="5yM-to-03c"/>
+                                            <outlet property="distanceLabel" destination="HHc-65-487" id="heb-uR-jeG"/>
                                             <outlet property="logoImage" destination="TAk-m4-W1N" id="bOC-Pm-w9B"/>
                                             <outlet property="nameLabel" destination="bxF-gq-2FL" id="n8m-Z6-7Vb"/>
                                         </connections>
@@ -152,9 +152,8 @@
                                     <constraint firstAttribute="height" constant="25" id="gEM-Xl-AzR"/>
                                 </constraints>
                                 <segments>
-                                    <segment title="Cost"/>
-                                    <segment title="Capacity"/>
                                     <segment title="Date"/>
+                                    <segment title="Capacity"/>
                                 </segments>
                                 <variation key="default">
                                     <mask key="constraints">

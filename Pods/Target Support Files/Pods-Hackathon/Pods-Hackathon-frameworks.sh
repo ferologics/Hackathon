@@ -53,14 +53,12 @@ code_sign_if_enabled() {
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework 'Pods-Hackathon/Bolts.framework'
-  install_framework 'Pods-Hackathon/Bond.framework'
   install_framework 'Pods-Hackathon/BubbleTransition.framework'
   install_framework 'Pods-Hackathon/Cartography.framework'
   install_framework 'Pods-Hackathon/ConvenienceKit.framework'
   install_framework 'Pods-Hackathon/EasyAnimation.framework'
   install_framework 'Pods-Hackathon/FBSDKCoreKit.framework'
   install_framework 'Pods-Hackathon/FBSDKLoginKit.framework'
-  install_framework 'Pods-Hackathon/FilterBar.framework'
   install_framework 'Pods-Hackathon/LGPlusButtonsView.framework'
   install_framework 'Pods-Hackathon/Pages.framework'
   install_framework 'Pods-Hackathon/Parse.framework'
@@ -68,18 +66,15 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework 'Pods-Hackathon/ParseUI.framework'
   install_framework 'Pods-Hackathon/Presentation.framework'
   install_framework 'Pods-Hackathon/Shuffle.framework'
-  install_framework 'Pods-Hackathon/SwiftyJSON.framework'
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework 'Pods-Hackathon/Bolts.framework'
-  install_framework 'Pods-Hackathon/Bond.framework'
   install_framework 'Pods-Hackathon/BubbleTransition.framework'
   install_framework 'Pods-Hackathon/Cartography.framework'
   install_framework 'Pods-Hackathon/ConvenienceKit.framework'
   install_framework 'Pods-Hackathon/EasyAnimation.framework'
   install_framework 'Pods-Hackathon/FBSDKCoreKit.framework'
   install_framework 'Pods-Hackathon/FBSDKLoginKit.framework'
-  install_framework 'Pods-Hackathon/FilterBar.framework'
   install_framework 'Pods-Hackathon/LGPlusButtonsView.framework'
   install_framework 'Pods-Hackathon/Pages.framework'
   install_framework 'Pods-Hackathon/Parse.framework'
@@ -87,5 +82,4 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework 'Pods-Hackathon/ParseUI.framework'
   install_framework 'Pods-Hackathon/Presentation.framework'
   install_framework 'Pods-Hackathon/Shuffle.framework'
-  install_framework 'Pods-Hackathon/SwiftyJSON.framework'
 fi

@@ -5,7 +5,6 @@ PODS:
   - Bolts/AppLinks (1.2.0):
     - Bolts/Tasks
   - Bolts/Tasks (1.2.0)
-  - Bond (3.9.0)
   - BubbleTransition (0.2)
   - Cartography (0.5.0)
   - ConvenienceKit (0.2.0)
@@ -21,8 +20,7 @@ PODS:
     - FBSDKCoreKit/arc
   - FBSDKLoginKit (4.4.0):
     - FBSDKCoreKit
-  - FilterBar (2.0.0)
-  - LGPlusButtonsView (1.0.1)
+  - LGPlusButtonsView (1.0.3)
   - Pages (0.6.1)
   - Parse (1.7.5.3):
     - Bolts/Tasks (>= 1.2.0)
@@ -37,40 +35,33 @@ PODS:
     - Cartography (~> 0.5.0)
     - Pages (~> 0.6.1)
   - Shuffle (0.0.1)
-  - SwiftyJSON (2.2.0)
 
 DEPENDENCIES:
-  - Bond
   - BubbleTransition (~> 0.1)
   - ConvenienceKit
   - EasyAnimation
   - FBSDKCoreKit
-  - FilterBar (~> 2.0.0)
   - LGPlusButtonsView (~> 1.0.0)
   - Parse
   - ParseFacebookUtilsV4
   - ParseUI
   - Presentation
   - Shuffle (~> 0.0.1)
-  - SwiftyJSON (~> 2.2.0)
 
 SPEC CHECKSUMS:
   Bolts: d176cb1e0012175589e389a9db49b85e27787576
-  Bond: 994ccc56aebfe2707d7b5e76f6d665a5beefa45b
   BubbleTransition: 6ee83cedb8b9eb2a9489e11b0e0c666f3916bb2c
   Cartography: 774e5cc446f5a6bca5d4345c5aa6af9a1fe74dc6
   ConvenienceKit: 947032f82c3d419d107e0cbde1fcb725e9c7ed62
   EasyAnimation: ddc49f0eaf034f6d47a95bf805d9e95e84908053
   FBSDKCoreKit: 75bdd75c980e811db218488d99dd93b7740f4474
   FBSDKLoginKit: 02a9254a4c132412fa03577b0d53e936d068a7fb
-  FilterBar: 1745c76c36bbab42d662cec8b62b3e19e7de45bf
-  LGPlusButtonsView: 1d3bb2e035b6d6e2520c0188087ae050e47d203a
+  LGPlusButtonsView: d10027afc527e4aaae80f69c27e7a5f12a63df2c
   Pages: 515a8ec7396cfb7cdacc28c0beceb2ce39c065cb
   Parse: 373adbb1ad2e34d383542c3b28f678c49ebe4881
   ParseFacebookUtilsV4: ea5db22e87b91cbf99b9d156642e2b97a4db7d51
   ParseUI: d1228541b02a36a7354c8f47747f5f7a89cf1ff0
   Presentation: 983b35662805253b6141e589edb6685a4d1724a5
   Shuffle: d519ca7f7b20b125bd2d2dd2235665a23a61041c
-  SwiftyJSON: 0b3e6c07af17ff745e77e8e9984097b55c956e5c
 
 COCOAPODS: 0.38.0
