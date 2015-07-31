@@ -25,7 +25,6 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     var plusButtonView: LGPlusButtonsView!
 //    @IBOutlet weak var searchBar:    UISearchBar! // TODO searchBar
     let transition               = BubbleTransition()
-    let locationManager          = CLLocationManager()
     
     var hackathons               = [Hackathon]()
     var filterContentForCategory = [Hackathon]()
@@ -37,11 +36,13 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        setUpLocationManager()
         updateSwitchButton()
 //        updateSearchBar()
-//        criteria.cityString = locationManager.locality // TODO text from searchbar 
-        deployQuery(HackathonHelper.queryForTable(searchCriteria))
+//        criteria.cityString = locationManager.locality // TODO text from searchbar
+        
+        HackathonHelper.queryForTable(searchCriteria, onComplete: { (query) -> Void in
+            self.deployQuery(query)
+        })
         
         self.initPlusButtonView()
 
@@ -51,14 +52,13 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     {
         super.viewWillLayoutSubviews()
         self.setupPlusButtons()
-    
     }
     
-    @IBAction func sortTapped(sender: AnyObject)
-    {
-        let selectedSegmentIndex = sortSegment.selectedSegmentIndex
-        segmentAtIndexTouched(selectedSegmentIndex)
-    }
+//    @IBAction func sortTapped(sender: AnyObject)
+//    {
+//        let selectedSegmentIndex = sortSegment.selectedSegmentIndex
+//        segmentAtIndexTouched(selectedSegmentIndex)
+//    }
     
     @IBAction func categoryTapped(sender: AnyObject)
     {
@@ -101,26 +101,17 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
 //    }
 
     // MARK: - custom methods
-    func updateSwitchButton()
-    {
-        switchButton.layer.cornerRadius = 22
-        switchButton.backgroundColor    = secondaryColor
-    }
-    
-    func updateTableView()
-    {
-        tableView.backgroundColor = mainColor
-    }
+
    
 }
 
-                                                                        // MARK: -
-                                                                        // MARK: bubbleTransitionMethods and helpers
+// MARK: -
+// MARK: bubbleTransitionMethods and helpers
 extension SearchViewController
 {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?)
     {
-        if let controller = segue.destinationViewController as? UIViewController
+        if let controller = segue.destinationViewController as? ProfileViewController
         {
             controller.transitioningDelegate  = self
             controller.modalPresentationStyle = .Custom
@@ -271,7 +262,6 @@ extension SearchViewController: LGPlusButtonsViewDelegate
 
 extension SearchViewController
 {
-    
     func getImageWithColor(color: UIColor, size: CGSize) -> UIImage
     {
         let rect = CGRectMake(0, 0, size.width, size.height)
@@ -282,91 +272,6 @@ extension SearchViewController
         UIGraphicsEndImageContext()
         return image
     }
-    
-    func segmentAtIndexTouched(index:Int)
-    {
-        
-        let segmentWidth = sortSegment.bounds.width/3
-        println(segmentWidth)
-        let greenImage = getImageWithColor(UIColor.greenColor(), size:  CGSizeMake(25, segmentWidth))
-        let redImage = getImageWithColor(UIColor.greenColor(), size:  CGSizeMake(25, segmentWidth))
-        let clearImage = getImageWithColor(UIColor.greenColor(), size:  CGSizeMake(25, segmentWidth))
-        
-        switch index {
-            case 0: // CAPACITY
-                
-                if ( searchCriteria.primarySort?.state == .Off ) // set the state to ascending
-                {
-                    searchCriteria.primarySort?.state = .Ascending
-                    deployQuery(HackathonHelper.queryForTable(searchCriteria))
-
-                    if (searchCriteria.primarySort?.isPrimary == false && searchCriteria.secondarySort?.isPrimary == false) { searchCriteria.primarySort?.isPrimary = true } // change CAPACITY sort to be primary
-                    
-                    sortSegment.setImage(greenImage, forSegmentAtIndex: index)
-                }
-                if ( searchCriteria.primarySort?.state == .Ascending) // set the state to descending
-                {
-                    searchCriteria.primarySort?.state = .Descending
-                    deployQuery(HackathonHelper.queryForTable(searchCriteria))
-
-                    sortSegment.setImage(redImage, forSegmentAtIndex: index)
-                }
-                if ( searchCriteria.primarySort?.state == .Descending) // set the state to off
-                {
-                    searchCriteria.primarySort?.state = .Off
-                    sortSegment.setImage(clearImage, forSegmentAtIndex: index)
-                    deployQuery(HackathonHelper.queryForTable(searchCriteria))
-                    
-                    if ((searchCriteria.primarySort?.isPrimary == true) && (searchCriteria.secondarySort?.state != .Off)) // set isPrimary off for capacity and if date is on set it to primary
-                    {
-                        searchCriteria.primarySort?.isPrimary = false
-                        searchCriteria.secondarySort?.isPrimary = true
-                    }
-                    else if (searchCriteria.primarySort?.isPrimary == true) // set isPrimary off
-                    {
-                        searchCriteria.primarySort?.isPrimary = false
-                    }
-                }
-            
-            case 1: // DATE
-                
-                if ( searchCriteria.secondarySort?.state == .Off ) // set the state to ascending
-                {
-                    searchCriteria.secondarySort?.state = .Ascending
-                    deployQuery(HackathonHelper.queryForTable(searchCriteria))
-
-                    if (searchCriteria.secondarySort?.isPrimary == false && searchCriteria.primarySort?.isPrimary == false) { searchCriteria.secondarySort?.isPrimary = true } // change DATE sort to be primary
-                    sortSegment.setImage(greenImage, forSegmentAtIndex: index)
-                }
-                if ( searchCriteria.secondarySort?.state == .Ascending) // set the state to descending
-                {
-                    searchCriteria.secondarySort?.state = .Descending
-                    deployQuery(HackathonHelper.queryForTable(searchCriteria))
-
-                    sortSegment.setImage(redImage, forSegmentAtIndex: index)
-                }
-                if ( searchCriteria.secondarySort?.state == .Descending) // set the state to off
-                {
-                    searchCriteria.secondarySort?.state = .Off
-                    sortSegment.setImage(clearImage, forSegmentAtIndex: index)
-                    
-                    deployQuery(HackathonHelper.queryForTable(searchCriteria))
-
-                    if ((searchCriteria.secondarySort?.isPrimary == true) && (searchCriteria.primarySort?.state != .Off)) // set isPrimary off for date and if capacity is on set it to primary
-                    {
-                        searchCriteria.secondarySort?.isPrimary = false
-                        searchCriteria.primarySort?.isPrimary = true
-                    }
-                    else if (searchCriteria.secondarySort?.isPrimary == true) // set isPrimary off
-                    {
-                        searchCriteria.secondarySort?.isPrimary = false
-                    }
-                }
-            
-            default:
-                println("whoops") // debug
-        }
-    } // TODO implement icon change and searchCriteria change
 }
 
 // MARK: -
@@ -388,61 +293,6 @@ extension SearchViewController
 }
 
 // MARK: -
-// MARK: Core Location Delegate
-
-extension SearchViewController: CLLocationManagerDelegate // TODO use parse instead of the cllocationmanager
-{
-    
-    func setUpLocationManager()
-    {
-        self.locationManager.delegate = self
-        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        self.locationManager.requestWhenInUseAuthorization()
-        self.locationManager.startUpdatingLocation()
-    }
-    
-    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!)
-    {
-        CLGeocoder().reverseGeocodeLocation(manager.location, completionHandler:
-        {(placemarks, error)->Void in
-            
-            if (error != nil)
-            {
-                println("Error: " + error.localizedDescription)
-                return
-            }
-            
-            if placemarks.count > 0
-            {
-                let pm = placemarks[0] as! CLPlacemark
-                self.displayLocationInfo(pm)
-            }
-            else
-            {
-                println("Error with the data.")
-            }
-        })
-    }
-    
-    func displayLocationInfo(placemark: CLPlacemark)
-    {
-        self.locationManager.stopUpdatingLocation()
-        searchCriteria.cityString = placemark.locality
-        println(placemark.locality)
-        println(placemark.postalCode)
-        println(placemark.administrativeArea)
-        println(placemark.country)
-    }
-    
-    func locationManager(manager: CLLocationManager!, didFailWithError error: NSError!)
-    {
-        // TODO setup erroor handler here
-        println(error.localizedDescription)
-    }
-    
-}
-
-// MARK: -
 // MARK: general helper methods
 extension SearchViewController
 {
@@ -451,13 +301,14 @@ extension SearchViewController
         cell.nameLabel?.text = hackathon.name
         cell.dateLabel?.text = HackathonHelper.utcToString( hackathon.start! )
         cell.capacityLabel?.text = hackathon.capacity?.stringValue
-        cell.distanceLabel?.text = getDistanceFromUser(hackathon.geoPoint!)
-        if let url = NSURL(string: hackathon.logo!) { // set hackathon logo
-            if let data = NSData(contentsOfURL: url){
-                cell.logoImage.contentMode = UIViewContentMode.ScaleAspectFit
-                cell.logoImage.image = UIImage(data: data)
-            }
-        }
+        
+        getDistanceFromUser(hackathon.geoPoint!, complete: { (str) -> Void in
+            cell.distanceLabel?.text = str
+        })
+        
+        setHackathonCellLogoAsynch(cell, hackathon: hackathon) 
+        
+        
     }
     
     func deployQuery(query: PFQuery)
@@ -470,14 +321,40 @@ extension SearchViewController
         })
     }
     
-    func getDistanceFromUser(geopoint: PFGeoPoint) -> String {
-        var distance = "Unknown"
+    func getDistanceFromUser(geopoint: PFGeoPoint, complete: (String) -> Void ) {
+        var distance:String?
         HackathonHelper.saveAndReturnCurrentLocation { (point) -> Void in
             
-            distance = point.distanceInKilometersTo(point).description
+            distance = point.distanceInKilometersTo(geopoint).description
+            complete(distance!)
         }
-        return distance
     }
+    
+    func getDataFromUrl(urL:NSURL, completion: ((data: NSData?) -> Void)) {
+        NSURLSession.sharedSession().dataTaskWithURL(urL) { (data, response, error) in
+            completion(data: data)
+            }.resume()
+    }
+    
+    func setHackathonCellLogoAsynch(cell:SearchTableViewCell, hackathon: Hackathon) {
+        
+        if let url = NSURL(string: hackathon.logo!) { // set hackathon logo
+            
+            getDataFromUrl(url) { data in
+                dispatch_async(dispatch_get_main_queue()) {
+                    cell.logoImage.contentMode = UIViewContentMode.ScaleAspectFit
+                    cell.logoImage.image = UIImage(data: data!)
+                }
+            }
+        }
+    }
+    
+    func updateSwitchButton() {
+        switchButton.layer.cornerRadius = 22
+        switchButton.backgroundColor    = secondaryColor
+    }
+    
+    func updateTableView() { tableView.backgroundColor = mainColor }
 }
 
 

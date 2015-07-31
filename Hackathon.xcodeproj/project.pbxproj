@@ -10,6 +10,8 @@
 		6504455352C390D24DEF7D87 /* Pods_Hackathon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE6BAA5AC05D04FD4CFFE2E2 /* Pods_Hackathon.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		AF0BC05A1B69DBA700CE1B7B /* HackathonHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0BC0591B69DBA700CE1B7B /* HackathonHelper.swift */; };
 		AF0BC05E1B69DC1D00CE1B7B /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0BC05D1B69DC1D00CE1B7B /* SearchTableViewCell.swift */; };
+		AF1F1CD11B6AF7AE00CA6FD4 /* HackathonCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1F1CD01B6AF7AE00CA6FD4 /* HackathonCardView.swift */; };
+		AF1F1CD31B6AF7FF00CA6FD4 /* CardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1F1CD21B6AF7FF00CA6FD4 /* CardViewController.swift */; };
 		AF559AB31B4CF65000114F80 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF559AB21B4CF65000114F80 /* AppDelegate.swift */; };
 		AF559AB81B4CF65000114F80 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AF559AB61B4CF65000114F80 /* Main.storyboard */; };
 		AF559ABA1B4CF65000114F80 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF559AB91B4CF65000114F80 /* Images.xcassets */; };
@@ -24,7 +26,6 @@
 		AFE7FB4E1B60393300487624 /* ParseLoginHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE7FB481B60393300487624 /* ParseLoginHelper.swift */; };
 		AFE7FB531B60394900487624 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE7FB501B60394900487624 /* ProfileViewController.swift */; };
 		AFE7FB541B60394900487624 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE7FB511B60394900487624 /* SearchViewController.swift */; };
-		AFE7FB581B60395700487624 /* HackathonCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE7FB561B60395700487624 /* HackathonCardView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +43,8 @@
 		AAAE8F7B18D9224B8664BAFA /* Pods-Hackathon.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hackathon.release.xcconfig"; path = "Pods/Target Support Files/Pods-Hackathon/Pods-Hackathon.release.xcconfig"; sourceTree = "<group>"; };
 		AF0BC0591B69DBA700CE1B7B /* HackathonHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HackathonHelper.swift; path = Hackathon/Helpers/HackathonHelper.swift; sourceTree = "<group>"; };
 		AF0BC05D1B69DC1D00CE1B7B /* SearchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchTableViewCell.swift; path = Views/Search/SearchTableViewCell.swift; sourceTree = "<group>"; };
+		AF1F1CD01B6AF7AE00CA6FD4 /* HackathonCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HackathonCardView.swift; path = Views/HackathonCardView.swift; sourceTree = "<group>"; };
+		AF1F1CD21B6AF7FF00CA6FD4 /* CardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CardViewController.swift; path = ViewControllers/CardViewController.swift; sourceTree = "<group>"; };
 		AF559AAD1B4CF65000114F80 /* Hackathon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hackathon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF559AB11B4CF65000114F80 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AF559AB21B4CF65000114F80 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -60,7 +63,6 @@
 		AFE7FB481B60393300487624 /* ParseLoginHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ParseLoginHelper.swift; path = Hackathon/Helpers/ParseLoginHelper.swift; sourceTree = "<group>"; };
 		AFE7FB501B60394900487624 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileViewController.swift; path = ViewControllers/ProfileViewController.swift; sourceTree = "<group>"; };
 		AFE7FB511B60394900487624 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchViewController.swift; path = ViewControllers/SearchViewController.swift; sourceTree = "<group>"; };
-		AFE7FB561B60395700487624 /* HackathonCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HackathonCardView.swift; path = Views/Search/HackathonCardView.swift; sourceTree = "<group>"; };
 		AFE7FB591B60397000487624 /* Hackathon-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Hackathon-Bridging-Header.h"; path = "Hackathon/Hackathon-Bridging-Header.h"; sourceTree = "<group>"; };
 		EE6BAA5AC05D04FD4CFFE2E2 /* Pods_Hackathon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Hackathon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -133,7 +135,6 @@
 		AF2EBB691B5EE82400562B62 /* Search */ = {
 			isa = PBXGroup;
 			children = (
-				AFE7FB561B60395700487624 /* HackathonCardView.swift */,
 				AF0BC05D1B69DC1D00CE1B7B /* SearchTableViewCell.swift */,
 			);
 			name = Search;
@@ -205,6 +206,7 @@
 		AFBE80501B4FD2D6009A7EF3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				AF1F1CD01B6AF7AE00CA6FD4 /* HackathonCardView.swift */,
 				AF2EBB691B5EE82400562B62 /* Search */,
 				AF2EBB681B5EE80F00562B62 /* Profile */,
 			);
@@ -214,6 +216,7 @@
 		AFBE80511B4FD2DE009A7EF3 /* ViewConrollers */ = {
 			isa = PBXGroup;
 			children = (
+				AF1F1CD21B6AF7FF00CA6FD4 /* CardViewController.swift */,
 				AFE7FB501B60394900487624 /* ProfileViewController.swift */,
 				AFE7FB511B60394900487624 /* SearchViewController.swift */,
 			);
@@ -375,7 +378,6 @@
 				AFE7FB4E1B60393300487624 /* ParseLoginHelper.swift in Sources */,
 				AFE7FB4C1B60393300487624 /* Palette.swift in Sources */,
 				AFE7FB4B1B60393300487624 /* ErrorHandling.swift in Sources */,
-				AFE7FB581B60395700487624 /* HackathonCardView.swift in Sources */,
 				AFE7FB531B60394900487624 /* ProfileViewController.swift in Sources */,
 				AFE7FB4D1B60393300487624 /* ParseHelper.swift in Sources */,
 				AFB5D80E1B66D0720068E881 /* ProfileTableViewCell.swift in Sources */,
@@ -383,7 +385,9 @@
 				AF0BC05A1B69DBA700CE1B7B /* HackathonHelper.swift in Sources */,
 				AFE7FB421B60392700487624 /* Hackathon.swift in Sources */,
 				AFE7FB541B60394900487624 /* SearchViewController.swift in Sources */,
+				AF1F1CD31B6AF7FF00CA6FD4 /* CardViewController.swift in Sources */,
 				AF0BC05E1B69DC1D00CE1B7B /* SearchTableViewCell.swift in Sources */,
+				AF1F1CD11B6AF7AE00CA6FD4 /* HackathonCardView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
