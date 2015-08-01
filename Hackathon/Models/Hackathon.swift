@@ -51,7 +51,7 @@ extension Hackathon
     
     static func parseClassName() -> String
     {
-        return "Hackathon" // TODO figure out a way to change this between the friends and hackathon classname
+        return "Hackathon"
     }
     
     override class func initialize()

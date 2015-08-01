@@ -18,9 +18,6 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     @IBOutlet weak var switchButton: UIButton!
     @IBOutlet weak var categoryButton: UIButton!
     @IBOutlet weak var searchButton: UIButton!
-    @IBOutlet weak var sortSegment: UISegmentedControl!
-    
-    var sortNameInc:Int = 0, sortDateInc:Int = 0, sortCapacityInc:Int = 0 // uisegmentController sort tracking variables (asc, desc, off)
     
     var plusButtonView: LGPlusButtonsView!
 //    @IBOutlet weak var searchBar:    UISearchBar! // TODO searchBar
@@ -54,24 +51,10 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         self.setupPlusButtons()
     }
     
-//    @IBAction func sortTapped(sender: AnyObject)
-//    {
-//        let selectedSegmentIndex = sortSegment.selectedSegmentIndex
-//        segmentAtIndexTouched(selectedSegmentIndex)
-//    }
-    
     @IBAction func categoryTapped(sender: AnyObject)
     {
         self.plusButtonsViewPlusButtonPressed(plusButtonView)
     }
-    
-//    @IBAction func searchTapped(sender: AnyObject)
-//    {
-//        if ( categoryButton.touchInside )
-//        {
-//            // TODO searchBar overlay animation, present the searchViewController 'n stuff
-//        }
-//    }
 
     override func didReceiveMemoryWarning()
     {
@@ -111,10 +94,17 @@ extension SearchViewController
 {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?)
     {
-        if let controller = segue.destinationViewController as? ProfileViewController
+        println("\(segue.identifier)")
+        if let profile = segue.destinationViewController as? ProfileViewController
         {
-            controller.transitioningDelegate  = self
-            controller.modalPresentationStyle = .Custom
+            profile.transitioningDelegate  = self
+            profile.modalPresentationStyle = .Custom
+        }
+        if let detailsView = segue.destinationViewController as? CardViewController
+        {
+            let index = tableView.indexPathForSelectedRow()!.row
+            let hackathon = hackathons[index]
+            detailsView.hackathon = hackathon
         }
     }
     
@@ -136,6 +126,8 @@ extension SearchViewController
     }
 }
 
+// MARK: - 
+// MARK: UITableViewCell
 extension SearchViewController
 {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
@@ -152,10 +144,29 @@ extension SearchViewController
         self.initCellWithHackathon(cell, hackathon: hackathon)
         return cell
     }
+    
+    func initCellWithHackathon(cell: SearchTableViewCell, hackathon: Hackathon)
+    {
+        cell.nameLabel?.text = hackathon.name
+        cell.dateLabel?.text = HackathonHelper.utcToString( hackathon.start! )
+        cell.capacityLabel?.text = hackathon.capacity?.stringValue
+        
+        getDistanceFromUser(hackathon.geoPoint!, complete: { (str) -> Void in
+            cell.distanceLabel?.text = str
+        })
+        
+        setHackathonCellLogoAsynch(cell, hackathon: hackathon)
+        
+
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
+    }
 }
 
-                                                                        // MARK: -
-                                                                        // MARK: LGPlusButtonSetup
+// MARK: -
+// MARK: LGPlusButtonSetup
 extension SearchViewController: LGPlusButtonsViewDelegate
 {
     func plusButtonsViewPlusButtonPressed(plusButtonsView: LGPlusButtonsView!) {
@@ -296,20 +307,6 @@ extension SearchViewController
 // MARK: general helper methods
 extension SearchViewController
 {
-    func initCellWithHackathon(cell: SearchTableViewCell, hackathon: Hackathon)
-    {
-        cell.nameLabel?.text = hackathon.name
-        cell.dateLabel?.text = HackathonHelper.utcToString( hackathon.start! )
-        cell.capacityLabel?.text = hackathon.capacity?.stringValue
-        
-        getDistanceFromUser(hackathon.geoPoint!, complete: { (str) -> Void in
-            cell.distanceLabel?.text = str
-        })
-        
-        setHackathonCellLogoAsynch(cell, hackathon: hackathon) 
-        
-        
-    }
     
     func deployQuery(query: PFQuery)
     {

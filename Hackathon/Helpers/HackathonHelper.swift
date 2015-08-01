@@ -33,7 +33,7 @@ class SearchCriteria
 class HackathonHelper
 {
 
-    static func queryForTable(searchCriteria: SearchCriteria, onComplete: (PFQuery) -> Void) // TODO fix sorting
+    static func queryForTable(searchCriteria: SearchCriteria, onComplete: (PFQuery) -> Void)
     {
         var query:PFQuery?
         
@@ -97,6 +97,7 @@ class HackathonHelper
             }// TODO setup error handler
         }
     }
+    
 }
 
 
