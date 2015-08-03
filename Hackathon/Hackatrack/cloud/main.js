@@ -1,23 +1,22 @@
 /*
 Created 20th July 2015 by Fero Hetes with a heavy help of Jay without
-       whom would my app never see the light of the day...
-(also thanks to amazing instructors Abdul, Simon and mostly Warren <3)
-                             _________
-                            /         \
-                           /    <3     \
-                           |           |
-                           | <0>   <0> |
-                           \   _____   /
-                            \_________/
-                                /|\
-                                 |
-                                 |
-                                / \
+whom would my app never see the light of the day...
+(also thanks to amazing instructors Abdul, Simon and foremostly Warren <3)
+                         _________
+                        /         \
+                       /    <3     \
+                       |           |
+                       | <0>   <0> |
+                       \   _____   /
+                        \_________/
+                            /|\
+                             |
+                             |
+                            / \
 */
 
 // required libraries
 var _ = require('underscore');
-var moment = require('moment');
 
 // variables
 var cities = ["San Francisco", "London"];
@@ -25,20 +24,22 @@ var searchKeyword = "hackathon";
 var searchURL = 'https://www.eventbriteapi.com/v3/events/search/';
 var venueURL = 'https://www.eventbriteapi.com/v3/venues/';
 var token = "FWMDQSTTDTI5EJRD6VUH";
+var Hackathon = Parse.Object.extend("Hackathon");
 
 // cloud code job
 Parse.Cloud.job("hopeThisWorks", function(request, status) {
 
-   var query = new Parse.Query("Hackathon");
+   /*var query = new Parse.Query("Hackathon");
    var deletionPromise = query.find().then(function(results) {
       _.each(results, function(result) {
          result.destroy();
       })
-   })
+   })*/
 
    var promises = _.map(cities, function (city, index) {
 
       var promise = new Parse.Promise();
+
 
       getHTTPResponseForCity(city)
       .then(function(httpResponse) {
@@ -63,11 +64,40 @@ Parse.Cloud.job("hopeThisWorks", function(request, status) {
       return promise;
    });
 
-   promises.unshift(deletionPromise); // add the deletion promise to the 1st place in promises array
+   /*promises.unshift(deletionPromise); // add the deletion promise to the 1st place in promises array*/
 
    Parse.Promise.when(promises).then(function (p1, p2) {
       status.success("all is good");
    });
+});
+
+// before save deduplicating
+Parse.Cloud.beforeSave("Hackathon", function(request, response) {
+    if (!request.object.isNew()) {
+      // Let existing object updates go through
+      response.success();
+    }
+    var query = new Parse.Query(Hackathon);
+    // Add query filters to check for uniqueness
+    query.equalTo("uniqueID", request.object.get("uniqueID"));
+    query.first().then(function(existingObject) {
+      if (existingObject) {
+         return Parse.Promise.as(true);
+      } else {
+        // Pass a flag that this is not an existing object
+        return Parse.Promise.as(false);
+      }
+    }).then(function(existingObject) {
+      if (existingObject) {
+        // Existing object, stop initial save
+        response.error("Existing object");
+      } else {
+        // New object, let the save go through
+        response.success();
+      }
+    }, function (error) {
+      response.error("Error performing checks or saves.");
+    });
 });
 
 // search code
@@ -90,7 +120,7 @@ function getHTTPResponseForVenueID(venueID) {
    return Parse.Cloud.httpRequest({
       url : venueURL + venueID,
       params : {
-               token : token
+         token : token
       },
       followRedirects : true
    });
@@ -101,63 +131,63 @@ function hackathonForEvent(theEvent)
 {
    Parse.Cloud.useMasterKey(); // not really needed I guess
    var hackathon = new Parse.Object("Hackathon");
-/*
-MIGHT NEED TO USE PROMISES MOST LIKELY AS HTTPRESPONSE IS ASYNCH, NO IDEA HOW TO RESTRUCTURE THIS, FUCK.
-*/
+   /*
+   MIGHT NEED TO USE PROMISES MOST LIKELY AS HTTPRESPONSE IS ASYNCH, NO IDEA HOW TO RESTRUCTURE THIS, FUCK.
+   */
    //var promise = new Parse.Promise();
 
-     return getHTTPResponseForVenueID(theEvent["venue_id"])
-     .then(function(httpResponse)
-     {
-         /*console.log("Got details for venue " + theEvent["venue_id"]);*/
-         var venue = JSON.parse(httpResponse.text);
-         /*console.log("httpresponse - " + venue);*/
+   return getHTTPResponseForVenueID(theEvent["venue_id"])
+   .then(function(httpResponse)
+   {
+      /*console.log("Got details for venue " + theEvent["venue_id"]);*/
+      var venue = JSON.parse(httpResponse.text);
+      /*console.log("httpresponse - " + venue);*/
 
-         hackathon.set("uri",             theEvent["resource_uri"] + "?token=" + token);
-         hackathon.set("url",             theEvent["url"]);
-         hackathon.set("uniqueID",        theEvent["id"]);
-         hackathon.set("name",            theEvent["name"]["text"]);
+      hackathon.set("uri",             theEvent["resource_uri"] + "?token=" + token);
+      hackathon.set("url",             theEvent["url"]);
+      hackathon.set("uniqueID",        theEvent["id"]);
+      hackathon.set("name",            theEvent["name"]["text"]);
 
-         hackathon.set("venueName",       venue["name"]);
-         hackathon.set("city",          ( venue["address"] != null ) ? venue["address"]["city"]      : "No city" );
-         hackathon.set("addres_1",      ( venue["address"] != null ) ? venue["address"]["address_1"] : "No address_1" );
-         hackathon.set("address_2",     ( venue["address"] != null ) ? venue["address"]["address_2"] : "No address_2" );
+      hackathon.set("venueName",       venue["name"]);
+      hackathon.set("city",          ( venue["address"] != null ) ? venue["address"]["city"]      : "No city" );
+      hackathon.set("addres_1",      ( venue["address"] != null ) ? venue["address"]["address_1"] : "No address_1" );
+      hackathon.set("address_2",     ( venue["address"] != null ) ? venue["address"]["address_2"] : "No address_2" );
 
-         hackathon.set("geoPoint",    new Parse.GeoPoint( venue["address"]["latitude"],venue["address"]["longitude"] ) );
+      hackathon.set("geoPoint",    new Parse.GeoPoint( venue["address"]["latitude"],venue["address"]["longitude"] ) );
 
-         hackathon.set("description",     theEvent["description"] ? theEvent["description"]["text"] : "None provided.");
-         hackathon.set("status",          theEvent["status"]);
-         hackathon.set("capacity",        theEvent["capacity"]);
-         hackathon.set("logo",          ( theEvent["logo"] != undefined || theEvent["logo"] != null ) ? theEvent["logo"]["url"] : "http://www.ecolabelindex.com/files/ecolabel-logos-sized/no-logo-provided.png");
-         hackathon.set("start", new Date( theEvent["start"]["utc"]));
-         hackathon.set("end",   new Date( theEvent["end"]["utc"]));
-         hackathon.set("online",          theEvent["online_theEvent"]);
-         hackathon.set("currency",        theEvent["currency"]);
+      hackathon.set("description",     theEvent["description"] ? theEvent["description"]["text"] : "None provided.");
+      hackathon.set("status",          theEvent["status"]);
+      hackathon.set("capacity",        theEvent["capacity"]);
+      hackathon.set("logo",          ( theEvent["logo"] != undefined || theEvent["logo"] != null ) ? theEvent["logo"]["url"] : "http://www.ecolabelindex.com/files/ecolabel-logos-sized/no-logo-provided.png");
+      hackathon.set("start", new Date( theEvent["start"]["utc"]));
+      hackathon.set("end",   new Date( theEvent["end"]["utc"]));
+      hackathon.set("online",          theEvent["online_theEvent"]);
+      hackathon.set("currency",        theEvent["currency"]);
 
-         var tickets = _.map(theEvent["ticket_classes"], function (item, index) { // creating a JSON object to Parse
-            return {
-               name:           item["name"],
-               cost:         ( item["cost"]        ? item["cost"]["display"] : 0.00 ),
-               fee:          ( item["fee"]         ? item["fee"]["display"]  : 0.00 ),
-               tax:          ( item["tax"]         ? item["tax"]["display"]  : 0.00 ),
-               description:  ( item["description"] ? item["description"]     : "No description" ),
-               onSaleStatus:   item["on_sale_status"],
-               donations:      item["donation"],
-               free:           item["free"]
-            };
-         });
+      var tickets = _.map(theEvent["ticket_classes"], function (item, index) { // creating a JSON object to Parse
+         return {
+            name:           item["name"],
+            cost:         ( item["cost"]        ? item["cost"]["display"] : 0.00 ),
+            fee:          ( item["fee"]         ? item["fee"]["display"]  : 0.00 ),
+            tax:          ( item["tax"]         ? item["tax"]["display"]  : 0.00 ),
+            description:  ( item["description"] ? item["description"]     : "No description" ),
+            onSaleStatus:   item["on_sale_status"],
+            donations:      item["donation"],
+            free:           item["free"]
+         };
+      });
 
-         hackathon.set("ticketClassesNames",          assignTicketClassesProperties( tickets, ["name"] ));
-         hackathon.set("ticketClassesCosts",          assignTicketClassesProperties( tickets, ["cost"] ));
-         hackathon.set("ticketClassesFees",           assignTicketClassesProperties( tickets, ["fee"] ));
-         hackathon.set("ticketClassesTaxes",          assignTicketClassesProperties( tickets, ["tax"] ));
-         hackathon.set("ticketClassesOnSaleStatuses", assignTicketClassesProperties( tickets, ["onSaleStatus"] ));
-         hackathon.set("ticketClassesDescriptions",   assignTicketClassesProperties( tickets, ["description"]["text"] )); // TODO might be some kind of problem in here
-         hackathon.set("ticketClassesDonations",      assignTicketClassesProperties( tickets, ["donations"] ));
-         hackathon.set("ticketClassesFree",           assignTicketClassesProperties( tickets, ["free"] ));
+      hackathon.set("ticketClassesNames",          assignTicketClassesProperties( tickets, ["name"] ));
+      hackathon.set("ticketClassesCosts",          assignTicketClassesProperties( tickets, ["cost"] ));
+      hackathon.set("ticketClassesFees",           assignTicketClassesProperties( tickets, ["fee"] ));
+      hackathon.set("ticketClassesTaxes",          assignTicketClassesProperties( tickets, ["tax"] ));
+      hackathon.set("ticketClassesOnSaleStatuses", assignTicketClassesProperties( tickets, ["onSaleStatus"] ));
+      hackathon.set("ticketClassesDescriptions",   assignTicketClassesProperties( tickets, ["description"]["text"] )); // TODO might be some kind of problem in here
+      hackathon.set("ticketClassesDonations",      assignTicketClassesProperties( tickets, ["donations"] ));
+      hackathon.set("ticketClassesFree",           assignTicketClassesProperties( tickets, ["free"] ));
 
-         return hackathon
-     });
+      return hackathon
+   });
 }
 
 function assignTicketClassesProperties(ticketClasses, property) {
