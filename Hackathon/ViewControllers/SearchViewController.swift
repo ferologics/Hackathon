@@ -11,6 +11,8 @@ import BubbleTransition
 import QuartzCore
 import LGPlusButtonsView
 import CoreLocation
+import FBSDKCoreKit
+import SwiftyJSON
 
 class SearchViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIViewControllerTransitioningDelegate, UISearchBarDelegate, UISearchDisplayDelegate
 {
@@ -23,6 +25,8 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
 //    @IBOutlet weak var searchBar:    UISearchBar! // TODO searchBar
     let transition               = BubbleTransition()
     
+    let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
+    
     var hackathons               = [Hackathon]()
     var filterContentForCategory = [Hackathon]()
     var filteredHackathons       = [Hackathon]()
@@ -33,16 +37,20 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        updateSwitchButton()
-//        updateSearchBar()
-//        criteria.cityString = locationManager.locality // TODO text from searchbar
         
         HackathonHelper.queryForTable(searchCriteria, onComplete: { (query) -> Void in
             self.deployQuery(query)
         })
         
+        updateSwitchButton()
         self.initPlusButtonView()
-
+//      updateSearchBar()
+        
+        dispatch_async(dispatch_get_global_queue(priority, 0)) {
+            // do some task
+            self.updateFacebookData()
+        }
+        
     }
     
     override func viewWillLayoutSubviews()
@@ -84,12 +92,12 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
 //    }
 
     // MARK: - custom methods
-
    
 }
 
 // MARK: -
 // MARK: bubbleTransitionMethods and helpers
+
 extension SearchViewController
 {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?)
@@ -126,8 +134,9 @@ extension SearchViewController
     }
 }
 
-// MARK: - 
+// MARK: -
 // MARK: UITableViewCell
+
 extension SearchViewController
 {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
@@ -268,8 +277,7 @@ extension SearchViewController: LGPlusButtonsViewDelegate
     }
 }
 
-// MARK: -
-// MARK: UISEGMENT HELPERS logic - UIImage form a UIColor and handle changes on sortSegment
+// MARK: UIImage form a UIColor and handle changes on sortSegment
 
 extension SearchViewController
 {
@@ -305,6 +313,7 @@ extension SearchViewController
 
 // MARK: -
 // MARK: general helper methods
+
 extension SearchViewController
 {
     
@@ -352,6 +361,124 @@ extension SearchViewController
     }
     
     func updateTableView() { tableView.backgroundColor = mainColor }
+    
+    func updateFacebookData() // FIXME: implement check for profile picture change, email and everything else...
+    {
+        let fbID = PFUser.currentUser()?.objectForKey("fbID") as! String
+        let graphUrl = "/" + fbID
+        //        println(graphUrl)
+        
+        FBSDKGraphRequest(graphPath: graphUrl, parameters: ["fields":"id,name,email,friends,picture"], HTTPMethod: "GET").startWithCompletionHandler { (connection: FBSDKGraphRequestConnection!, result: AnyObject?, error: NSError?) -> Void in
+            if error == nil {
+//                println(result)
+                
+                var facebookUsers = PFObject(className: "FBUsers")
+                let data          = JSON(result!)
+                
+//                println(data)
+                
+                let friends = data["friends"]["data"]
+                var ids = [String]()
+                var names = [String]()
+                
+                for (key: String, subJson: JSON) in friends { // loop through the json based on keys to get friend ids and names
+                    
+                    ids.append(subJson["id"].stringValue)
+                    names.append(subJson["name"].stringValue)
+                }
+                
+                dispatch_async(dispatch_get_global_queue(self.priority, 0))
+                {
+                    self.saveNewFriendsToFBUsers(ids, names)
+                    self.saveNewFriendsToUserProfile(ids) // pass in array of friends using the app and save the new ones
+                }
+                
+            } else {
+                ErrorHandling.defaultErrorHandler(error!)
+                println("Error Getting Friends \(error)");
+            }
+        }
+    }
+    
+    func saveNewFriendsToFBUsers( ids: [String], _ names: [String] )
+    {
+        var fbUsers = PFObject(className: "FBUsers")
+        
+        var newIDs = [String]()
+        var newNames = [String]()
+        
+        var existingIDs = PFUser.query()
+        var existingNames = PFUser.query()
+
+        for (var i = 0; i < ids.count; i++)
+        {
+            existingIDs?.whereKey("ids", equalTo: ids[i])
+            existingIDs?.whereKey("names", equalTo: names[i])
+            existingIDs?.findObjectsInBackgroundWithBlock({ (objects, error) -> Void in
+                
+                if (error == nil)
+                {
+                    if (objects!.count > 0)
+                    {
+                        println("existing friend or id")
+                    }
+                    else
+                    {
+                        newIDs.append(ids[i])
+                        newNames.append(names[i])
+                        fbUsers["id"] = ids[i]
+                        fbUsers["name"] = names[i]
+                    }
+                }
+                else
+                {
+                    ErrorHandling.defaultErrorHandler(error!)
+                }
+            })
+        }
+        
+        fbUsers.saveInBackgroundWithBlock({ (response, error) -> Void in
+            if ( response == true ) { println("new friends: \(newNames) \nnew IDs: \(newIDs)") }
+            else { ErrorHandling.defaultErrorHandler(error!) }
+        })
+    }
+    
+    func saveNewFriendsToUserProfile( ids: [String] )
+    {
+        let user = PFUser.currentUser()
+        
+        var existingFacebookUsers = PFQuery(className: "FBUsers")
+        var newIDs = [String]()
+        
+        for id in ids
+        {
+            existingFacebookUsers.whereKey("id", equalTo: id)
+            existingFacebookUsers.findObjectsInBackgroundWithBlock({ (objects, error) -> Void in
+                
+                if (error == nil)
+                {
+                    if (objects!.count > 0)
+                    {
+                        println("existing friend or id")
+                    }
+                    else
+                    {
+                        newIDs.append(id)
+                        user?["id"] = id
+                    }
+                }
+                else
+                {
+                    ErrorHandling.defaultErrorHandler(error!)
+                }
+            })
+        }
+        
+        user?.saveInBackgroundWithBlock({ (response, error) -> Void in
+            if ( response == true ) { println("saved: \(newIDs)") }
+            else { ErrorHandling.defaultErrorHandler(error!) }
+        })
+    }
 }
 
 

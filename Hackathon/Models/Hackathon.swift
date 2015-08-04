@@ -16,7 +16,7 @@ class Hackathon : PFObject, PFSubclassing
     
     @NSManaged var uniqueID:                    String?
     @NSManaged var name:                        String?
-    @NSManaged var descript:                    String?
+    @NSManaged var descript:                    String? // TODO: not saving description properly
     @NSManaged var city:                        String?
     @NSManaged var adres_1:                     String?
     @NSManaged var adres_2:                     String?

@@ -29,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 ErrorHandling.defaultErrorHandler(error)
             } else  if let user = user {
                 // if login was successful, display the TabBarController
-                // 2
+                // 2    
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
                 let tabBarController = storyboard.instantiateViewControllerWithIdentifier("SearchViewController") as! UIViewController
                 // 3
@@ -42,8 +42,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 //        UITableViewCell.appearance().backgroundColor = secondaryColor
 //        UITableViewCell.appearance().layer.cornerRadius = 10.0
+//        UITableView.appearance().backgroundColor = lightColor
         
-        UITableView.appearance().backgroundColor = lightColor
         Parse.setApplicationId("1kQEKpgZG525SU9GiCXl4xkrpbiwjy5OpZK9QKlA", clientKey: "XWXzoPY6cVmBPjzJwBkGaXUm6qvHjkjjLl9NLHYb")
         
         PFFacebookUtils.initializeFacebookWithApplicationLaunchOptions(launchOptions)
@@ -56,7 +56,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         if (user != nil) {
             // 3
-            // if we have a user, set the TabBarController to be the initial View Controller
+            // if we have a user, set the SearchViewController to be the initial View Controller
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             startViewController = storyboard.instantiateViewControllerWithIdentifier("SearchViewController") as! UIViewController
         } else {
@@ -66,6 +66,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             loginViewController.fields = .UsernameAndPassword | .LogInButton | .SignUpButton | .PasswordForgotten | .Facebook
             loginViewController.delegate = parseLoginHelper
             loginViewController.signUpController?.delegate = parseLoginHelper
+            loginViewController.facebookPermissions = ["email","user_friends","public_profile"]
             
             startViewController = loginViewController
         }

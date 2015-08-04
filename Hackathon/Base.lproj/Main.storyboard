@@ -218,7 +218,7 @@
                                             <rect key="frame" x="26" y="60" width="548" height="480"/>
                                             <subviews>
                                                 <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mrt-lv-RdD">
-                                                    <rect key="frame" x="0.0" y="0.0" width="548" height="290"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="548" height="470"/>
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="heD-Op-CEa">
                                                             <rect key="frame" x="210" y="10" width="128" height="128"/>
@@ -249,7 +249,7 @@
                                                         <constraint firstItem="mwV-H2-foF" firstAttribute="top" secondItem="mrt-lv-RdD" secondAttribute="top" constant="10" id="5HA-aH-aa8"/>
                                                         <constraint firstItem="heD-Op-CEa" firstAttribute="top" secondItem="mrt-lv-RdD" secondAttribute="top" constant="10" id="74X-MP-7aC"/>
                                                         <constraint firstAttribute="trailing" secondItem="mwV-H2-foF" secondAttribute="trailing" constant="10" id="TRg-yT-lFe"/>
-                                                        <constraint firstAttribute="bottom" secondItem="YQr-e2-1XR" secondAttribute="bottom" constant="20" id="aKc-Cd-Gnx"/>
+                                                        <constraint firstAttribute="bottom" secondItem="YQr-e2-1XR" secondAttribute="bottom" constant="200" id="aKc-Cd-Gnx"/>
                                                         <constraint firstAttribute="centerX" secondItem="YQr-e2-1XR" secondAttribute="centerX" id="g6Y-7f-ZmH"/>
                                                         <constraint firstAttribute="centerX" secondItem="heD-Op-CEa" secondAttribute="centerX" id="iNs-9I-KMs"/>
                                                     </constraints>
@@ -260,7 +260,7 @@
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mae-EL-BX6">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mae-EL-BX6">
                                                     <rect key="frame" x="5" y="178" width="538" height="15"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -346,7 +346,6 @@
                         </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="1RN-wn-wgr" appends="YES" id="SGH-mP-5LX"/>
-                            <outletCollection property="gestureRecognizers" destination="4es-wp-vwc" appends="YES" id="k3N-ji-88C"/>
                         </connections>
                     </view>
                     <connections>
@@ -356,7 +355,6 @@
                         <outlet property="logo" destination="heD-Op-CEa" id="naD-mc-8FF"/>
                         <outlet property="name" destination="nOl-Kc-njC" id="0hO-d2-JSs"/>
                         <outlet property="rootView" destination="mCj-ga-EI7" id="NOC-Xm-jrF"/>
-                        <outlet property="swipeRecognizer" destination="4es-wp-vwc" id="BW0-5I-6Yu"/>
                         <outlet property="tapRecognizer" destination="1RN-wn-wgr" id="hpT-Kd-cOo"/>
                         <outlet property="ticketAvailability" destination="CPZ-vc-z3n" id="H0D-eb-XUy"/>
                         <outlet property="ticketCosts" destination="2jh-wA-MFB" id="sAi-oT-IMr"/>
@@ -369,12 +367,6 @@
                         <action selector="gestureOutside:" destination="LYJ-gE-WaG" id="gjV-U4-Cs5"/>
                     </connections>
                 </tapGestureRecognizer>
-                <swipeGestureRecognizer direction="right" id="7Bd-wW-VMP"/>
-                <swipeGestureRecognizer direction="left" id="4es-wp-vwc">
-                    <connections>
-                        <action selector="gestureOutside:" destination="LYJ-gE-WaG" id="xah-gT-mK8"/>
-                    </connections>
-                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="566" y="1084"/>
         </scene>

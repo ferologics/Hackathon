@@ -14,7 +14,7 @@ class CardViewController: UIViewController {
     @IBOutlet weak var cardView: HackathonCardView!
 
     @IBOutlet var tapRecognizer: UITapGestureRecognizer!
-    @IBOutlet var swipeRecognizer: UISwipeGestureRecognizer!
+//    @IBOutlet var swipeRecognizer: UISwipeGestureRecognizer!
     
     @IBOutlet weak var logo: UIImageView!
     @IBOutlet weak var name: UILabel!
@@ -29,7 +29,6 @@ class CardViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -71,18 +70,18 @@ extension CardViewController: UIGestureRecognizerDelegate
         {
             let location = sender.locationInView(nil)
             
-            if (!self.view.pointInside(self.view.convertPoint(location, fromView: cardView), withEvent: nil))
+            if (!self.view.pointInside(self.view.convertPoint(location, fromView: cardView), withEvent: nil)) // FIXME: tap on left and top doesn't work
             {
                 self.dismissViewControllerAnimated(true, completion: { () -> Void in
                     println("dismissed by tap")
                 })
             }
-            if (swipeRecognizer.direction == UISwipeGestureRecognizerDirection.Left || swipeRecognizer.direction == UISwipeGestureRecognizerDirection.Right)
-            {
-                self.presentingViewController!.dismissViewControllerAnimated(true, completion: { () -> Void in
-                    println("dismissed by swipe")
-                })
-            }
+//            if (swipeRecognizer.direction == UISwipeGestureRecognizerDirection.Left || swipeRecognizer.direction == UISwipeGestureRecognizerDirection.Right)
+//            {
+//                self.presentingViewController!.dismissViewControllerAnimated(true, completion: { () -> Void in
+//                    println("dismissed by swipe")
+//                })
+//            } TODO: eventually implement swiping off
         }
     }
 }
@@ -94,8 +93,11 @@ extension CardViewController
     func initCardWithHackathon()
     {
         self.name.text = hackathon?.name
-        self.desc.text = hackathon?.descript
+        self.desc.text = hackathon?.descript // TODO: not displaying the
+        println(hackathon?.descript)
+        
         setHackathonCardLogoAsynch(logo,hackathon: hackathon!)
+
     }
     
     func getDataFromUrl(urL:NSURL, completion: ((data: NSData?) -> Void)) {

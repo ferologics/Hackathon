@@ -66,6 +66,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework 'Pods-Hackathon/ParseUI.framework'
   install_framework 'Pods-Hackathon/Presentation.framework'
   install_framework 'Pods-Hackathon/Shuffle.framework'
+  install_framework 'Pods-Hackathon/SwiftyJSON.framework'
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework 'Pods-Hackathon/Bolts.framework'
@@ -82,4 +83,5 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework 'Pods-Hackathon/ParseUI.framework'
   install_framework 'Pods-Hackathon/Presentation.framework'
   install_framework 'Pods-Hackathon/Shuffle.framework'
+  install_framework 'Pods-Hackathon/SwiftyJSON.framework'
 fi
