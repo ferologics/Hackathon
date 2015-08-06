@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4A2E354ABF3E8238AB9E4D97"
-               BuildableName = "ConvenienceKit.framework"
-               BlueprintName = "ConvenienceKit"
+               BlueprintIdentifier = "5F276493CE2779FA6DB42414"
+               BuildableName = "LBBlurredImage.framework"
+               BlueprintName = "LBBlurredImage"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>

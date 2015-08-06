@@ -39,6 +39,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>LBBlurredImage.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>LGPlusButtonsView.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -81,82 +86,6 @@
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
-	<dict>
-		<key>0790963957FA77EEA6F1C129B16D5AAC</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>0F642EF2EEB0733B331D3DF4A2DAD71E</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>1A247155AA57224C919D714EB2898207</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>25E0F0AEF3D0FF9A663EBD748DD275FD</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>36E5D2C39AEA4634E39EB7B112A8820E</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>5387ED9C5FBEFD49DCD4D1BED6C4A521</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>5CB83B65B7E91567BD8948B80352543B</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>771888BD4D9C3EE0A9FD016B4C0237EE</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>8028DAD2EF7AD55201D54BD19493F604</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>857981548E29B617C799E26130D6A886</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>86C0547C9846E7DF7918B0A2EA526552</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>AC09E4B3F91C3243E0848BCB41158628</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>B7AFAA591F8E07F3E0AD7C59C0AA1820</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>D155F24AC39D71404844F9CC9261AA14</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>DC0F112A78B148A46D3407DA04350950</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-	</dict>
+	<dict/>
 </dict>
 </plist>
