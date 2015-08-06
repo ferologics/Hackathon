@@ -68,6 +68,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             loginViewController.signUpController?.delegate = parseLoginHelper
             loginViewController.facebookPermissions = ["email","user_friends","public_profile"]
             
+            
             startViewController = loginViewController
         }
         

@@ -12,7 +12,6 @@ pod 'FBSDKCoreKit'
 pod 'ParseFacebookUtilsV4'
 pod 'ConvenienceKit'
 pod 'BubbleTransition', '~> 0.1'
-pod 'Shuffle', '~> 0.0.1'
-pod 'EasyAnimation'
 pod 'SwiftyJSON', '~> 2.2.1'
+pod 'LBBlurredImage'
 end

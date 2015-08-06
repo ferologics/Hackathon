@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Parse
 
 class CardViewController: UIViewController {
     
@@ -14,7 +15,9 @@ class CardViewController: UIViewController {
     @IBOutlet weak var cardView: HackathonCardView!
 
     @IBOutlet var tapRecognizer: UITapGestureRecognizer!
-//    @IBOutlet var swipeRecognizer: UISwipeGestureRecognizer!
+    @IBOutlet var swipeRecognizerRight: UISwipeGestureRecognizer!
+    @IBOutlet var swipeRecognizerLeft: UISwipeGestureRecognizer!
+
     
     @IBOutlet weak var logo: UIImageView!
     @IBOutlet weak var name: UILabel!
@@ -24,24 +27,126 @@ class CardViewController: UIViewController {
     @IBOutlet weak var ticketCosts: UILabel!
     @IBOutlet weak var ticketAvailability: UILabel!
     
+    @IBOutlet weak var track: UIButton!
+    @IBOutlet weak var expand: UIButton!
+    
+    @IBOutlet weak var descriptionHeight: NSLayoutConstraint!
+    var backupConstraint:NSLayoutConstraint? // TODO: edit this to be 
     
     var hackathon: Hackathon?
+    var watchlist = Watchlist()
+    
+    var expanded = false
+    var tracking = false {
+        didSet {
+            
+            if  tracking == true  {
+                self.track.highlighted = true
+                
+//                if oldValue == false
+//                {
+//                    println(UIImage(named: "track"))
+//                    println(UIImage(named: "tracking"))
+//                    let imagesForAnimation = [UIImage(named: "track")!, UIImage(named: "tracking")!]
+//                    
+//                    if let button = track
+//                    {
+//                        button.imageView?.animationImages      = imagesForAnimation
+//                        button.imageView?.animationDuration    = 1.0
+//                        button.imageView?.animationRepeatCount = 1
+//                        button.imageView?.startAnimating()
+//                    }
+//                    
+//                    let delay = 0.9 * Double(NSEC_PER_SEC)
+//                    let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+//                    dispatch_after(time, dispatch_get_main_queue()) {
+//                        self.track.highlighted = true
+//                    }
+//
+//                }
+//                else { self.track.highlighted = true }
+                
+            } else {
+                
+                self.track.highlighted = false
+                
+//                if oldValue == true
+//                {
+//                    let imagesForAnimation = [UIImage(named: "tracking")!, UIImage(named: "track")!] // TODO: add more images, just scale them
+//                    track.imageView?.animationImages = imagesForAnimation
+//                    track.imageView?.animationDuration = 1.0
+//                    track.imageView?.animationRepeatCount = 1
+//                    track.imageView?.startAnimating()
+//                    
+//                    let delay = 0.9 * Double(NSEC_PER_SEC)
+//                    let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+//                    dispatch_after(time, dispatch_get_main_queue()) {
+//                        self.track.highlighted = false
+//                    }
+//
+//                }
+//                else { self.track.highlighted = false }
+            }
+        }
+    }
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
     override func viewWillAppear(animated: Bool) {
+        
         UIApplication.sharedApplication().setStatusBarStyle(.LightContent, animated: true)
         cardView.layer.cornerRadius = 25
-        initCardWithHackathon()
-        
+        watchlist.isTrackingHackathon(hackathon!, onComplete: { (isTracking) -> Void in
+            self.tracking = isTracking
+            self.initCardWithHackathon()
+        })
+         // ??? figure out why the card has shade only on the first time it's tapped
     }
     
     override func viewWillDisappear(animated: Bool) {
         UIApplication.sharedApplication().setStatusBarStyle(.Default, animated: true)
     }
     
+
+    @IBAction func trackTapped(sender: AnyObject) {
+            
+        if (tracking == true)
+        {
+            self.watchlist.stopTrackingHackathon(self.hackathon!, onComplete: { (tracking) -> Void in
+                self.tracking = tracking
+            })
+        }
+        else
+        {
+            self.watchlist.startTrackingHackathon(self.hackathon!, onComplete: { (tracking) -> Void in
+                self.tracking = tracking
+            })
+        }
+    }
+    
+    @IBAction func expandTaped(sender: AnyObject) { // TODO: make the animation more natural somehow?
+        
+        if (expanded == false)
+        {
+            expanded = true
+            self.backupConstraint = self.descriptionHeight
+            
+            UIView.animateWithDuration(1.0) { self.descriptionHeight.active = false ; self.view.layoutIfNeeded() }
+//            let expandImage = UIImage(named: "expand")!.CIImage
+//            expand.setImage(UIImage(CIImage: expandImage!, scale: 1.0, orientation: UIImageOrientation.UpMirrored), forState: UIControlState.Normal) // TODO : animate the expansion image
+        }
+        else
+        {
+            expanded = false
+            self.descriptionHeight = self.backupConstraint
+            UIView.animateWithDuration(1.0) { self.descriptionHeight.active = true ; self.view.layoutIfNeeded() }
+        }
+        
+    }
 }
 
 // MARK: gesture recognizer delegate and related functions
@@ -68,20 +173,13 @@ extension CardViewController: UIGestureRecognizerDelegate
     {
         if (sender.state == UIGestureRecognizerState.Ended)
         {
-            let location = sender.locationInView(nil)
-            
-            if (!self.view.pointInside(self.view.convertPoint(location, fromView: cardView), withEvent: nil)) // FIXME: tap on left and top doesn't work
+            let location = sender.locationInView(self.cardView)
+            if (!self.cardView.pointInside(location, withEvent: nil)) // FIXME: tap on left and top doesn't work
             {
                 self.dismissViewControllerAnimated(true, completion: { () -> Void in
                     println("dismissed by tap")
                 })
             }
-//            if (swipeRecognizer.direction == UISwipeGestureRecognizerDirection.Left || swipeRecognizer.direction == UISwipeGestureRecognizerDirection.Right)
-//            {
-//                self.presentingViewController!.dismissViewControllerAnimated(true, completion: { () -> Void in
-//                    println("dismissed by swipe")
-//                })
-//            } TODO: eventually implement swiping off
         }
     }
 }
@@ -90,33 +188,17 @@ extension CardViewController: UIGestureRecognizerDelegate
 
 extension CardViewController
 {
+    
     func initCardWithHackathon()
     {
+//        println(hackathon)
         self.name.text = hackathon?.name
-        self.desc.text = hackathon?.descript // TODO: not displaying the
-        println(hackathon?.descript)
-        
-        setHackathonCardLogoAsynch(logo,hackathon: hackathon!)
-
-    }
-    
-    func getDataFromUrl(urL:NSURL, completion: ((data: NSData?) -> Void)) {
-        NSURLSession.sharedSession().dataTaskWithURL(urL) { (data, response, error) in
-            completion(data: data)
-            }.resume()
-    }
-    
-    func setHackathonCardLogoAsynch(imageView:UIImageView, hackathon: Hackathon) {
-        
-        if let url = NSURL(string: hackathon.logo!) { // set hackathon logo
-            
-            getDataFromUrl(url) { data in
-                dispatch_async(dispatch_get_main_queue()) {
-                    imageView.contentMode = UIViewContentMode.ScaleAspectFit
-                    imageView.image = UIImage(data: data!)
-                }
-            }
-        }
+        self.desc.text = hackathon?.descript
+//        println(hackathon?.descript)
+        HackathonHelper.setHackathonCellLogoAsynch(hackathon!, onComplete: { (image) -> Void in
+            self.logo.image = image
+            self.logo.contentMode = UIViewContentMode.ScaleAspectFit
+        })
     }
 }
 

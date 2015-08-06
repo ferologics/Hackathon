@@ -16,18 +16,18 @@ class Hackathon : PFObject, PFSubclassing
     
     @NSManaged var uniqueID:                    String?
     @NSManaged var name:                        String?
-    @NSManaged var descript:                    String? // TODO: not saving description properly
+    @NSManaged var descript:                    String?
     @NSManaged var city:                        String?
     @NSManaged var adres_1:                     String?
     @NSManaged var adres_2:                     String?
     @NSManaged var geoPoint:                    PFGeoPoint?
     @NSManaged var start:                       NSDate?
     @NSManaged var end:                         NSDate?
-    @NSManaged var capacity:                    NSNumber? // int
+    @NSManaged var capacity:                    NSNumber?
     @NSManaged var currency:                    String?
     @NSManaged var logo:                        String?
     @NSManaged var status:                      String?
-    @NSManaged var online:                      NSNumber? // Bool
+    @NSManaged var online:                      NSNumber?
     @NSManaged var url:                         String?
     @NSManaged var ticketClassesNames:          [String]?
     @NSManaged var ticketClassesCosts:          [Int]?
@@ -44,6 +44,7 @@ class Hackathon : PFObject, PFSubclassing
     {
         super.init()
     }
+    
 }
 
 extension Hackathon

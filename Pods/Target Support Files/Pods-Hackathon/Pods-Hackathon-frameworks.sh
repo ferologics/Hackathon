@@ -56,7 +56,6 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework 'Pods-Hackathon/BubbleTransition.framework'
   install_framework 'Pods-Hackathon/Cartography.framework'
   install_framework 'Pods-Hackathon/ConvenienceKit.framework'
-  install_framework 'Pods-Hackathon/EasyAnimation.framework'
   install_framework 'Pods-Hackathon/FBSDKCoreKit.framework'
   install_framework 'Pods-Hackathon/FBSDKLoginKit.framework'
   install_framework 'Pods-Hackathon/LGPlusButtonsView.framework'
@@ -65,7 +64,6 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework 'Pods-Hackathon/ParseFacebookUtilsV4.framework'
   install_framework 'Pods-Hackathon/ParseUI.framework'
   install_framework 'Pods-Hackathon/Presentation.framework'
-  install_framework 'Pods-Hackathon/Shuffle.framework'
   install_framework 'Pods-Hackathon/SwiftyJSON.framework'
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
@@ -73,7 +71,6 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework 'Pods-Hackathon/BubbleTransition.framework'
   install_framework 'Pods-Hackathon/Cartography.framework'
   install_framework 'Pods-Hackathon/ConvenienceKit.framework'
-  install_framework 'Pods-Hackathon/EasyAnimation.framework'
   install_framework 'Pods-Hackathon/FBSDKCoreKit.framework'
   install_framework 'Pods-Hackathon/FBSDKLoginKit.framework'
   install_framework 'Pods-Hackathon/LGPlusButtonsView.framework'
@@ -82,6 +79,5 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework 'Pods-Hackathon/ParseFacebookUtilsV4.framework'
   install_framework 'Pods-Hackathon/ParseUI.framework'
   install_framework 'Pods-Hackathon/Presentation.framework'
-  install_framework 'Pods-Hackathon/Shuffle.framework'
   install_framework 'Pods-Hackathon/SwiftyJSON.framework'
 fi

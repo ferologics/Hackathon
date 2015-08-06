@@ -14,25 +14,51 @@ import CoreLocation
 import FBSDKCoreKit
 import SwiftyJSON
 
-class SearchViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIViewControllerTransitioningDelegate, UISearchBarDelegate, UISearchDisplayDelegate
+class SearchViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIViewControllerTransitioningDelegate
 {
     @IBOutlet weak var tableView:    UITableView!
     @IBOutlet weak var switchButton: UIButton!
     @IBOutlet weak var categoryButton: UIButton!
     @IBOutlet weak var searchButton: UIButton!
     
+    @IBOutlet weak var topConstraint: NSLayoutConstraint!
+    
     var plusButtonView: LGPlusButtonsView!
-//    @IBOutlet weak var searchBar:    UISearchBar! // TODO searchBar
     let transition               = BubbleTransition()
     
-    let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
-    
+    var query:PFQuery?
     var hackathons               = [Hackathon]()
     var filterContentForCategory = [Hackathon]()
     var filteredHackathons       = [Hackathon]()
     
+    // search stuff
     var searchCriteria = SearchCriteria()
-    var query:PFQuery?
+    var search: UISearchBar?
+    var searchController: UISearchController?
+    enum State {
+        case Off
+        case SearchMode
+    }
+    
+    var state: State = .Off {
+        didSet {
+            switch (state) {
+            case .Off:
+                // dismiss the previous results (empty strings and such, reset)
+                // fill the table view with hackathons for current category
+                // hide the search bar
+                
+            case .SearchMode:
+                
+                // display the search bar
+                // animate the transition from button (constrains)
+                // trigger keyboard?
+                
+                let searchText = searchBar?.text ?? ""
+                query = ParseHelper.searchUsers(searchText, completionBlock:updateList)
+            }
+        }
+    }
     
     override func viewDidLoad()
     {
@@ -42,15 +68,22 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
             self.deployQuery(query)
         })
         
-        updateSwitchButton()
+        updateButtons()
         self.initPlusButtonView()
 //      updateSearchBar()
+
+        if ( FBSDKAccessToken.currentAccessToken() != nil ) { ParseLoginHelper.updateFacebookData() } // update users friends and whatnot
         
-        dispatch_async(dispatch_get_global_queue(priority, 0)) {
-            // do some task
-            self.updateFacebookData()
-        }
+    }
+    
+    override func viewWillAppear(animated: Bool) {
         
+        UIApplication.sharedApplication().setStatusBarStyle(.LightContent, animated: true)
+        // ??? figure out why the card has shade only on the first time it's tapped
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        UIApplication.sharedApplication().setStatusBarStyle(.Default, animated: true)
     }
     
     override func viewWillLayoutSubviews()
@@ -149,24 +182,26 @@ extension SearchViewController
     {
         let cell      = tableView.dequeueReusableCellWithIdentifier("HackathonCell", forIndexPath: indexPath) as! SearchTableViewCell
         var hackathon = hackathons[indexPath.row]
-        println(hackathon.name)
+//        println(hackathon.name)
         self.initCellWithHackathon(cell, hackathon: hackathon)
         return cell
     }
     
     func initCellWithHackathon(cell: SearchTableViewCell, hackathon: Hackathon)
     {
+        cell.selectionStyle = UITableViewCellSelectionStyle.None
         cell.nameLabel?.text = hackathon.name
         cell.dateLabel?.text = HackathonHelper.utcToString( hackathon.start! )
         cell.capacityLabel?.text = hackathon.capacity?.stringValue
         
-        getDistanceFromUser(hackathon.geoPoint!, complete: { (str) -> Void in
+        HackathonHelper.getDistanceFromUser(hackathon.geoPoint!, complete: { (str) -> Void in
             cell.distanceLabel?.text = str
         })
         
-        setHackathonCellLogoAsynch(cell, hackathon: hackathon)
-        
-
+        HackathonHelper.setHackathonCellLogoAsynch(hackathon, onComplete: { (image) -> Void in
+            cell.logoImage.contentMode = UIViewContentMode.ScaleAspectFit
+            cell.logoImage.image       = image
+        })
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -188,19 +223,35 @@ extension SearchViewController: LGPlusButtonsViewDelegate
         {
             case 0:
                 searchCriteria.category = .CurrentLocation
+                categoryButton.setImage(UIImage(named: "currentLocation"), forState: UIControlState.Normal)
                 showOrHideCategories()
                 println("current location")
+//                self.viewDidLayoutSubviews()
                 
+                HackathonHelper.queryForTable(searchCriteria, onComplete: { (query) -> Void in
+                    self.deployQuery(query)
+                })
+            
             case 1:
                 searchCriteria.category = .Global
+                categoryButton.setImage(UIImage(named: "global"), forState: UIControlState.Normal)
                 showOrHideCategories()
                 println("global")
                 
+                HackathonHelper.queryForTable(searchCriteria, onComplete: { (query) -> Void in
+                    self.deployQuery(query)
+                })
+            
             case 2:
                 searchCriteria.category = .Friends
+                categoryButton.setImage(UIImage(named: "friends"), forState: UIControlState.Normal)
                 showOrHideCategories()
                 println("friends")
                 
+                HackathonHelper.queryForTable(searchCriteria, onComplete: { (query) -> Void in
+                    self.deployQuery(query)
+                })
+            
             default: println("whoops")
         }
     }
@@ -228,8 +279,7 @@ extension SearchViewController: LGPlusButtonsViewDelegate
         
         plusButtonView.buttonInset = UIEdgeInsetsMake(inset, inset, inset, inset)
         plusButtonView.contentInset = UIEdgeInsetsMake(inset, inset, inset, inset)
-        plusButtonView.offset = CGPointMake(0.0, 50.0)
- 
+        plusButtonView.offset = CGPointMake(-10.7, 60.0)
         
         plusButtonView.setButtonsTitleFont(UIFont.boldSystemFontOfSize(buttonsFontSize))
         
@@ -239,12 +289,25 @@ extension SearchViewController: LGPlusButtonsViewDelegate
         plusButtonView.buttonsSize = CGSizeMake(buttonSide, buttonSide);
         plusButtonView.setButtonsLayerCornerRadius(buttonSide/2)
         plusButtonView.setButtonsLayerBorderColor(UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.1), borderWidth: 1.0)
+//        plusButtonView.backgroundColor = UIColor.whiteColor()
         plusButtonView.setButtonsLayerMasksToBounds(true)
-        plusButtonView.setButtonsBackgroundColor(UIColor(red: 0.0, green: 0.5, blue: 1.0, alpha: 1.0), forState:UIControlState.Normal) // TODO change the color from palette
-        plusButtonView.setButtonsBackgroundColor(UIColor(red: 0.2, green: 0.7, blue: 1.0, alpha: 1.0), forState:UIControlState.Highlighted)
-        plusButtonView.setButtonsBackgroundColor(UIColor(red: 0.2, green: 0.7, blue: 1.0, alpha: 1.0), forState:UIControlState.Highlighted|UIControlState.Selected)
-        plusButtonView.setButtonsImage(self.getImageWithColor(UIColor.redColor(), size: plusButtonView.buttonsSize), forState: UIControlState.Normal)
         
+//        plusButtonView.setButtonsBackgroundImage(backgroundImage: UIImage!, forState: UIControlState) TODO: implement a transparent circular image here
+        
+        for (var i=0; i<plusButtonView.buttons.count; i++)
+        {
+            switch i {
+            case 0:
+                plusButtonView.buttons[i].setImage(UIImage(named: "currentLocation"), forState: UIControlState.Normal)
+//                plusButtonView.buttons[i].setBackgroundImage(UIImage(named: "currentLocation"), forState: UIControlState.Normal) // TODO: set to transparent
+            case 1:
+                plusButtonView.buttons[i].setImage(UIImage(named: "global"),          forState: UIControlState.Normal)
+            case 2:
+                plusButtonView.buttons[i].setImage(UIImage(named: "friends"),         forState: UIControlState.Normal)
+                
+            default: println("something went wrong along the way");
+            }
+        }
     }
     
     func initPlusButtonView()
@@ -256,6 +319,8 @@ extension SearchViewController: LGPlusButtonsViewDelegate
         
         plusButtonView.delegate = self // SET THE DELEGATE TO SELF
 //        plusButtonView.setButtonsTitles(["1","2","3","4"], forState: UIControlState.Normal) // TODO initialize the buttons with images
+        
+        
         plusButtonView.setDescriptionsTexts(["Current Location", "Global", "Friends"])
         plusButtonView.position = LGPlusButtonsViewPositionTopRight
         plusButtonView.appearingAnimationType = LGPlusButtonsAppearingAnimationTypeCrossDissolveAndPop
@@ -316,168 +381,60 @@ extension SearchViewController
 
 extension SearchViewController
 {
+    func initializeSearchBar
+    {
+        search = UISearchBar(frame: CGRectMake(0, 0, 320, 44))
+        
+        search!.delegate = self;
+        search!.showsCancelButton = true
+        self.searchController = UISearchController(searchResultsController: self)
+        
+        self.searchController?.delegate = SearchViewController()
+        self.searchController?.searchResultsController = self
+        self.searchController.searchre = SearchViewController()
+        
+        [self.view addSubview:searchBar];
+        
+        search.hidden = true
+        [searchController setActive:NO animated:NO];
+    }
     
     func deployQuery(query: PFQuery)
     {
         query.findObjectsInBackgroundWithBlock(
             { (results, error) -> Void in
                 self.hackathons = results as! [Hackathon]
-                println()
                 self.tableView.reloadData()
         })
     }
     
-    func getDistanceFromUser(geopoint: PFGeoPoint, complete: (String) -> Void ) {
-        var distance:String?
-        HackathonHelper.saveAndReturnCurrentLocation { (point) -> Void in
-            
-            distance = point.distanceInKilometersTo(geopoint).description
-            complete(distance!)
-        }
-    }
-    
-    func getDataFromUrl(urL:NSURL, completion: ((data: NSData?) -> Void)) {
-        NSURLSession.sharedSession().dataTaskWithURL(urL) { (data, response, error) in
-            completion(data: data)
-            }.resume()
-    }
-    
-    func setHackathonCellLogoAsynch(cell:SearchTableViewCell, hackathon: Hackathon) {
-        
-        if let url = NSURL(string: hackathon.logo!) { // set hackathon logo
-            
-            getDataFromUrl(url) { data in
-                dispatch_async(dispatch_get_main_queue()) {
-                    cell.logoImage.contentMode = UIViewContentMode.ScaleAspectFit
-                    cell.logoImage.image = UIImage(data: data!)
-                }
-            }
-        }
-    }
-    
-    func updateSwitchButton() {
-        switchButton.layer.cornerRadius = 22
-        switchButton.backgroundColor    = secondaryColor
+    func updateButtons()
+    {
+        switchButton.layer.cornerRadius   = 22
+        categoryButton.layer.cornerRadius = 22
+        searchButton.layer.cornerRadius   = 22
     }
     
     func updateTableView() { tableView.backgroundColor = mainColor }
     
-    func updateFacebookData() // FIXME: implement check for profile picture change, email and everything else...
-    {
-        let fbID = PFUser.currentUser()?.objectForKey("fbID") as! String
-        let graphUrl = "/" + fbID
-        //        println(graphUrl)
-        
-        FBSDKGraphRequest(graphPath: graphUrl, parameters: ["fields":"id,name,email,friends,picture"], HTTPMethod: "GET").startWithCompletionHandler { (connection: FBSDKGraphRequestConnection!, result: AnyObject?, error: NSError?) -> Void in
-            if error == nil {
-//                println(result)
-                
-                var facebookUsers = PFObject(className: "FBUsers")
-                let data          = JSON(result!)
-                
-//                println(data)
-                
-                let friends = data["friends"]["data"]
-                var ids = [String]()
-                var names = [String]()
-                
-                for (key: String, subJson: JSON) in friends { // loop through the json based on keys to get friend ids and names
-                    
-                    ids.append(subJson["id"].stringValue)
-                    names.append(subJson["name"].stringValue)
-                }
-                
-                dispatch_async(dispatch_get_global_queue(self.priority, 0))
-                {
-                    self.saveNewFriendsToFBUsers(ids, names)
-                    self.saveNewFriendsToUserProfile(ids) // pass in array of friends using the app and save the new ones
-                }
-                
-            } else {
-                ErrorHandling.defaultErrorHandler(error!)
-                println("Error Getting Friends \(error)");
-            }
-        }
-    }
-    
-    func saveNewFriendsToFBUsers( ids: [String], _ names: [String] )
-    {
-        var fbUsers = PFObject(className: "FBUsers")
-        
-        var newIDs = [String]()
-        var newNames = [String]()
-        
-        var existingIDs = PFUser.query()
-        var existingNames = PFUser.query()
+}
 
-        for (var i = 0; i < ids.count; i++)
-        {
-            existingIDs?.whereKey("ids", equalTo: ids[i])
-            existingIDs?.whereKey("names", equalTo: names[i])
-            existingIDs?.findObjectsInBackgroundWithBlock({ (objects, error) -> Void in
-                
-                if (error == nil)
-                {
-                    if (objects!.count > 0)
-                    {
-                        println("existing friend or id")
-                    }
-                    else
-                    {
-                        newIDs.append(ids[i])
-                        newNames.append(names[i])
-                        fbUsers["id"] = ids[i]
-                        fbUsers["name"] = names[i]
-                    }
-                }
-                else
-                {
-                    ErrorHandling.defaultErrorHandler(error!)
-                }
-            })
-        }
-        
-        fbUsers.saveInBackgroundWithBlock({ (response, error) -> Void in
-            if ( response == true ) { println("new friends: \(newNames) \nnew IDs: \(newIDs)") }
-            else { ErrorHandling.defaultErrorHandler(error!) }
-        })
+extension SearchViewController: UISearchBarDelegate
+{
+    func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
+        searchBar.setShowsCancelButton(true, animated: true)
+        state = .SearchMode
     }
     
-    func saveNewFriendsToUserProfile( ids: [String] )
-    {
-        let user = PFUser.currentUser()
-        
-        var existingFacebookUsers = PFQuery(className: "FBUsers")
-        var newIDs = [String]()
-        
-        for id in ids
-        {
-            existingFacebookUsers.whereKey("id", equalTo: id)
-            existingFacebookUsers.findObjectsInBackgroundWithBlock({ (objects, error) -> Void in
-                
-                if (error == nil)
-                {
-                    if (objects!.count > 0)
-                    {
-                        println("existing friend or id")
-                    }
-                    else
-                    {
-                        newIDs.append(id)
-                        user?["id"] = id
-                    }
-                }
-                else
-                {
-                    ErrorHandling.defaultErrorHandler(error!)
-                }
-            })
-        }
-        
-        user?.saveInBackgroundWithBlock({ (response, error) -> Void in
-            if ( response == true ) { println("saved: \(newIDs)") }
-            else { ErrorHandling.defaultErrorHandler(error!) }
-        })
+    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+        searchBar.text = ""
+        searchBar.setShowsCancelButton(false, animated: true)
+        state = .DefaultMode
+    }
+    
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        ParseHelper.searchUsers(searchText, completionBlock:updateList)
     }
 }
 

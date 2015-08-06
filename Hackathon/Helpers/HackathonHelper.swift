@@ -68,6 +68,15 @@ class HackathonHelper
 // MARK: -
 // MARK: supporting functions
     
+    static func getDistanceFromUser(geopoint: PFGeoPoint, complete: (String) -> Void ) {
+        var distance:String?
+        HackathonHelper.saveAndReturnCurrentLocation { (point) -> Void in
+            
+            distance = (round((point.distanceInKilometersTo(geopoint))*1000)/1000).description // round to 3 digits
+            complete(distance!)
+        }
+    }
+    
     static func utcToString(date: NSDate) -> String {
         var dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "yyyy.MM.dd' 'HH:mm" // format date
@@ -96,6 +105,25 @@ class HackathonHelper
                 println(error)
             }// TODO setup error handler
         }
+    }
+    
+    static func setHackathonCellLogoAsynch(hackathon: Hackathon, onComplete: (UIImage) -> Void)
+    {
+        
+        if let url = NSURL(string: hackathon.logo!) // set hackathon logo
+        {
+            getDataFromUrl(url) { data in
+                dispatch_async(dispatch_get_main_queue()) {
+                    onComplete(UIImage(data: data!)!)
+                }
+            }
+        }
+    }
+    
+    static func getDataFromUrl(urL:NSURL, completion: ((data: NSData?) -> Void)) {
+        NSURLSession.sharedSession().dataTaskWithURL(urL) { (data, response, error) in
+            completion(data: data) // return callback data
+            }.resume()
     }
     
 }
