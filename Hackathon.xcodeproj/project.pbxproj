@@ -10,8 +10,10 @@
 		6504455352C390D24DEF7D87 /* Pods_Hackathon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE6BAA5AC05D04FD4CFFE2E2 /* Pods_Hackathon.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		AF0BC05A1B69DBA700CE1B7B /* HackathonHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0BC0591B69DBA700CE1B7B /* HackathonHelper.swift */; };
 		AF0BC05E1B69DC1D00CE1B7B /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0BC05D1B69DC1D00CE1B7B /* SearchTableViewCell.swift */; };
+		AF0D09291B741C2C0070FE6C /* HackathonCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0D09281B741C2C0070FE6C /* HackathonCardView.swift */; };
+		AF0D092B1B753D240070FE6C /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF0D092A1B753D240070FE6C /* MapKit.framework */; };
+		AF0D092D1B75A50C0070FE6C /* MapInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0D092C1B75A50C0070FE6C /* MapInfo.swift */; };
 		AF14D8451B71647600E72885 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF14D8441B71647600E72885 /* Images.xcassets */; };
-		AF1F1CD11B6AF7AE00CA6FD4 /* HackathonCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1F1CD01B6AF7AE00CA6FD4 /* HackathonCardView.swift */; };
 		AF1F1CD31B6AF7FF00CA6FD4 /* CardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1F1CD21B6AF7FF00CA6FD4 /* CardViewController.swift */; };
 		AF46EF291B72709200CB26C0 /* Watchlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF46EF281B72709100CB26C0 /* Watchlist.swift */; };
 		AF559AB31B4CF65000114F80 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF559AB21B4CF65000114F80 /* AppDelegate.swift */; };
@@ -44,8 +46,10 @@
 		AAAE8F7B18D9224B8664BAFA /* Pods-Hackathon.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hackathon.release.xcconfig"; path = "Pods/Target Support Files/Pods-Hackathon/Pods-Hackathon.release.xcconfig"; sourceTree = "<group>"; };
 		AF0BC0591B69DBA700CE1B7B /* HackathonHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HackathonHelper.swift; path = Hackathon/Helpers/HackathonHelper.swift; sourceTree = "<group>"; };
 		AF0BC05D1B69DC1D00CE1B7B /* SearchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchTableViewCell.swift; path = Views/Search/SearchTableViewCell.swift; sourceTree = "<group>"; };
+		AF0D09281B741C2C0070FE6C /* HackathonCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HackathonCardView.swift; path = Views/HackathonCardView.swift; sourceTree = "<group>"; };
+		AF0D092A1B753D240070FE6C /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		AF0D092C1B75A50C0070FE6C /* MapInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapInfo.swift; path = Hackathon/Helpers/MapInfo.swift; sourceTree = "<group>"; };
 		AF14D8441B71647600E72885 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		AF1F1CD01B6AF7AE00CA6FD4 /* HackathonCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HackathonCardView.swift; path = Views/HackathonCardView.swift; sourceTree = "<group>"; };
 		AF1F1CD21B6AF7FF00CA6FD4 /* CardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CardViewController.swift; path = ViewControllers/CardViewController.swift; sourceTree = "<group>"; };
 		AF46EF281B72709100CB26C0 /* Watchlist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Watchlist.swift; path = Models/Watchlist.swift; sourceTree = "<group>"; };
 		AF559AAD1B4CF65000114F80 /* Hackathon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hackathon.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -74,6 +78,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AF0D092B1B753D240070FE6C /* MapKit.framework in Frameworks */,
 				6504455352C390D24DEF7D87 /* Pods_Hackathon.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -100,6 +105,7 @@
 		63BB266BA541E312D5069F26 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AF0D092A1B753D240070FE6C /* MapKit.framework */,
 				EE6BAA5AC05D04FD4CFFE2E2 /* Pods_Hackathon.framework */,
 			);
 			name = Frameworks;
@@ -113,6 +119,7 @@
 				AFE7FB471B60393300487624 /* ParseHelper.swift */,
 				AFE7FB481B60393300487624 /* ParseLoginHelper.swift */,
 				AF0BC0591B69DBA700CE1B7B /* HackathonHelper.swift */,
+				AF0D092C1B75A50C0070FE6C /* MapInfo.swift */,
 			);
 			name = Helpers;
 			path = ..;
@@ -209,7 +216,7 @@
 		AFBE80501B4FD2D6009A7EF3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				AF1F1CD01B6AF7AE00CA6FD4 /* HackathonCardView.swift */,
+				AF0D09281B741C2C0070FE6C /* HackathonCardView.swift */,
 				AF2EBB691B5EE82400562B62 /* Search */,
 				AF2EBB681B5EE80F00562B62 /* Profile */,
 			);
@@ -383,15 +390,16 @@
 				AFE7FB4C1B60393300487624 /* Palette.swift in Sources */,
 				AFE7FB4B1B60393300487624 /* ErrorHandling.swift in Sources */,
 				AFE7FB531B60394900487624 /* ProfileViewController.swift in Sources */,
+				AF0D09291B741C2C0070FE6C /* HackathonCardView.swift in Sources */,
 				AFE7FB4D1B60393300487624 /* ParseHelper.swift in Sources */,
 				AFB5D80E1B66D0720068E881 /* ProfileTableViewCell.swift in Sources */,
 				AF559AB31B4CF65000114F80 /* AppDelegate.swift in Sources */,
 				AF0BC05A1B69DBA700CE1B7B /* HackathonHelper.swift in Sources */,
 				AFE7FB421B60392700487624 /* Hackathon.swift in Sources */,
 				AFE7FB541B60394900487624 /* SearchViewController.swift in Sources */,
+				AF0D092D1B75A50C0070FE6C /* MapInfo.swift in Sources */,
 				AF1F1CD31B6AF7FF00CA6FD4 /* CardViewController.swift in Sources */,
 				AF0BC05E1B69DC1D00CE1B7B /* SearchTableViewCell.swift in Sources */,
-				AF1F1CD11B6AF7AE00CA6FD4 /* HackathonCardView.swift in Sources */,
 				AF46EF291B72709200CB26C0 /* Watchlist.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

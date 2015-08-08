@@ -68,6 +68,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             loginViewController.signUpController?.delegate = parseLoginHelper
             loginViewController.facebookPermissions = ["email","user_friends","public_profile"]
             
+            var logoImageLog = UIImageView()
+            logoImageLog.image = UIImage(named: "AppIcon")
+            loginViewController.logInView?.logo = logoImageLog
+            
+            var logoImageReg = UIImageView()
+            logoImageReg.image = UIImage(named: "AppIcon")
+            loginViewController.signUpController?.signUpView?.logo = logoImageReg
             
             startViewController = loginViewController
         }

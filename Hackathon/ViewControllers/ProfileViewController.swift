@@ -21,6 +21,16 @@ class ProfileViewController: UIViewController, UITableViewDataSource {
     override func viewDidLoad() {
         updateView()
         updateTableView()
+        
+        NSNotificationCenter.defaultCenter().addObserver(
+            self,
+            selector: "updateTableView:",
+            name: "reloadProfile",
+            object: nil)
+    }
+    
+    @objc func updateTableView(notification: NSNotification){
+           updateTableView()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -56,7 +66,7 @@ extension ProfileViewController: UITableViewDelegate
     {
         let cell      = tableView.dequeueReusableCellWithIdentifier("ProfileHackathonCell", forIndexPath: indexPath) as! ProfileTableViewCell
         var hackathon = hackathons[indexPath.row]
-        //        println(hackathon.name)
+//        println(hackathon.name)
         self.initCellWithHackathon(cell, hackathon: hackathon)
         return cell
     }
@@ -89,6 +99,8 @@ extension ProfileViewController
 {
     func updateTableView() {
         tableView.layer.cornerRadius = 10
+        tableView.layer.borderColor = mainColor.CGColor
+        tableView.layer.borderWidth = 0.4
         self.getUsersHackathons()
         self.updateProile()
     }
@@ -108,13 +120,26 @@ extension ProfileViewController
     func updateProile()
     {
         var user = PFUser.currentUser()
-        var profilePhotoURL = user?.objectForKey("picture") as! String // cast to a string
-        HackathonHelper.getDataFromUrl((NSURL(string: profilePhotoURL))!, completion: { (data) -> Void in // cast to a nsurl
-            self.profilePhoto.layer.cornerRadius = self.profilePhoto.frame.width / 2
-            self.profilePhoto.layer.masksToBounds = true
-            self.profilePhoto.image = UIImage(data: data!)! // TODO: just store tihis inside parse as a file
-            self.profilePhoto.contentMode = UIViewContentMode.ScaleAspectFit
-        })
+        var profilePhotoURL = ""
+        if ( FBSDKAccessToken.currentAccessToken() != nil ) {
+            if let photo = user?.objectForKey("picture") as? String {
+                profilePhotoURL =  photo// cast to a string
+                HackathonHelper.getDataFromUrl((NSURL(string: profilePhotoURL))!, completion: { (data) -> Void in // cast to a nsurl
+                    self.profilePhoto.layer.cornerRadius = self.profilePhoto.frame.width / 2
+                    self.profilePhoto.layer.masksToBounds = true
+                    self.profilePhoto.image = UIImage(data: data!)! // TODO: just store tihis inside parse as a file
+                    self.profilePhoto.contentMode = UIViewContentMode.ScaleAspectFit
+                })
+            } else {
+                profilePhotoURL = "http://thumb7.shutterstock.com/display_pic_with_logo/567124/99335579/stock-vector-no-user-profile-picture-hand-drawn-99335579.jpg"
+                HackathonHelper.getDataFromUrl((NSURL(string: profilePhotoURL))!, completion: { (data) -> Void in // cast to a nsurl
+                    self.profilePhoto.layer.cornerRadius = self.profilePhoto.frame.width / 2
+                    self.profilePhoto.layer.masksToBounds = true
+                    self.profilePhoto.image = UIImage(data: data!)! // TODO: just store tihis inside parse as a file
+                    self.profilePhoto.contentMode = UIViewContentMode.ScaleAspectFit
+                })
+            }
+       }
         name.text = user?.objectForKey("username") as? String
     }
     

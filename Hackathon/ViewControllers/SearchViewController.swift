@@ -21,32 +21,66 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     @IBOutlet weak var categoryButton: UIButton!
     @IBOutlet weak var searchButton: UIButton!
     
-    @IBOutlet weak var topConstraint: NSLayoutConstraint!
-    
     var plusButtonView: LGPlusButtonsView!
-    let transition               = BubbleTransition()
+    let transition = BubbleTransition()
     
     var query:PFQuery?
-    var hackathons               = [Hackathon]()
-    var filterContentForCategory = [Hackathon]()
-    var filteredHackathons       = [Hackathon]()
+    var hackathons = [Hackathon]()
+    
+    // hide set of constrains for the searchBar
+    @IBOutlet var searchButtonLeadingSpace: NSLayoutConstraint!
+    @IBOutlet var centerAlongSearchButton: NSLayoutConstraint!
+    @IBOutlet var height: NSLayoutConstraint!
+    
+    // show set of constrains
+    @IBOutlet var centerX: NSLayoutConstraint!
+    @IBOutlet var viewLeadingSpace: NSLayoutConstraint!
+    @IBOutlet var topSpace: NSLayoutConstraint!
     
     // search stuff
+    @IBOutlet weak var search: UISearchBar!
+    
     var searchCriteria = SearchCriteria()
-    var search: UISearchBar?
     var searchController: UISearchController?
+    
     enum State {
-        case Off
+        case OffMode
         case SearchMode
     }
     
-    var state: State = .Off {
+    var state: State = .OffMode {
         didSet {
+            
+            let showSet = [centerX, viewLeadingSpace, topSpace]
+            let hideSet = [searchButtonLeadingSpace, centerAlongSearchButton, height]
             switch (state) {
-            case .Off:
+            case .OffMode:
                 // dismiss the previous results (empty strings and such, reset)
                 // fill the table view with hackathons for current category
                 // hide the search bar
+                
+                searchCriteria.searchString = nil
+                
+                for constraint in showSet {
+                    constraint.active = false
+                }
+                
+                for constraint in hideSet {
+                    constraint.active = true
+                }
+                
+                UIView.animateWithDuration(0.5, animations: { () -> Void in
+                    self.view.backgroundColor = UIColor.whiteColor()
+                    self.categoryButton.alpha = 1
+                    self.categoryButton.hidden = false
+                    self.searchButton.hidden = false
+                    self.searchButton.alpha = 1
+                    self.search.alpha = 0
+                    self.view.layoutIfNeeded()
+                })
+                
+                self.tableView.reloadData()
+                println("off u biach")
                 
             case .SearchMode:
                 
@@ -54,13 +88,36 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                 // animate the transition from button (constrains)
                 // trigger keyboard?
                 
-                let searchText = searchBar?.text ?? ""
-                query = ParseHelper.searchUsers(searchText, completionBlock:updateList)
+                for constraint in showSet {
+                    constraint.active = true
+                }
+                
+                for constraint in hideSet {
+                    constraint.active = false
+                }
+                
+                UIView.animateWithDuration(0.5, animations: { () -> Void in
+                    self.view.backgroundColor = mainColor
+                    self.categoryButton.alpha = 0
+                    self.categoryButton.hidden = true
+                    self.searchButton.hidden = true
+                    self.searchButton.alpha = 0
+                    self.search.alpha = 1
+                    self.view.layoutIfNeeded()
+                })
+                
+                self.search.becomeFirstResponder()
+                
+                searchCriteria.searchString = search?.text ?? nil
+                HackathonHelper.queryForTable(searchCriteria, onComplete: { (query) -> Void in
+                    println("Querying for type \(query.parseClassName)")
+                    self.deployQuery(query)
+                })
             }
         }
     }
     
-    override func viewDidLoad()
+    override func viewDidLoad() // MARK: viewdidload
     {
         super.viewDidLoad()
         
@@ -68,17 +125,14 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
             self.deployQuery(query)
         })
         
-        updateButtons()
-        self.initPlusButtonView()
-//      updateSearchBar()
+        updateUI()
 
         if ( FBSDKAccessToken.currentAccessToken() != nil ) { ParseLoginHelper.updateFacebookData() } // update users friends and whatnot
         
     }
     
     override func viewWillAppear(animated: Bool) {
-        
-        UIApplication.sharedApplication().setStatusBarStyle(.LightContent, animated: true)
+        UIApplication.sharedApplication().setStatusBarStyle(.LightContent, animated: false)
         // ??? figure out why the card has shade only on the first time it's tapped
     }
     
@@ -96,36 +150,13 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     {
         self.plusButtonsViewPlusButtonPressed(plusButtonView)
     }
-
+    
     override func didReceiveMemoryWarning()
     {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
-    // func filterContentForCategory(category: Category) {
-    //     self.filteredHackathons = self.hackathons.filter({( hackathon: Hackathon) -> Bool in
-    //     // let categoryMatch = (scope == .CurrentLocation) || (searchCriteria.category == scope)
-        
-    //     return /*categoryMatch &&*/ categoryMatch
-    //   })
-    // }
     
-//    func searchcontroller
-//    
-//    func searchDisplayController(controller: UISearchController, shouldReloadTableForSearchString searchString: String!) -> Bool {
-//
-//        self.filterContentForSearchText(searchString)
-//        return true
-//    }
-// 
-//    func searchDisplayController(controller: UISearchController, shouldReloadTableForSearchScope searchOption: Int) -> Bool {
-//      self.filterContentForSearchText(self.searchDisplayController!.searchBar.text)
-//      return true
-//    }
-
-    // MARK: - custom methods
-   
 }
 
 // MARK: -
@@ -182,7 +213,7 @@ extension SearchViewController
     {
         let cell      = tableView.dequeueReusableCellWithIdentifier("HackathonCell", forIndexPath: indexPath) as! SearchTableViewCell
         var hackathon = hackathons[indexPath.row]
-//        println(hackathon.name)
+        //        println(hackathon.name)
         self.initCellWithHackathon(cell, hackathon: hackathon)
         return cell
     }
@@ -192,7 +223,7 @@ extension SearchViewController
         cell.selectionStyle = UITableViewCellSelectionStyle.None
         cell.nameLabel?.text = hackathon.name
         cell.dateLabel?.text = HackathonHelper.utcToString( hackathon.start! )
-        cell.capacityLabel?.text = hackathon.capacity?.stringValue
+        cell.capacityLabel?.text = costRange(hackathon)
         
         HackathonHelper.getDistanceFromUser(hackathon.geoPoint!, complete: { (str) -> Void in
             cell.distanceLabel?.text = str
@@ -221,54 +252,46 @@ extension SearchViewController: LGPlusButtonsViewDelegate
     {
         switch index
         {
-            case 0:
-                searchCriteria.category = .CurrentLocation
-                categoryButton.setImage(UIImage(named: "currentLocation"), forState: UIControlState.Normal)
-                showOrHideCategories()
-                println("current location")
-//                self.viewDidLayoutSubviews()
-                
-                HackathonHelper.queryForTable(searchCriteria, onComplete: { (query) -> Void in
-                    self.deployQuery(query)
-                })
+        case 0:
+            searchCriteria.category = .CurrentLocation
+            categoryButton.setImage(UIImage(named: "currentLocation"), forState: UIControlState.Normal)
+            showOrHideCategories()
+            println("current location")
+            //                self.viewDidLayoutSubviews()
             
-            case 1:
-                searchCriteria.category = .Global
-                categoryButton.setImage(UIImage(named: "global"), forState: UIControlState.Normal)
-                showOrHideCategories()
-                println("global")
-                
-                HackathonHelper.queryForTable(searchCriteria, onComplete: { (query) -> Void in
-                    self.deployQuery(query)
-                })
+            HackathonHelper.queryForTable(searchCriteria, onComplete: { (query) -> Void in
+                self.deployQuery(query)
+            })
             
-            case 2:
-                searchCriteria.category = .Friends
-                categoryButton.setImage(UIImage(named: "friends"), forState: UIControlState.Normal)
-                showOrHideCategories()
-                println("friends")
-                
-                HackathonHelper.queryForTable(searchCriteria, onComplete: { (query) -> Void in
-                    self.deployQuery(query)
-                })
+        case 1:
+            searchCriteria.category = .Global
+            categoryButton.setImage(UIImage(named: "global"), forState: UIControlState.Normal)
+            showOrHideCategories()
+            println("global")
             
-            default: println("whoops")
+            HackathonHelper.queryForTable(searchCriteria, onComplete: { (query) -> Void in
+                self.deployQuery(query)
+            })
+            
+        case 2:
+            searchCriteria.category = .Friends
+            categoryButton.setImage(UIImage(named: "friends"), forState: UIControlState.Normal)
+            showOrHideCategories()
+            println("friends")
+            
+            HackathonHelper.queryForTable(searchCriteria, onComplete: { (query) -> Void in
+                self.deployQuery(query)
+            })
+            
+        default: println("whoops")
         }
     }
     
     func setupPlusButtons()
     {
         if plusButtonView.buttons == nil { return }
-        //        var asd = plusButtonView.buttons[1] as! LGPlusButton
-        //        asd.imageView?.image =
         
         plusButtonView.plusButton = plusButtonView.buttons.firstObject as! LGPlusButton
-        
-//        var viewFrame = plusButtonView.frame
-//        viewFrame.origin = CGPointMake(viewFrame.origin.x, viewFrame.origin.y + 80)
-//        plusButtonView.frame = viewFrame
-        
-//        var firstPlusButton = plusButtonView.buttons.firstObject as! LGPlusButton // ???
         
         let isPortrait = UIInterfaceOrientationIsPortrait(UIApplication.sharedApplication().statusBarOrientation)
         
@@ -288,23 +311,27 @@ extension SearchViewController: LGPlusButtonsViewDelegate
         
         plusButtonView.buttonsSize = CGSizeMake(buttonSide, buttonSide);
         plusButtonView.setButtonsLayerCornerRadius(buttonSide/2)
-        plusButtonView.setButtonsLayerBorderColor(UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.1), borderWidth: 1.0)
-//        plusButtonView.backgroundColor = UIColor.whiteColor()
+        plusButtonView.setButtonsLayerBorderColor(mainColor, borderWidth: 0.5)
+        //        plusButtonView.backgroundColor = UIColor.whiteColor()
         plusButtonView.setButtonsLayerMasksToBounds(true)
         
-//        plusButtonView.setButtonsBackgroundImage(backgroundImage: UIImage!, forState: UIControlState) TODO: implement a transparent circular image here
+        //        plusButtonView.setButtonsBackgroundImage(backgroundImage: UIImage!, forState: UIControlState) TODO: implement a transparent circular image here
+        
+        var whiteImage = getImageWithColor(UIColor.whiteColor(), size: CGSize(width: 44.0,height: 44.0))
         
         for (var i=0; i<plusButtonView.buttons.count; i++)
         {
             switch i {
             case 0:
                 plusButtonView.buttons[i].setImage(UIImage(named: "currentLocation"), forState: UIControlState.Normal)
-//                plusButtonView.buttons[i].setBackgroundImage(UIImage(named: "currentLocation"), forState: UIControlState.Normal) // TODO: set to transparent
+                plusButtonView.buttons[i].setBackgroundImage(whiteImage, forState: UIControlState.Normal)
             case 1:
                 plusButtonView.buttons[i].setImage(UIImage(named: "global"),          forState: UIControlState.Normal)
+                plusButtonView.buttons[i].setBackgroundImage(whiteImage, forState: UIControlState.Normal)
             case 2:
                 plusButtonView.buttons[i].setImage(UIImage(named: "friends"),         forState: UIControlState.Normal)
-                
+                plusButtonView.buttons[i].setBackgroundImage(whiteImage, forState: UIControlState.Normal)
+                //                plusButtonView.buttons[i].cornerRadius = 22.0
             default: println("something went wrong along the way");
             }
         }
@@ -317,9 +344,7 @@ extension SearchViewController: LGPlusButtonsViewDelegate
                 println("\(title), \(description), \(index)")
             }, plusButtonActionHandler: nil)
         
-        plusButtonView.delegate = self // SET THE DELEGATE TO SELF
-//        plusButtonView.setButtonsTitles(["1","2","3","4"], forState: UIControlState.Normal) // TODO initialize the buttons with images
-        
+        plusButtonView.delegate = self
         
         plusButtonView.setDescriptionsTexts(["Current Location", "Global", "Friends"])
         plusButtonView.position = LGPlusButtonsViewPositionTopRight
@@ -359,21 +384,18 @@ extension SearchViewController
 }
 
 // MARK: -
-// MARK: FILTERING HELPERS logic searchbar
+// MARK: Search HELPERS logic searchbar
 
 extension SearchViewController
 {
-    func filterContentForSearchTextOrCategory(searchText: String, category: Category)
+    
+    @IBAction func searchTapped(sender: AnyObject)
     {
-        // Filter the array using the filter method
-        self.filteredHackathons = self.hackathons.filter(
-        {( hackathon: Hackathon) -> Bool in
-            
-            let categoryMatch = (category == .CurrentLocation) || (self.searchCriteria.category == category)
-            let stringMatch   = hackathon.name!.rangeOfString(searchText)
-            return (categoryMatch && (stringMatch != nil)) || categoryMatch //  either filter for search text and category or just category
-        })
-    } // TODO revisit this when implementing search bar, reimplement probably
+        // set the states
+        if ( self.state == .OffMode ) { self.state = .SearchMode}
+        else if ( self.state == .SearchMode ) {self.state = .OffMode}
+    }
+    
 }
 
 // MARK: -
@@ -381,41 +403,63 @@ extension SearchViewController
 
 extension SearchViewController
 {
-    func initializeSearchBar
+    
+    func costRange(hack: Hackathon) -> String
     {
-        search = UISearchBar(frame: CGRectMake(0, 0, 320, 44))
+        var min = ""
+        var minCost = hack.ticketClassesCosts?.first
         
-        search!.delegate = self;
-        search!.showsCancelButton = true
-        self.searchController = UISearchController(searchResultsController: self)
+        if let minC = minCost {
+            min = minC
+        }
         
-        self.searchController?.delegate = SearchViewController()
-        self.searchController?.searchResultsController = self
-        self.searchController.searchre = SearchViewController()
-        
-        [self.view addSubview:searchBar];
-        
-        search.hidden = true
-        [searchController setActive:NO animated:NO];
+        let str = "from \(min)"
+        return str
     }
     
     func deployQuery(query: PFQuery)
     {
         query.findObjectsInBackgroundWithBlock(
             { (results, error) -> Void in
-                self.hackathons = results as! [Hackathon]
+                self.hackathons = (results as? [Hackathon]) ?? []
                 self.tableView.reloadData()
         })
     }
     
-    func updateButtons()
+    func updateUI()
     {
-        switchButton.layer.cornerRadius   = 22
-        categoryButton.layer.cornerRadius = 22
-        searchButton.layer.cornerRadius   = 22
+        self.initPlusButtonView()
+        updateButtons()
+        updateTableView()
+        updateSearchBar()
+        updateViewConstraints()
+        self.view.layoutIfNeeded()
     }
     
-    func updateTableView() { tableView.backgroundColor = mainColor }
+    func updateSearchBar()
+    {
+        self.search.alpha = 0
+    }
+    
+    func updateButtons()
+    {
+        switchButton.layer.cornerRadius   = 30
+        switchButton.layer.masksToBounds = true
+        
+        categoryButton.layer.cornerRadius = 22
+        categoryButton.layer.borderColor = mainColor.CGColor!
+        categoryButton.layer.borderWidth = 0.5
+        categoryButton.layer.masksToBounds = true
+        
+        searchButton.layer.cornerRadius   = 22
+        searchButton.layer.borderColor = mainColor.CGColor!
+        searchButton.layer.borderWidth = 0.5
+        searchButton.layer.masksToBounds = true
+    }
+    
+    func updateTableView() {
+        self.tableView.contentInset = UIEdgeInsets(top: 50, left: 0, bottom: 70, right: 0)
+    }
     
 }
 
@@ -426,16 +470,23 @@ extension SearchViewController: UISearchBarDelegate
         state = .SearchMode
     }
     
+    func searchBarTextDidEndEditing(searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
+    
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
-        searchBar.text = ""
         searchBar.setShowsCancelButton(false, animated: true)
-        state = .DefaultMode
+        state = .OffMode
     }
     
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
-        ParseHelper.searchUsers(searchText, completionBlock:updateList)
+        searchCriteria.searchString = searchText
+        HackathonHelper.queryForTable(searchCriteria, onComplete: { (query) -> Void in
+            self.deployQuery(query)
+        })
     }
+    
 }
 
 

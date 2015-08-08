@@ -25,7 +25,7 @@ enum Category
 
 class SearchCriteria
 {
-    var searchString:  String?
+    var searchString:  String? = nil
     var searchDistance: Double = 50.0
     var category: Category = .CurrentLocation
 }
@@ -39,7 +39,27 @@ class HackathonHelper
         
         if ( searchCriteria.category == .Friends )
         {
+            var user = PFUser.currentUser()
             query = PFQuery(className: "Watchlist") // if in Friends category -> set query source to "Watchlist" class
+            // get user ids for all friends
+            var relation = user?.relationForKey("tracking")
+            var relationQuery = relation?.query() // can also be further refined
+            relationQuery?.whereKeyExists("objectId")
+            
+            //query for friends
+            query?.whereKey("toUser", matchesQuery: relationQuery!)
+            
+            if (searchCriteria.searchString?.isEmpty == false) // if searchstring exists create subquery
+            {
+                if let q = query { // there should always be a category before this happens so this is probably not needed
+                    
+                    var searchQuery = PFQuery()
+                    searchQuery.whereKey("name", matchesQuery: q) // create subquery
+                    searchQuery.whereKey("name", matchesRegex: searchCriteria.searchString!, modifiers: "i") // make it match lowercase
+                    onComplete(searchQuery)
+                }
+            }
+            else { onComplete(query!) }
         }
         else
         {
@@ -47,21 +67,25 @@ class HackathonHelper
             if ( searchCriteria.category == .CurrentLocation )
             {
                 saveAndReturnCurrentLocation({ (point) -> Void in
+                    
+                    //set the current location query
                     query!.whereKey("geoPoint", nearGeoPoint: point, withinKilometers: searchCriteria.searchDistance)
-                    onComplete(query!)
-                }) // get current location and wait for the callback
+                    
+                    if (searchCriteria.searchString?.isEmpty == false) // if searchstring exists create subquery
+                    {
+                        if let q = query { // there should always be a category before this happens so this is probably not needed
+                            
+                            var searchQuery = PFQuery(className: "Hackathon")
+                            searchQuery.whereKey("name", matchesQuery: q) // create subquery
+                            searchQuery.whereKey("name", matchesRegex: searchCriteria.searchString!, modifiers: "i") // make it match lowercase
+                            onComplete(searchQuery)
+                        }
+                    }
+                    else { onComplete(query!) }
+                })
             }
-        }
-
-        if let string = searchCriteria.searchString // if searchstring exists -> use it to search the current query
-        {
-            if let q = query { // there should always be a category before this happens so this is probably not needed
-                
-                var searchQuery = PFQuery()
-                searchQuery.whereKey("name", matchesKey: "name", inQuery: q) // create subquery
-                searchQuery.whereKeyExists(string) // search subquery for string
-                onComplete(searchQuery)
-            }
+            else
+            { onComplete(query!) }
         }
     }
     
@@ -79,11 +103,10 @@ class HackathonHelper
     
     static func utcToString(date: NSDate) -> String {
         var dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "yyyy.MM.dd' 'HH:mm" // format date
+        dateFormatter.dateFormat = "d MMM' 'H:mm" // format date
                                  //"yyyy-MM-dd'T'HH:mm:ss'Z'" maybe?
 
         var dateString = dateFormatter.stringFromDate(date)
-        println(dateString)
         return dateString
     }
     

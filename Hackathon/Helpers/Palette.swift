@@ -8,7 +8,7 @@
 
 import UIKit
 
-let mainColor = UIColor(red: 192.0/255.0, green: 57.0/255.0, blue: 43.0/255.0, alpha: 1)
+let mainColor = UIColor(red: 222.0/255.0, green: 53.0/255.0, blue: 47.0/255.0, alpha: 1)
 
 let secondaryColor = UIColor(red: 217.0/255.0, green: 44.0/255.0, blue: 26.0/255.0, alpha: 1)
 

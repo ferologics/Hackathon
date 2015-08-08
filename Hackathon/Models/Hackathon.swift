@@ -30,9 +30,9 @@ class Hackathon : PFObject, PFSubclassing
     @NSManaged var online:                      NSNumber?
     @NSManaged var url:                         String?
     @NSManaged var ticketClassesNames:          [String]?
-    @NSManaged var ticketClassesCosts:          [Int]?
-    @NSManaged var ticketClassesFees:           [Int]?
-    @NSManaged var ticketClassesTaxes:          [Int]?
+    @NSManaged var ticketClassesCosts:          [String]?
+    @NSManaged var ticketClassesFees:           [String]?
+    @NSManaged var ticketClassesTaxes:          [String]?
     @NSManaged var ticketClassesOnSaleStatuses: [String]?
     @NSManaged var ticketClassesDescriptions:   [String]?
     @NSManaged var ticketClassesDonations:      [Bool]?

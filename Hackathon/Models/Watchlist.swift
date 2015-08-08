@@ -86,13 +86,6 @@ class Watchlist : PFObject, PFSubclassing
     func stopTrackingHackathon(hack: Hackathon, onComplete: (Bool) -> Void )
     {
         var user = PFUser.currentUser()
-//        var userQuery = PFUser.query()
-//
-//        userQuery!.whereKey("toHackathon", equalTo: hack)
-//        userQuery!.whereKey("toUser", equalTo: user!)
-//        userQuery!.getFirstObjectInBackgroundWithBlock({ (object, error) -> Void in
-//            if (error == nil)
-//            {
 
         // remove the relation
         let trackingRelation = user?.relationForKey("tracking")
@@ -100,8 +93,9 @@ class Watchlist : PFObject, PFSubclassing
         user?.saveInBackgroundWithBlock({ (success, error) -> Void in
             if (error == nil)
             {
-                onComplete(!success) // return false (opposite of success)
-                self.deleteEventually() // also remove the object from the watchlist
+                onComplete(success) // return false (opposite of success)
+                var toDelete = PFObject(withoutDataWithClassName: "Watchlist", objectId: self.objectId)
+                toDelete.deleteEventually() // also remove the object from the watchlist
             }
             else { ErrorHandling.defaultErrorHandler(error!) }
         })

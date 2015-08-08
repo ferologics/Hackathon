@@ -19,7 +19,7 @@ whom would my app never see the light of the day...
 var _ = require('underscore');
 
 // variables
-var cities = ["San Francisco", "London", "New York"];
+var cities = ["San Francisco", "London", "New York", "Palo Alto","Redwood City"];
 var searchKeyword = "hackathon";
 var searchURL = 'https://www.eventbriteapi.com/v3/events/search/';
 var venueURL = 'https://www.eventbriteapi.com/v3/venues/';
@@ -136,9 +136,9 @@ function hackathonForEvent(theEvent)
       var tickets = _.map(theEvent["ticket_classes"], function (item, index) { // creating a JSON object to Parse
          return {
             name:           item["name"],
-            cost:         ( item["cost"]        ? item["cost"]["display"] : 0.00 ),
-            fee:          ( item["fee"]         ? item["fee"]["display"]  : 0.00 ),
-            tax:          ( item["tax"]         ? item["tax"]["display"]  : 0.00 ),
+            cost:         ( item["cost"]        ? item["cost"]["display"] : "$0" ),
+            fee:          ( item["fee"]         ? item["fee"]["display"]  : "$0" ),
+            tax:          ( item["tax"]         ? item["tax"]["display"]  : "$0" ),
             description:  ( item["description"] ? item["description"]     : "No description" ),
             onSaleStatus:   item["on_sale_status"],
             donations:      item["donation"],

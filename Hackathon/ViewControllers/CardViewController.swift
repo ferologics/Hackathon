@@ -8,6 +8,8 @@
 
 import UIKit
 import Parse
+import MapKit
+import AddressBook
 
 class CardViewController: UIViewController {
     
@@ -26,85 +28,62 @@ class CardViewController: UIViewController {
     @IBOutlet weak var ticketNames: UILabel!
     @IBOutlet weak var ticketCosts: UILabel!
     @IBOutlet weak var ticketAvailability: UILabel!
+    @IBOutlet weak var url: UITextView!
+    
+    @IBOutlet weak var mapView: MKMapView!
     
     @IBOutlet weak var track: UIButton!
+    @IBOutlet weak var cancel: UIButton!
     @IBOutlet weak var expand: UIButton!
     
-    @IBOutlet weak var descriptionHeight: NSLayoutConstraint!
-    var backupConstraint:NSLayoutConstraint? // TODO: edit this to be 
+    @IBOutlet var descriptionHeight: NSLayoutConstraint!
     
     var hackathon: Hackathon?
     var watchlist = Watchlist()
+    
+    var mapInfo: MapInfo?
     
     var expanded = false
     var tracking = false {
         didSet {
             
             if  tracking == true  {
-                self.track.highlighted = true
+                UIView.animateWithDuration(0.5, animations: { () -> Void in
+                    self.track.highlighted = true
+                    self.track.imageView!.transform = CGAffineTransformMakeRotation(CGFloat(2*M_PI))
+                    self.view.layoutIfNeeded()
+                })
                 
-//                if oldValue == false
-//                {
-//                    println(UIImage(named: "track"))
-//                    println(UIImage(named: "tracking"))
-//                    let imagesForAnimation = [UIImage(named: "track")!, UIImage(named: "tracking")!]
-//                    
-//                    if let button = track
-//                    {
-//                        button.imageView?.animationImages      = imagesForAnimation
-//                        button.imageView?.animationDuration    = 1.0
-//                        button.imageView?.animationRepeatCount = 1
-//                        button.imageView?.startAnimating()
-//                    }
-//                    
-//                    let delay = 0.9 * Double(NSEC_PER_SEC)
-//                    let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
-//                    dispatch_after(time, dispatch_get_main_queue()) {
-//                        self.track.highlighted = true
-//                    }
-//
-//                }
-//                else { self.track.highlighted = true }
                 
             } else {
-                
-                self.track.highlighted = false
-                
-//                if oldValue == true
-//                {
-//                    let imagesForAnimation = [UIImage(named: "tracking")!, UIImage(named: "track")!] // TODO: add more images, just scale them
-//                    track.imageView?.animationImages = imagesForAnimation
-//                    track.imageView?.animationDuration = 1.0
-//                    track.imageView?.animationRepeatCount = 1
-//                    track.imageView?.startAnimating()
-//                    
-//                    let delay = 0.9 * Double(NSEC_PER_SEC)
-//                    let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
-//                    dispatch_after(time, dispatch_get_main_queue()) {
-//                        self.track.highlighted = false
-//                    }
-//
-//                }
-//                else { self.track.highlighted = false }
+                UIView.animateWithDuration(0.5, animations: { () -> Void in
+                    self.track.highlighted = false
+                    self.track.imageView!.transform = CGAffineTransformIdentity
+                    self.view.layoutIfNeeded()
+                })
             }
         }
     }
     
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        updateMapView()
+        
+        mapView.delegate = self
+        cardView.layer.cornerRadius = 25
+        cardView.layer.masksToBounds = true
+        self.view.layoutIfNeeded()
     }
     
     override func viewWillAppear(animated: Bool) {
         
         UIApplication.sharedApplication().setStatusBarStyle(.LightContent, animated: true)
-        cardView.layer.cornerRadius = 25
+
         watchlist.isTrackingHackathon(hackathon!, onComplete: { (isTracking) -> Void in
             self.tracking = isTracking
             self.initCardWithHackathon()
         })
-         // ??? figure out why the card has shade only on the first time it's tapped
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -117,13 +96,15 @@ class CardViewController: UIViewController {
         if (tracking == true)
         {
             self.watchlist.stopTrackingHackathon(self.hackathon!, onComplete: { (tracking) -> Void in
-                self.tracking = tracking
+                self.tracking = !tracking // tracking is false
+                NSNotificationCenter.defaultCenter().postNotificationName("reloadProfile", object: nil)
             })
         }
         else
         {
             self.watchlist.startTrackingHackathon(self.hackathon!, onComplete: { (tracking) -> Void in
-                self.tracking = tracking
+                self.tracking = tracking // tracking is true
+                NSNotificationCenter.defaultCenter().postNotificationName("reloadProfile", object: nil)
             })
         }
     }
@@ -133,17 +114,43 @@ class CardViewController: UIViewController {
         if (expanded == false)
         {
             expanded = true
-            self.backupConstraint = self.descriptionHeight
             
-            UIView.animateWithDuration(1.0) { self.descriptionHeight.active = false ; self.view.layoutIfNeeded() }
-//            let expandImage = UIImage(named: "expand")!.CIImage
-//            expand.setImage(UIImage(CIImage: expandImage!, scale: 1.0, orientation: UIImageOrientation.UpMirrored), forState: UIControlState.Normal) // TODO : animate the expansion image
+            UIView.animateWithDuration(0.5) {
+                self.expand.imageView!.transform = CGAffineTransformMakeRotation(CGFloat(M_PI))
+                self.view.layoutIfNeeded()
+            }
+            
+            let delay = 0.3 * Double(NSEC_PER_SEC)
+            let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+            
+            dispatch_after(time, dispatch_get_main_queue()) {
+                
+                UIView.animateWithDuration(0.5) {
+                    self.descriptionHeight.active = false
+                    self.view.layoutIfNeeded()
+                }
+            }
+            
         }
         else
         {
             expanded = false
-            self.descriptionHeight = self.backupConstraint
-            UIView.animateWithDuration(1.0) { self.descriptionHeight.active = true ; self.view.layoutIfNeeded() }
+            
+            UIView.animateWithDuration(0.5) {
+                self.expand.imageView!.transform = CGAffineTransformIdentity
+                self.view.layoutIfNeeded()
+            }
+            
+            let delay = 0.3 * Double(NSEC_PER_SEC)
+            let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+            
+            dispatch_after(time, dispatch_get_main_queue()) {
+                
+                UIView.animateWithDuration(0.5) {
+                    self.descriptionHeight.active = true
+                    self.view.layoutIfNeeded()
+                }
+            }
         }
         
     }
@@ -153,6 +160,28 @@ class CardViewController: UIViewController {
 
 extension CardViewController: UIGestureRecognizerDelegate
 {
+    
+    
+    @IBAction func dismissCard(sender: AnyObject) {
+        
+        UIView.animateWithDuration(0.5, animations: { () -> Void in
+            self.cancel.imageView?.transform = CGAffineTransformMakeRotation(-CGFloat(M_PI_2))
+            
+            self.view.layoutIfNeeded()
+        })
+        
+        let delay = 0.3 * Double(NSEC_PER_SEC)
+        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+        
+        dispatch_after(time, dispatch_get_main_queue()) {
+            
+            self.dismissViewControllerAnimated(true, completion: { () -> Void in
+                
+                println("dismissed by tap")
+            })
+        }
+    }
+    
     func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
@@ -174,7 +203,7 @@ extension CardViewController: UIGestureRecognizerDelegate
         if (sender.state == UIGestureRecognizerState.Ended)
         {
             let location = sender.locationInView(self.cardView)
-            if (!self.cardView.pointInside(location, withEvent: nil)) // FIXME: tap on left and top doesn't work
+            if (!self.cardView.pointInside(location, withEvent: nil))
             {
                 self.dismissViewControllerAnimated(true, completion: { () -> Void in
                     println("dismissed by tap")
@@ -199,7 +228,109 @@ extension CardViewController
             self.logo.image = image
             self.logo.contentMode = UIViewContentMode.ScaleAspectFit
         })
+        
+        if let start = hackathon?.start, end = hackathon?.end {
+            self.date.text = formatForCard(start, end: end)
+        }
+        
+        self.ticketNames.text = ticketClassNames()
+        self.ticketCosts.text = ticketClassCost()
+        self.ticketAvailability.text = ticketClassAvailability()
+        self.url.text = hackathon?.url
+        
+        // mapview
+}
+    
+    func formatForCard(start: NSDate, end: NSDate) -> String {
+        
+        var dateFormatter = NSDateFormatter()
+        var dayFormatter = NSDateFormatter()
+        dayFormatter.dateFormat = "d"
+        dateFormatter.dateFormat = "d MMM' 'H:mm" // format date
+        //"yyyy-MM-dd'T'HH:mm:ss'Z'" maybe?
+        
+        var dayString = dayFormatter.stringFromDate(start)
+        var dateString = dateFormatter.stringFromDate(end)
+        
+        return "\(dayString)-\(dateString)"
     }
+    
+    func ticketClassNames() -> String
+    {
+        var str = ""
+        if let classes = hackathon?.ticketClassesCosts {
+            for name in classes {
+                str += "\(name)\n"
+            }
+        }
+        return str
+    }
+    
+    func ticketClassCost() -> String
+    {
+        var str = ""
+        if let classes = hackathon?.ticketClassesNames {
+            for cost in classes {
+                str += "\(cost)\n"
+            }
+        }
+        return str
+    }
+    
+    func ticketClassAvailability() -> String
+    {
+        var str = ""
+        if let classes = hackathon?.ticketClassesOnSaleStatuses {
+            for availability in classes {
+                str += "\(availability.lowercaseString)\n"
+            }
+        }
+        return str
+    }
+}
+
+extension CardViewController: MKMapViewDelegate
+{
+    func updateMapView()
+    {
+        if let point = hackathon?.geoPoint {
+            centerMapOnLocation(point)
+            mapInfo = MapInfo(title: hackathon?.name!, locationName: hackathon?.adres_1!, address_2: hackathon?.adres_2, coordinate: point)
+        }
+    }
+    
+    func centerMapOnLocation(location: PFGeoPoint)
+    {
+        let coordinate = CLLocation(latitude: location.latitude, longitude: location.longitude)
+        let regionRadius: CLLocationDistance = 1000
+        let coordinateRegion = MKCoordinateRegionMakeWithDistance(coordinate.coordinate, regionRadius * 2.0, regionRadius * 2.0)
+        mapView.setRegion(coordinateRegion, animated: true)
+    }
+    
+    func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
+        if let annotation = annotation as? MapInfo
+        {
+            let identifier = "pin"
+            
+            var view: MKPinAnnotationView
+            if let dequedView = mapView.dequeueReusableAnnotationViewWithIdentifier(identifier) as? MKPinAnnotationView
+            {
+                dequedView.annotation = annotation
+                view = dequedView
+            }
+            else
+            {
+                view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+                view.canShowCallout = true
+                view.calloutOffset = CGPoint(x: -5,y: 5)
+                view.rightCalloutAccessoryView = UIButton.buttonWithType(.DetailDisclosure) as! UIView
+            }
+            return view
+        }
+        return nil
+    }
+    
+    // func mapItem() -> MKMapItem
 }
 
 

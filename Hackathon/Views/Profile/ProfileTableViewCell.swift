@@ -11,9 +11,6 @@ import UIKit
 class ProfileTableViewCell: UITableViewCell {
 
     @IBOutlet weak var logoImage: UIImageView!
-    @IBOutlet weak var dateImage: UIImageView!
-    @IBOutlet weak var capacityImage: UIImageView!
-    @IBOutlet weak var costImage: UIImageView!
     
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
