@@ -9,9 +9,16 @@
 import UIKit
 import Parse
 import MapKit
-import AddressBook
+import EventKit
+import CoreLocation
+import Mixpanel
 
 class CardViewController: UIViewController {
+    
+    let mixpanel = Mixpanel.sharedInstance()
+    
+    let store = EKEventStore()
+    var accessGranted = false
     
     @IBOutlet var rootView: UIView!
     @IBOutlet weak var cardView: HackathonCardView!
@@ -20,6 +27,8 @@ class CardViewController: UIViewController {
     @IBOutlet var swipeRecognizerRight: UISwipeGestureRecognizer!
     @IBOutlet var swipeRecognizerLeft: UISwipeGestureRecognizer!
 
+    var markdown = "register through here"
+//    var htmlString = MMMarkdow
     
     @IBOutlet weak var logo: UIImageView!
     @IBOutlet weak var name: UILabel!
@@ -41,6 +50,7 @@ class CardViewController: UIViewController {
     var hackathon: Hackathon?
     var watchlist = Watchlist()
     
+    var locationAllowed = CLLocationManager.locationServicesEnabled()
     var mapInfo: MapInfo?
     
     var expanded = false
@@ -48,6 +58,11 @@ class CardViewController: UIViewController {
         didSet {
             
             if  tracking == true  {
+                
+                if let name = hackathon?.name {
+                self.mixpanel.track("tracking", properties: ["name":name])
+                }
+                
                 UIView.animateWithDuration(0.5, animations: { () -> Void in
                     self.track.highlighted = true
                     self.track.imageView!.transform = CGAffineTransformMakeRotation(CGFloat(2*M_PI))
@@ -67,27 +82,30 @@ class CardViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        updateMapView()
-        
-        mapView.delegate = self
-        cardView.layer.cornerRadius = 25
-        cardView.layer.masksToBounds = true
-        self.view.layoutIfNeeded()
+        Mixpanel.sharedInstanceWithToken(token)
     }
     
     override func viewWillAppear(animated: Bool) {
         
         UIApplication.sharedApplication().setStatusBarStyle(.LightContent, animated: true)
-
-        watchlist.isTrackingHackathon(hackathon!, onComplete: { (isTracking) -> Void in
-            self.tracking = isTracking
-            self.initCardWithHackathon()
-        })
+        
+        if Reachability.isConnectedToNetwork() {
+            
+            updateMapView()
+            updateCardView()
+            watchlist.isTrackingHackathon(hackathon!, onComplete: { (isTracking) -> Void in
+                self.tracking = isTracking
+                self.initCardWithHackathon()
+            })
+        }
+        else{
+            ErrorHandling.displayErrorForNetwork(self)
+        }
     }
     
     override func viewWillDisappear(animated: Bool) {
         UIApplication.sharedApplication().setStatusBarStyle(.Default, animated: true)
+        self.mapView.delegate = nil
     }
     
 
@@ -224,10 +242,12 @@ extension CardViewController
         self.name.text = hackathon?.name
         self.desc.text = hackathon?.descript
 //        println(hackathon?.descript)
-        HackathonHelper.setHackathonCellLogoAsynch(hackathon!, onComplete: { (image) -> Void in
-            self.logo.image = image
-            self.logo.contentMode = UIViewContentMode.ScaleAspectFit
-        })
+        if Reachability.isConnectedToNetwork() {
+            HackathonHelper.setHackathonCellLogoAsynch(hackathon!, onComplete: { (image) -> Void in
+                self.logo.image = image
+                self.logo.contentMode = UIViewContentMode.ScaleAspectFit
+            })
+        } else { ErrorHandling.displayErrorForNetwork(self) }
         
         if let start = hackathon?.start, end = hackathon?.end {
             self.date.text = formatForCard(start, end: end)
@@ -236,7 +256,7 @@ extension CardViewController
         self.ticketNames.text = ticketClassNames()
         self.ticketCosts.text = ticketClassCost()
         self.ticketAvailability.text = ticketClassAvailability()
-        self.url.text = hackathon?.url
+        self.url.text = hackathon?.url!
         
         // mapview
 }
@@ -247,7 +267,6 @@ extension CardViewController
         var dayFormatter = NSDateFormatter()
         dayFormatter.dateFormat = "d"
         dateFormatter.dateFormat = "d MMM' 'H:mm" // format date
-        //"yyyy-MM-dd'T'HH:mm:ss'Z'" maybe?
         
         var dayString = dayFormatter.stringFromDate(start)
         var dateString = dateFormatter.stringFromDate(end)
@@ -287,16 +306,31 @@ extension CardViewController
         }
         return str
     }
+    
+    func updateCardView()
+    {
+        cardView.layer.cornerRadius = 25
+        cardView.layer.masksToBounds = true
+        self.view.layoutIfNeeded()
+    }
 }
 
 extension CardViewController: MKMapViewDelegate
 {
     func updateMapView()
     {
-        if let point = hackathon?.geoPoint {
+        mapView.delegate = self
+        
+        var locationName = hackathon?.address_1!
+        var address_2 = ""
+        if let ad2 = hackathon?.address_2 { address_2 = ad2 }
+        else {  }
+        
+        if let point = hackathon?.geoPoint, title = hackathon?.name!, locName = locationName {
             centerMapOnLocation(point)
-            mapInfo = MapInfo(title: hackathon?.name!, locationName: hackathon?.adres_1!, address_2: hackathon?.adres_2, coordinate: point)
+            mapInfo = MapInfo(title: title, locationName: locName , address_2: address_2, coordinate: point)
         }
+        mapView.addAnnotation(mapInfo)
     }
     
     func centerMapOnLocation(location: PFGeoPoint)
@@ -322,7 +356,7 @@ extension CardViewController: MKMapViewDelegate
             {
                 view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
                 view.canShowCallout = true
-                view.calloutOffset = CGPoint(x: -5,y: 5)
+                view.calloutOffset = CGPoint(x: -7,y: 7)
                 view.rightCalloutAccessoryView = UIButton.buttonWithType(.DetailDisclosure) as! UIView
             }
             return view
@@ -330,9 +364,117 @@ extension CardViewController: MKMapViewDelegate
         return nil
     }
     
-    // func mapItem() -> MKMapItem
+    func mapView(mapView: MKMapView!, annotationView view: MKAnnotationView!,
+        calloutAccessoryControlTapped control: UIControl!) {
+            let location = view.annotation as! MapInfo
+            let launchOptions = [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving]
+            location.mapItem().openInMapsWithLaunchOptions(launchOptions)
+            
+            self.mixpanel.track("got directions")
+    }
 }
 
+// MARK: eventstore
+// MARK: -
+extension CardViewController
+{
+    
+    @IBAction func addToCallendar(sender: AnyObject) {
+        updateAuthorizationStatusToAccessEventStore()
+        if accessGranted
+        {
+//            store.saveEvent(event, span: EKSpanThisEvent, commit: true, error: &err)
+//            self.savedEventId = event.eventIdentifier //save event id to access this particular event later
+            
+            var event = EKEvent(eventStore: store)
+            event.title = hackathon?.name
+            event.startDate = hackathon?.start
+            event.endDate = hackathon?.end
+            event.calendar = store.defaultCalendarForNewEvents
+            
+            let interval: NSTimeInterval = -24 * 60 * 60 * 2
+            let absoluteAlarm = EKAlarm(absoluteDate: event.startDate)
+            let offsetAlarm = EKAlarm(relativeOffset: interval)
+
+            event.alarms = [absoluteAlarm, offsetAlarm]
+            
+            var err: NSError?
+            
+            store.saveEvent(event, span: EKSpanThisEvent, commit: true, error: &err)
+            if ( err == nil ) {
+                
+                self.mixpanel.track("calendar access", properties: ["granted":true])
+                
+                let alert = UIAlertView(title: "Let's Hack!", message: "Event added. Do you want to see it in your calendar?", delegate: self, cancelButtonTitle: "No", otherButtonTitles: "Take me there")
+                alert.tag = 1
+                alert.show()
+            }
+            else
+            {
+                mixpanel.track("error", properties:["category":"event"])
+            }
+            
+            
+        }
+    }
+    
+    func updateAuthorizationStatusToAccessEventStore()
+    {
+        let authorizationStatus = EKEventStore.authorizationStatusForEntityType(EKEntityTypeEvent)
+        switch (authorizationStatus)
+        {
+            case EKAuthorizationStatus.Denied:
+                return
+            
+            case EKAuthorizationStatus.Restricted:
+                self.accessGranted = false
+                let alertView = UIAlertView(title: "Access Denied", message: "This app doesn't have access to your calendar, to add event enable access in settings", delegate: self, cancelButtonTitle: "Dismiss")
+                alertView.show()
+            
+            case EKAuthorizationStatus.Authorized:
+                self.accessGranted = true
+                
+            self.mixpanel.track("calendar", properties: ["access granted":true])
+            
+            case EKAuthorizationStatus.NotDetermined:
+                store.requestAccessToEntityType(EKEntityTypeEvent, completion: { (granted, error) -> Void in
+                    dispatch_async(dispatch_get_main_queue()) {
+                        self.accessGranted = granted
+                }
+            })
+        }
+    }
+    
+    func openEventDayInCalendar()
+    {
+        if let day = hackathon?.start {
+            
+            let today = NSDate()
+            let timeSince = NSDate.timeIntervalSinceReferenceDate() // this plus
+            let todayToFutureDate = day.timeIntervalSinceDate(today)
+            let finalInterval = todayToFutureDate + timeSince
+            
+            self.mixpanel.track("calendar", properties: ["opened" : true])
+            
+            UIApplication.sharedApplication().openURL(NSURL(string: "calshow:\(finalInterval)")!)
+        }
+    }
+}
+
+extension CardViewController: UIAlertViewDelegate
+{
+    func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
+        
+        if alertView.tag == 1 {
+            switch buttonIndex
+            {
+            case 0: self.mixpanel.track("calendar", properties: ["opened" : false])
+            case 1: openEventDayInCalendar()
+            default: return
+            }
+        }
+    }
+}
 
 
 

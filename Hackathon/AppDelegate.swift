@@ -11,12 +11,13 @@ import Parse
 import FBSDKCoreKit
 import ParseUI
 import ParseFacebookUtilsV4
-
+import Mixpanel
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    var overlay : UIView?
     var parseLoginHelper: ParseLoginHelper!
 
     override init() {
@@ -27,6 +28,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             if let error = error {
                 // 1
                 ErrorHandling.defaultErrorHandler(error)
+                
+                Mixpanel.sharedInstanceWithToken(token)
+                let mixpanel = Mixpanel.sharedInstance()
+                mixpanel.track("error", properties:["category":"login"])
+                
             } else  if let user = user {
                 // if login was successful, display the TabBarController
                 // 2    
@@ -39,10 +45,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-
-//        UITableViewCell.appearance().backgroundColor = secondaryColor
-//        UITableViewCell.appearance().layer.cornerRadius = 10.0
-//        UITableView.appearance().backgroundColor = lightColor
+    
+        
+        Mixpanel.sharedInstanceWithToken(token)
+        let mixpanel = Mixpanel.sharedInstance()
+        mixpanel.track("App launched")
+        
+        if application.applicationState == UIApplicationState.Inactive {
+            NSNotificationCenter.defaultCenter().postNotificationName("reloadSearchView", object: nil)
+        }
         
         Parse.setApplicationId("1kQEKpgZG525SU9GiCXl4xkrpbiwjy5OpZK9QKlA", clientKey: "XWXzoPY6cVmBPjzJwBkGaXUm6qvHjkjjLl9NLHYb")
         
@@ -50,6 +61,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // check if we have logged in user
         // 2
+        
         let user = PFUser.currentUser()
         
         let startViewController: UIViewController;
@@ -63,18 +75,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // 4
             // Otherwise set the LoginViewController to be the first
             let loginViewController = PFLogInViewController()
-            loginViewController.fields = .UsernameAndPassword | .LogInButton | .SignUpButton | .PasswordForgotten | .Facebook
+            loginViewController.fields = .Facebook //.UsernameAndPassword | .LogInButton | .SignUpButton | .PasswordForgotten |
             loginViewController.delegate = parseLoginHelper
             loginViewController.signUpController?.delegate = parseLoginHelper
             loginViewController.facebookPermissions = ["email","user_friends","public_profile"]
             
+            var asdView = UIView()
             var logoImageLog = UIImageView()
-            logoImageLog.image = UIImage(named: "AppIcon")
-            loginViewController.logInView?.logo = logoImageLog
+            logoImageLog.image = UIImage(named: "splash")
             
-            var logoImageReg = UIImageView()
-            logoImageReg.image = UIImage(named: "AppIcon")
-            loginViewController.signUpController?.signUpView?.logo = logoImageReg
+            asdView.addSubview(logoImageLog)
+            
+            loginViewController.logInView?.logo = asdView
+            
+//            var logoImageReg = UIImageView()
+//            logoImageReg.image = UIImage(named: "AppIcon")
+//            loginViewController.signUpController?.signUpView?.logo = logoImageReg
             
             startViewController = loginViewController
         }

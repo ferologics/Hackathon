@@ -8,6 +8,7 @@
 
 import UIKit
 import QuartzCore
+import Mixpanel
 
 class ProfileViewController: UIViewController, UITableViewDataSource {
 
@@ -16,17 +17,21 @@ class ProfileViewController: UIViewController, UITableViewDataSource {
     @IBOutlet weak var profilePhoto: UIImageView!
     @IBOutlet weak var name: UILabel!
     
+    var searchController = SearchViewController()
     var hackathons = [Hackathon]()
+    
+    let token = "baee9c7274a02339f3ac1f16d6084602"
+    let mixpanel = Mixpanel.sharedInstance()
     
     override func viewDidLoad() {
         updateView()
+        Mixpanel.sharedInstanceWithToken(token)
+        mixpanel.track("used profile")
+        registerNotificationCenter()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
         updateTableView()
-        
-        NSNotificationCenter.defaultCenter().addObserver(
-            self,
-            selector: "updateTableView:",
-            name: "reloadProfile",
-            object: nil)
     }
     
     @objc func updateTableView(notification: NSNotification){
@@ -76,16 +81,20 @@ extension ProfileViewController: UITableViewDelegate
         cell.selectionStyle = UITableViewCellSelectionStyle.None
         cell.nameLabel?.text = hackathon.name
         cell.dateLabel?.text = HackathonHelper.utcToString( hackathon.start! )
-        cell.capacityLabel?.text = hackathon.capacity?.stringValue
+        cell.capacityLabel?.text = searchController.costRange(hackathon)
         
         HackathonHelper.getDistanceFromUser(hackathon.geoPoint!, complete: { (str) -> Void in
             cell.distanceLabel?.text = str
         })
         
-        HackathonHelper.setHackathonCellLogoAsynch(hackathon, onComplete: { (image) -> Void in
-            cell.logoImage.contentMode = UIViewContentMode.ScaleAspectFit
-            cell.logoImage.image       = image
-        })
+        if Reachability.isConnectedToNetwork() {
+            HackathonHelper.setHackathonCellLogoAsynch(hackathon, onComplete: { (image) -> Void in
+                cell.logoImage.contentMode = UIViewContentMode.ScaleAspectFit
+                cell.logoImage.image       = image
+            })
+        } else { ErrorHandling.displayErrorForNetwork(self) }
+        
+        
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -97,12 +106,14 @@ extension ProfileViewController: UITableViewDelegate
 // MARK: helper functions for the profile
 extension ProfileViewController
 {
+    
     func updateTableView() {
-        tableView.layer.cornerRadius = 10
-        tableView.layer.borderColor = mainColor.CGColor
-        tableView.layer.borderWidth = 0.4
-        self.getUsersHackathons()
-        self.updateProile()
+        
+        if Reachability.isConnectedToNetwork() {
+            self.getUsersHackathons()
+            self.updateProile()
+        }
+        else { ErrorHandling.displayErrorForNetwork(self) }
     }
     
     func getUsersHackathons()
@@ -110,7 +121,6 @@ extension ProfileViewController
         var user = PFUser.currentUser()
         var relation = user?.relationForKey("tracking")
         var query = relation?.query() // can also be further refined
-        //        query?.whereKeyExists("tracking")
         query?.findObjectsInBackgroundWithBlock({ (objects, error) -> Void in
             self.hackathons = objects as! [Hackathon]
             self.tableView.reloadData()
@@ -127,7 +137,7 @@ extension ProfileViewController
                 HackathonHelper.getDataFromUrl((NSURL(string: profilePhotoURL))!, completion: { (data) -> Void in // cast to a nsurl
                     self.profilePhoto.layer.cornerRadius = self.profilePhoto.frame.width / 2
                     self.profilePhoto.layer.masksToBounds = true
-                    self.profilePhoto.image = UIImage(data: data!)! // TODO: just store tihis inside parse as a file
+                    self.profilePhoto.image = UIImage(data: data!)! ?? UIImage(named: "noImage")// TODO: just store tihis inside parse as a file
                     self.profilePhoto.contentMode = UIViewContentMode.ScaleAspectFit
                 })
             } else {
@@ -143,10 +153,25 @@ extension ProfileViewController
         name.text = user?.objectForKey("username") as? String
     }
     
+    func registerNotificationCenter()
+    {
+        NSNotificationCenter.defaultCenter().addObserver(
+            self,
+            selector: "updateTableView:",
+            name: "reloadProfile",
+            object: nil)
+    }
+    
     func updateView() {
-        //        switchButton.transform = CGAffineTransformMakeRotation(CGFloat(M_PI_4))
-        switchButton.layer.cornerRadius = 22
         
+        switchButton.layer.cornerRadius   = 30
+        switchButton.layer.borderColor = mainColor.CGColor!
+        switchButton.layer.borderWidth = 0.5
+        switchButton.layer.masksToBounds = true
+        
+        tableView.layer.cornerRadius = 10
+        tableView.layer.borderColor = mainColor.CGColor
+        tableView.layer.borderWidth = 0.4
     }
 }
 

@@ -13,6 +13,7 @@ import LGPlusButtonsView
 import CoreLocation
 import FBSDKCoreKit
 import SwiftyJSON
+import Mixpanel
 
 class SearchViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIViewControllerTransitioningDelegate
 {
@@ -43,6 +44,9 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     var searchCriteria = SearchCriteria()
     var searchController: UISearchController?
     
+    let token = "baee9c7274a02339f3ac1f16d6084602"
+    let mixpanel = Mixpanel.sharedInstance() // MIXPANEL
+    
     enum State {
         case OffMode
         case SearchMode
@@ -53,11 +57,9 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
             
             let showSet = [centerX, viewLeadingSpace, topSpace]
             let hideSet = [searchButtonLeadingSpace, centerAlongSearchButton, height]
+            
             switch (state) {
             case .OffMode:
-                // dismiss the previous results (empty strings and such, reset)
-                // fill the table view with hackathons for current category
-                // hide the search bar
                 
                 searchCriteria.searchString = nil
                 
@@ -84,9 +86,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                 
             case .SearchMode:
                 
-                // display the search bar
-                // animate the transition from button (constrains)
-                // trigger keyboard?
+                mixpanel.track("search", properties:["category":"search"])
                 
                 for constraint in showSet {
                     constraint.active = true
@@ -120,15 +120,17 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     override func viewDidLoad() // MARK: viewdidload
     {
         super.viewDidLoad()
-        
-        HackathonHelper.queryForTable(searchCriteria, onComplete: { (query) -> Void in
-            self.deployQuery(query)
-        })
-        
+        Mixpanel.sharedInstanceWithToken(token)
         updateUI()
 
-        if ( FBSDKAccessToken.currentAccessToken() != nil ) { ParseLoginHelper.updateFacebookData() } // update users friends and whatnot
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        checkIfLocationEnabled()
         
+        loadHackathons()
+        
+         // update users friends and whatnot
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -229,10 +231,12 @@ extension SearchViewController
             cell.distanceLabel?.text = str
         })
         
-        HackathonHelper.setHackathonCellLogoAsynch(hackathon, onComplete: { (image) -> Void in
-            cell.logoImage.contentMode = UIViewContentMode.ScaleAspectFit
-            cell.logoImage.image       = image
-        })
+        if Reachability.isConnectedToNetwork() {
+            HackathonHelper.setHackathonCellLogoAsynch(hackathon, onComplete: { (image) -> Void in
+                cell.logoImage.contentMode = UIViewContentMode.ScaleAspectFit
+                cell.logoImage.image       = image
+            })
+        } else { ErrorHandling.displayErrorForNetwork(self) }
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -256,32 +260,32 @@ extension SearchViewController: LGPlusButtonsViewDelegate
             searchCriteria.category = .CurrentLocation
             categoryButton.setImage(UIImage(named: "currentLocation"), forState: UIControlState.Normal)
             showOrHideCategories()
-            println("current location")
+
+            mixpanel.track("search", properties:["global":"current location"])
+
             //                self.viewDidLayoutSubviews()
-            
-            HackathonHelper.queryForTable(searchCriteria, onComplete: { (query) -> Void in
-                self.deployQuery(query)
-            })
+            if Reachability.isConnectedToNetwork(){ queryShizzle() }
+            else { ErrorHandling.displayErrorForNetwork(self) }
             
         case 1:
             searchCriteria.category = .Global
             categoryButton.setImage(UIImage(named: "global"), forState: UIControlState.Normal)
             showOrHideCategories()
-            println("global")
             
-            HackathonHelper.queryForTable(searchCriteria, onComplete: { (query) -> Void in
-                self.deployQuery(query)
-            })
+            mixpanel.track("search", properties:["category":"global"])
+            
+            if Reachability.isConnectedToNetwork(){ queryShizzle() }
+            else { ErrorHandling.displayErrorForNetwork(self) }
             
         case 2:
             searchCriteria.category = .Friends
             categoryButton.setImage(UIImage(named: "friends"), forState: UIControlState.Normal)
             showOrHideCategories()
-            println("friends")
+
+            mixpanel.track("search", properties:["category":"friends"])
             
-            HackathonHelper.queryForTable(searchCriteria, onComplete: { (query) -> Void in
-                self.deployQuery(query)
-            })
+            if Reachability.isConnectedToNetwork(){ queryShizzle() }
+            else { ErrorHandling.displayErrorForNetwork(self) }
             
         default: println("whoops")
         }
@@ -302,7 +306,7 @@ extension SearchViewController: LGPlusButtonsViewDelegate
         
         plusButtonView.buttonInset = UIEdgeInsetsMake(inset, inset, inset, inset)
         plusButtonView.contentInset = UIEdgeInsetsMake(inset, inset, inset, inset)
-        plusButtonView.offset = CGPointMake(-10.7, 60.0)
+        plusButtonView.offset = CGPointMake(-10.5, 65.0)
         
         plusButtonView.setButtonsTitleFont(UIFont.boldSystemFontOfSize(buttonsFontSize))
         
@@ -403,6 +407,74 @@ extension SearchViewController
 
 extension SearchViewController
 {
+    @objc func updateTableView(notification: NSNotification){
+        updateTableView()
+    }
+    
+    func queryShizzle()
+    {
+        HackathonHelper.queryForTable(searchCriteria, onComplete: { (query) -> Void in
+            self.deployQuery(query)
+        })
+    }
+    
+    func loadHackathons()
+    {
+        if Reachability.isConnectedToNetwork()
+        {
+            HackathonHelper.queryForTable(searchCriteria, onComplete: { (query) -> Void in
+                self.deployQuery(query)
+            })
+            
+            if ( FBSDKAccessToken.currentAccessToken() != nil ) { ParseLoginHelper.updateFacebookData() }
+        }
+        else
+        {
+            ErrorHandling.displayErrorForNetwork(self)
+        }
+    }
+    
+    func checkIfLocationEnabled() {
+        
+        if (!NSUserDefaults.standardUserDefaults().boolForKey("HasLaunchedOnce"))
+        {
+            let manager = CLLocationManager()
+            switch CLLocationManager.authorizationStatus() {
+            case .Restricted, .Denied:
+                
+                let alertController = UIAlertController(
+                    title: "Background Location Access Disabled",
+                    message: "In order to see hackathons near you, please open this app's settings and set location access to 'While Using the App'.",
+                    preferredStyle: .Alert)
+                
+                let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+                alertController.addAction(cancelAction)
+                
+                let openAction = UIAlertAction(title: "Open Settings", style: .Default) { (action) in
+                    if let url = NSURL(string:UIApplicationOpenSettingsURLString) {
+                        UIApplication.sharedApplication().openURL(url)
+                    }
+                }
+                
+                alertController.addAction(openAction)
+                
+                NSUserDefaults.standardUserDefaults().setBool(false, forKey:"HasLaunchedOnce")
+                NSUserDefaults.standardUserDefaults().synchronize()
+                
+                self.presentViewController(alertController, animated: true, completion: nil)
+                
+            case .NotDetermined:
+                manager.requestWhenInUseAuthorization()
+                checkIfLocationEnabled()
+                
+            case .AuthorizedWhenInUse:
+                NSUserDefaults.standardUserDefaults().setBool(true, forKey:"HasLaunchedOnce")
+                NSUserDefaults.standardUserDefaults().synchronize()
+            default: return
+            }
+            
+        }
+    }
     
     func costRange(hack: Hackathon) -> String
     {
@@ -423,14 +495,15 @@ extension SearchViewController
             { (results, error) -> Void in
                 self.hackathons = (results as? [Hackathon]) ?? []
                 self.tableView.reloadData()
+                
+                if (error != nil) { self.mixpanel.track("error", properties:["category":"query"]) }
         })
     }
     
     func updateUI()
     {
         self.initPlusButtonView()
-        updateButtons()
-        updateTableView()
+        updateButtonsAndTableView()
         updateSearchBar()
         updateViewConstraints()
         self.view.layoutIfNeeded()
@@ -441,9 +514,11 @@ extension SearchViewController
         self.search.alpha = 0
     }
     
-    func updateButtons()
+    func updateButtonsAndTableView()
     {
         switchButton.layer.cornerRadius   = 30
+        switchButton.layer.borderColor = mainColor.CGColor!
+        switchButton.layer.borderWidth = 0.5
         switchButton.layer.masksToBounds = true
         
         categoryButton.layer.cornerRadius = 22
@@ -455,10 +530,21 @@ extension SearchViewController
         searchButton.layer.borderColor = mainColor.CGColor!
         searchButton.layer.borderWidth = 0.5
         searchButton.layer.masksToBounds = true
+        
+        self.tableView.contentInset = UIEdgeInsets(top: 50, left: 0, bottom: 70, right: 0)
+    }
+    
+    func registerNotificationCenter()
+    {
+        NSNotificationCenter.defaultCenter().addObserver(
+            self,
+            selector: "updateTableView:",
+            name: "reloadSearchView",
+            object: nil)
     }
     
     func updateTableView() {
-        self.tableView.contentInset = UIEdgeInsets(top: 50, left: 0, bottom: 70, right: 0)
+        queryShizzle()
     }
     
 }
@@ -467,7 +553,7 @@ extension SearchViewController: UISearchBarDelegate
 {
     func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
         searchBar.setShowsCancelButton(true, animated: true)
-        state = .SearchMode
+        state = .SearchMode // FIXME : when taps category it changes but doesnt load
     }
     
     func searchBarTextDidEndEditing(searchBar: UISearchBar) {
@@ -482,9 +568,8 @@ extension SearchViewController: UISearchBarDelegate
     
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
         searchCriteria.searchString = searchText
-        HackathonHelper.queryForTable(searchCriteria, onComplete: { (query) -> Void in
-            self.deployQuery(query)
-        })
+        if Reachability.isConnectedToNetwork(){ queryShizzle() }
+        else { ErrorHandling.displayErrorForNetwork(self) }
     }
     
 }

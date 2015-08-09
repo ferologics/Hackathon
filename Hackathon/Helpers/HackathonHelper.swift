@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Mixpanel
 
 public var currentLocation:PFGeoPoint?
 public var distanceDesired:Double?
@@ -33,6 +34,8 @@ class SearchCriteria
 class HackathonHelper
 {
 
+    let mixpanel = Mixpanel.sharedInstance()
+    
     static func queryForTable(searchCriteria: SearchCriteria, onComplete: (PFQuery) -> Void)
     {
         var query:PFQuery?
@@ -71,7 +74,7 @@ class HackathonHelper
                     //set the current location query
                     query!.whereKey("geoPoint", nearGeoPoint: point, withinKilometers: searchCriteria.searchDistance)
                     
-                    if (searchCriteria.searchString?.isEmpty == false) // if searchstring exists create subquery
+                    if (searchCriteria.searchString != nil) // if searchstring exists create subquery
                     {
                         if let q = query { // there should always be a category before this happens so this is probably not needed
                             
@@ -85,7 +88,20 @@ class HackathonHelper
                 })
             }
             else
-            { onComplete(query!) }
+            {
+                if (searchCriteria.searchString != nil) // if searchstring exists create subquery
+                {
+                    if let q = query { // there should always be a category before this happens so this is probably not needed
+                        
+                        var searchQuery = PFQuery(className: "Hackathon")
+                        searchQuery.whereKey("name", matchesQuery: q) // create subquery
+                        searchQuery.whereKey("name", matchesRegex: searchCriteria.searchString!, modifiers: "i") // make it match lowercase
+                        onComplete(searchQuery)
+                    }
+                }
+                else
+                { onComplete(query!) }
+            }
         }
     }
     
@@ -112,6 +128,7 @@ class HackathonHelper
     
     static func saveAndReturnCurrentLocation(onCompletion: (point: PFGeoPoint) -> Void)
     {
+        
         PFGeoPoint.geoPointForCurrentLocationInBackground
         {
             (geoPoint: PFGeoPoint?, error: NSError?) -> Void in
@@ -126,6 +143,10 @@ class HackathonHelper
             }
             else {
                 println(error)
+                
+                Mixpanel.sharedInstanceWithToken(token)
+                let mixpanel = Mixpanel.sharedInstance()
+                mixpanel.track("error", properties:["category":"location"])
             }// TODO setup error handler
         }
     }

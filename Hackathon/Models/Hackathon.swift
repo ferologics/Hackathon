@@ -18,8 +18,8 @@ class Hackathon : PFObject, PFSubclassing
     @NSManaged var name:                        String?
     @NSManaged var descript:                    String?
     @NSManaged var city:                        String?
-    @NSManaged var adres_1:                     String?
-    @NSManaged var adres_2:                     String?
+    @NSManaged var address_1:                   String?
+    @NSManaged var address_2:                   String?
     @NSManaged var geoPoint:                    PFGeoPoint?
     @NSManaged var start:                       NSDate?
     @NSManaged var end:                         NSDate?

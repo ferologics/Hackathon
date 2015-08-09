@@ -11,6 +11,7 @@ import FBSDKCoreKit
 import Parse
 import ParseUI
 import SwiftyJSON
+import Mixpanel
 
 typealias ParseLoginHelperCallback = (PFUser?, NSError?) -> Void
 
@@ -32,7 +33,6 @@ class ParseLoginHelper : NSObject, NSObjectProtocol {
 
 extension ParseLoginHelper : PFLogInViewControllerDelegate {
     
-    
     func logInViewController(logInController: PFLogInViewController, didLogInUser user: PFUser) {
         // Determine if this is a Facebook login
         let isFacebookLogin = FBSDKAccessToken.currentAccessToken() != nil
@@ -41,6 +41,7 @@ extension ParseLoginHelper : PFLogInViewControllerDelegate {
             // Plain parse login, we can return user immediately
             self.callback(user, nil)
         } else {
+            Mixpanel.sharedInstanceWithToken(token)
             // if this is a Facebook login, fetch the username from Facebook
             FBSDKGraphRequest(graphPath: "me", parameters: ["fields":"id,name,email,friends,picture"]).startWithCompletionHandler {
                 (connection: FBSDKGraphRequestConnection!, result: AnyObject?, error: NSError?) -> Void in
@@ -69,6 +70,10 @@ extension ParseLoginHelper : PFLogInViewControllerDelegate {
                         if (success) {
                             // updated user could be stored -> call success
                             self.callback(user, error)
+                            
+                            let mixpanel = Mixpanel.sharedInstance()
+                            mixpanel.track("signup", properties: ["Service":"Facebook"])
+                            
                         } else {
                             // updating user failed -> hand error to callback
                             ErrorHandling.defaultErrorHandler(error!) // TODO : IDK why is this throwing an error for me about email already existing
@@ -124,6 +129,11 @@ extension ParseLoginHelper : PFLogInViewControllerDelegate {
                 })
                 
             } else {
+                Mixpanel.sharedInstanceWithToken(token)
+
+                let mixpanel = Mixpanel.sharedInstance()
+                mixpanel.track("error", properties:["category":"fb users save"])
+
                 ErrorHandling.defaultErrorHandler(error!)
                 println("Error Getting Friends \(error)");
             }

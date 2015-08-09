@@ -19,7 +19,10 @@ whom would my app never see the light of the day...
 var _ = require('underscore');
 
 // variables
-var cities = ["San Francisco", "London", "New York", "Palo Alto","Redwood City"];
+var cities = ["San Francisco", "London", "New York", "Palo Alto","Redwood City",
+              "Baltimore", "Boston","Sacramento","Los Angeles","Denver","San Diego",
+              "St. Louis","Houston","Austin","Philadelphia","Kansas City","Portland"];
+              
 var searchKeyword = "hackathon";
 var searchURL = 'https://www.eventbriteapi.com/v3/events/search/';
 var venueURL = 'https://www.eventbriteapi.com/v3/venues/';
@@ -119,8 +122,8 @@ function hackathonForEvent(theEvent)
 
       hackathon.set("venueName",       venue["name"]);
       hackathon.set("city",          ( venue["address"] != null ) ? venue["address"]["city"]      : "No city" );
-      hackathon.set("addres_1",      ( venue["address"] != null ) ? venue["address"]["address_1"] : "No address_1" );
-      hackathon.set("address_2",     ( venue["address"] != null ) ? venue["address"]["address_2"] : "No address_2" );
+      hackathon.set("address_1",      ( venue["address"] != null ) ? venue["address"]["address_1"] : "No address_1" );
+      hackathon.set("address_2",     ( venue["address"] != null || venue["address"] != undefined) ? venue["address"]["address_2"] : "No address_2" );
 
       hackathon.set("geoPoint",    new Parse.GeoPoint( venue["address"]["latitude"],venue["address"]["longitude"] ) );
 

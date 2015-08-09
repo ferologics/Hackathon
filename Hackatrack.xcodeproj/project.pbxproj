@@ -1,0 +1,632 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A6900C5A6FF6F56F59CABC73 /* Pods_Hackatrack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A6559C89F6FF62EED6C1B20 /* Pods_Hackatrack.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		AF0BC05A1B69DBA700CE1B7B /* HackathonHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0BC0591B69DBA700CE1B7B /* HackathonHelper.swift */; };
+		AF0BC05E1B69DC1D00CE1B7B /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0BC05D1B69DC1D00CE1B7B /* SearchTableViewCell.swift */; };
+		AF0D09291B741C2C0070FE6C /* HackathonCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0D09281B741C2C0070FE6C /* HackathonCardView.swift */; };
+		AF0D092B1B753D240070FE6C /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF0D092A1B753D240070FE6C /* MapKit.framework */; };
+		AF0D092D1B75A50C0070FE6C /* MapInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0D092C1B75A50C0070FE6C /* MapInfo.swift */; };
+		AF1F1CD31B6AF7FF00CA6FD4 /* CardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1F1CD21B6AF7FF00CA6FD4 /* CardViewController.swift */; };
+		AF46EF291B72709200CB26C0 /* Watchlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF46EF281B72709100CB26C0 /* Watchlist.swift */; };
+		AF559AB31B4CF65000114F80 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF559AB21B4CF65000114F80 /* AppDelegate.swift */; };
+		AF559AB81B4CF65000114F80 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AF559AB61B4CF65000114F80 /* Main.storyboard */; };
+		AF559ABD1B4CF65000114F80 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF559ABB1B4CF65000114F80 /* LaunchScreen.xib */; };
+		AF559AC91B4CF65000114F80 /* HackathonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF559AC81B4CF65000114F80 /* HackathonTests.swift */; };
+		AF6026D11B76C6CE0064C1E4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF6026D01B76C6CE0064C1E4 /* Images.xcassets */; };
+		AFB5D80E1B66D0720068E881 /* ProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB5D80D1B66D0720068E881 /* ProfileTableViewCell.swift */; };
+		AFD882801B4D0C0A005B751D /* projectMastermind in Resources */ = {isa = PBXBuildFile; fileRef = AFD8827F1B4D0C0A005B751D /* projectMastermind */; };
+		AFE7FB421B60392700487624 /* Hackathon.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE7FB411B60392700487624 /* Hackathon.swift */; };
+		AFE7FB4B1B60393300487624 /* ErrorHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE7FB451B60393300487624 /* ErrorHandling.swift */; };
+		AFE7FB4C1B60393300487624 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE7FB461B60393300487624 /* Constants.swift */; };
+		AFE7FB4E1B60393300487624 /* ParseLoginHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE7FB481B60393300487624 /* ParseLoginHelper.swift */; };
+		AFE7FB531B60394900487624 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE7FB501B60394900487624 /* ProfileViewController.swift */; };
+		AFE7FB541B60394900487624 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE7FB511B60394900487624 /* SearchViewController.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		AF559AC31B4CF65000114F80 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AF559AA51B4CF65000114F80 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AF559AAC1B4CF65000114F80;
+			remoteInfo = Hackathon;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		7A6559C89F6FF62EED6C1B20 /* Pods_Hackatrack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Hackatrack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8A9B1B526DA2B4A519C91233 /* Pods-Hackatrack.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hackatrack.release.xcconfig"; path = "Pods/Target Support Files/Pods-Hackatrack/Pods-Hackatrack.release.xcconfig"; sourceTree = "<group>"; };
+		AF0BC0591B69DBA700CE1B7B /* HackathonHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HackathonHelper.swift; path = Hackathon/Helpers/HackathonHelper.swift; sourceTree = "<group>"; };
+		AF0BC05D1B69DC1D00CE1B7B /* SearchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchTableViewCell.swift; path = Views/Search/SearchTableViewCell.swift; sourceTree = "<group>"; };
+		AF0D09281B741C2C0070FE6C /* HackathonCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HackathonCardView.swift; path = Views/HackathonCardView.swift; sourceTree = "<group>"; };
+		AF0D092A1B753D240070FE6C /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		AF0D092C1B75A50C0070FE6C /* MapInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapInfo.swift; path = Hackathon/Helpers/MapInfo.swift; sourceTree = "<group>"; };
+		AF1F1CD21B6AF7FF00CA6FD4 /* CardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CardViewController.swift; path = ViewControllers/CardViewController.swift; sourceTree = "<group>"; };
+		AF46EF281B72709100CB26C0 /* Watchlist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Watchlist.swift; path = Models/Watchlist.swift; sourceTree = "<group>"; };
+		AF559AAD1B4CF65000114F80 /* Hackatrack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hackatrack.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AF559AB11B4CF65000114F80 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AF559AB21B4CF65000114F80 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		AF559AB71B4CF65000114F80 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		AF559ABC1B4CF65000114F80 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		AF559AC21B4CF65000114F80 /* HackatrackTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HackatrackTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		AF559AC71B4CF65000114F80 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AF559AC81B4CF65000114F80 /* HackathonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HackathonTests.swift; sourceTree = "<group>"; };
+		AF6026D01B76C6CE0064C1E4 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		AFB5D80D1B66D0720068E881 /* ProfileTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileTableViewCell.swift; path = Views/Profile/ProfileTableViewCell.swift; sourceTree = "<group>"; };
+		AFD8827F1B4D0C0A005B751D /* projectMastermind */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = projectMastermind; sourceTree = "<group>"; };
+		AFE7FB411B60392700487624 /* Hackathon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Hackathon.swift; path = Models/Hackathon.swift; sourceTree = "<group>"; };
+		AFE7FB451B60393300487624 /* ErrorHandling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ErrorHandling.swift; path = Hackathon/Helpers/ErrorHandling.swift; sourceTree = "<group>"; };
+		AFE7FB461B60393300487624 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = Hackathon/Helpers/Constants.swift; sourceTree = "<group>"; };
+		AFE7FB481B60393300487624 /* ParseLoginHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ParseLoginHelper.swift; path = Hackathon/Helpers/ParseLoginHelper.swift; sourceTree = "<group>"; };
+		AFE7FB501B60394900487624 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileViewController.swift; path = ViewControllers/ProfileViewController.swift; sourceTree = "<group>"; };
+		AFE7FB511B60394900487624 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchViewController.swift; path = ViewControllers/SearchViewController.swift; sourceTree = "<group>"; };
+		AFE7FB591B60397000487624 /* Hackathon-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Hackathon-Bridging-Header.h"; path = "Hackathon/Hackathon-Bridging-Header.h"; sourceTree = "<group>"; };
+		CFC490130A5779C9F2D1BADA /* Pods-Hackatrack.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hackatrack.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Hackatrack/Pods-Hackatrack.debug.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		AF559AAA1B4CF65000114F80 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AF0D092B1B753D240070FE6C /* MapKit.framework in Frameworks */,
+				A6900C5A6FF6F56F59CABC73 /* Pods_Hackatrack.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AF559ABF1B4CF65000114F80 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2F6B86B6F6778358090CC3EA /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				CFC490130A5779C9F2D1BADA /* Pods-Hackatrack.debug.xcconfig */,
+				8A9B1B526DA2B4A519C91233 /* Pods-Hackatrack.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		63BB266BA541E312D5069F26 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				AF0D092A1B753D240070FE6C /* MapKit.framework */,
+				7A6559C89F6FF62EED6C1B20 /* Pods_Hackatrack.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		AF0EE6031B5F2A4300E85C4D /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				AFE7FB451B60393300487624 /* ErrorHandling.swift */,
+				AFE7FB461B60393300487624 /* Constants.swift */,
+				AFE7FB481B60393300487624 /* ParseLoginHelper.swift */,
+				AF0BC0591B69DBA700CE1B7B /* HackathonHelper.swift */,
+				AF0D092C1B75A50C0070FE6C /* MapInfo.swift */,
+			);
+			name = Helpers;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		AF2EBB671B5EE75300562B62 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				AFE7FB411B60392700487624 /* Hackathon.swift */,
+				AF46EF281B72709100CB26C0 /* Watchlist.swift */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		AF2EBB681B5EE80F00562B62 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				AFB5D80D1B66D0720068E881 /* ProfileTableViewCell.swift */,
+			);
+			name = Profile;
+			sourceTree = "<group>";
+		};
+		AF2EBB691B5EE82400562B62 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				AF0BC05D1B69DC1D00CE1B7B /* SearchTableViewCell.swift */,
+			);
+			name = Search;
+			sourceTree = "<group>";
+		};
+		AF559AA41B4CF65000114F80 = {
+			isa = PBXGroup;
+			children = (
+				AF559AAF1B4CF65000114F80 /* Hackathon */,
+				AF559AC51B4CF65000114F80 /* HackathonTests */,
+				AF559AAE1B4CF65000114F80 /* Products */,
+				AFE7FB591B60397000487624 /* Hackathon-Bridging-Header.h */,
+				63BB266BA541E312D5069F26 /* Frameworks */,
+				2F6B86B6F6778358090CC3EA /* Pods */,
+			);
+			sourceTree = "<group>";
+		};
+		AF559AAE1B4CF65000114F80 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AF559AAD1B4CF65000114F80 /* Hackatrack.app */,
+				AF559AC21B4CF65000114F80 /* HackatrackTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		AF559AAF1B4CF65000114F80 /* Hackathon */ = {
+			isa = PBXGroup;
+			children = (
+				AF0EE6031B5F2A4300E85C4D /* Helpers */,
+				AF2EBB671B5EE75300562B62 /* Models */,
+				AFBE80501B4FD2D6009A7EF3 /* Views */,
+				AFBE80511B4FD2DE009A7EF3 /* ViewConrollers */,
+				AF559AB21B4CF65000114F80 /* AppDelegate.swift */,
+				AF559AB61B4CF65000114F80 /* Main.storyboard */,
+				AF559ABB1B4CF65000114F80 /* LaunchScreen.xib */,
+				AF6026D01B76C6CE0064C1E4 /* Images.xcassets */,
+				AF559AB01B4CF65000114F80 /* Supporting Files */,
+			);
+			path = Hackathon;
+			sourceTree = "<group>";
+		};
+		AF559AB01B4CF65000114F80 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				AFD8827F1B4D0C0A005B751D /* projectMastermind */,
+				AF559AB11B4CF65000114F80 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		AF559AC51B4CF65000114F80 /* HackathonTests */ = {
+			isa = PBXGroup;
+			children = (
+				AF559AC81B4CF65000114F80 /* HackathonTests.swift */,
+				AF559AC61B4CF65000114F80 /* Supporting Files */,
+			);
+			path = HackathonTests;
+			sourceTree = "<group>";
+		};
+		AF559AC61B4CF65000114F80 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				AF559AC71B4CF65000114F80 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		AFBE80501B4FD2D6009A7EF3 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				AF0D09281B741C2C0070FE6C /* HackathonCardView.swift */,
+				AF2EBB691B5EE82400562B62 /* Search */,
+				AF2EBB681B5EE80F00562B62 /* Profile */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		AFBE80511B4FD2DE009A7EF3 /* ViewConrollers */ = {
+			isa = PBXGroup;
+			children = (
+				AF1F1CD21B6AF7FF00CA6FD4 /* CardViewController.swift */,
+				AFE7FB501B60394900487624 /* ProfileViewController.swift */,
+				AFE7FB511B60394900487624 /* SearchViewController.swift */,
+			);
+			name = ViewConrollers;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		AF559AAC1B4CF65000114F80 /* Hackatrack */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AF559ACC1B4CF65000114F80 /* Build configuration list for PBXNativeTarget "Hackatrack" */;
+			buildPhases = (
+				5FD48C2AB86832A8AD4D93D0 /* Check Pods Manifest.lock */,
+				AF559AA91B4CF65000114F80 /* Sources */,
+				AF559AAA1B4CF65000114F80 /* Frameworks */,
+				AF559AAB1B4CF65000114F80 /* Resources */,
+				0569C18213543B206FB651B9 /* Embed Pods Frameworks */,
+				D31ACDC37F33D808E77275FB /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Hackatrack;
+			productName = Hackathon;
+			productReference = AF559AAD1B4CF65000114F80 /* Hackatrack.app */;
+			productType = "com.apple.product-type.application";
+		};
+		AF559AC11B4CF65000114F80 /* HackatrackTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AF559ACF1B4CF65000114F80 /* Build configuration list for PBXNativeTarget "HackatrackTests" */;
+			buildPhases = (
+				AF559ABE1B4CF65000114F80 /* Sources */,
+				AF559ABF1B4CF65000114F80 /* Frameworks */,
+				AF559AC01B4CF65000114F80 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				AF559AC41B4CF65000114F80 /* PBXTargetDependency */,
+			);
+			name = HackatrackTests;
+			productName = HackathonTests;
+			productReference = AF559AC21B4CF65000114F80 /* HackatrackTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		AF559AA51B4CF65000114F80 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0640;
+				ORGANIZATIONNAME = ferologics;
+				TargetAttributes = {
+					AF559AAC1B4CF65000114F80 = {
+						CreatedOnToolsVersion = 6.4;
+						DevelopmentTeam = UR7695XA4Q;
+					};
+					AF559AC11B4CF65000114F80 = {
+						CreatedOnToolsVersion = 6.4;
+						TestTargetID = AF559AAC1B4CF65000114F80;
+					};
+				};
+			};
+			buildConfigurationList = AF559AA81B4CF65000114F80 /* Build configuration list for PBXProject "Hackatrack" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = AF559AA41B4CF65000114F80;
+			productRefGroup = AF559AAE1B4CF65000114F80 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				AF559AAC1B4CF65000114F80 /* Hackatrack */,
+				AF559AC11B4CF65000114F80 /* HackatrackTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		AF559AAB1B4CF65000114F80 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AFD882801B4D0C0A005B751D /* projectMastermind in Resources */,
+				AF6026D11B76C6CE0064C1E4 /* Images.xcassets in Resources */,
+				AF559AB81B4CF65000114F80 /* Main.storyboard in Resources */,
+				AF559ABD1B4CF65000114F80 /* LaunchScreen.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AF559AC01B4CF65000114F80 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		0569C18213543B206FB651B9 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Hackatrack/Pods-Hackatrack-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5FD48C2AB86832A8AD4D93D0 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		D31ACDC37F33D808E77275FB /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Hackatrack/Pods-Hackatrack-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		AF559AA91B4CF65000114F80 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AFE7FB4E1B60393300487624 /* ParseLoginHelper.swift in Sources */,
+				AFE7FB4C1B60393300487624 /* Constants.swift in Sources */,
+				AFE7FB4B1B60393300487624 /* ErrorHandling.swift in Sources */,
+				AFE7FB531B60394900487624 /* ProfileViewController.swift in Sources */,
+				AF0D09291B741C2C0070FE6C /* HackathonCardView.swift in Sources */,
+				AFB5D80E1B66D0720068E881 /* ProfileTableViewCell.swift in Sources */,
+				AF559AB31B4CF65000114F80 /* AppDelegate.swift in Sources */,
+				AF0BC05A1B69DBA700CE1B7B /* HackathonHelper.swift in Sources */,
+				AFE7FB421B60392700487624 /* Hackathon.swift in Sources */,
+				AFE7FB541B60394900487624 /* SearchViewController.swift in Sources */,
+				AF0D092D1B75A50C0070FE6C /* MapInfo.swift in Sources */,
+				AF1F1CD31B6AF7FF00CA6FD4 /* CardViewController.swift in Sources */,
+				AF0BC05E1B69DC1D00CE1B7B /* SearchTableViewCell.swift in Sources */,
+				AF46EF291B72709200CB26C0 /* Watchlist.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AF559ABE1B4CF65000114F80 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AF559AC91B4CF65000114F80 /* HackathonTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		AF559AC41B4CF65000114F80 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AF559AAC1B4CF65000114F80 /* Hackatrack */;
+			targetProxy = AF559AC31B4CF65000114F80 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		AF559AB61B4CF65000114F80 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AF559AB71B4CF65000114F80 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		AF559ABB1B4CF65000114F80 /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AF559ABC1B4CF65000114F80 /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		AF559ACA1B4CF65000114F80 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "Hackathon/Hackathon-Bridging-Header.h";
+				"SWIFT_OBJC_BRIDGING_HEADER[arch=*]" = "Hackathon/Hackathon-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		AF559ACB1B4CF65000114F80 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "Hackathon/Hackathon-Bridging-Header.h";
+				"SWIFT_OBJC_BRIDGING_HEADER[arch=*]" = "Hackathon/Hackathon-Bridging-Header.h";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		AF559ACD1B4CF65000114F80 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = CFC490130A5779C9F2D1BADA /* Pods-Hackatrack.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				INFOPLIST_FILE = Hackathon/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = Hackatrack;
+				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Hackathon/Hackathon-Bridging-Header.h";
+				"SWIFT_OBJC_BRIDGING_HEADER[arch=*]" = "Hackathon/Hackathon-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		AF559ACE1B4CF65000114F80 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8A9B1B526DA2B4A519C91233 /* Pods-Hackatrack.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				INFOPLIST_FILE = Hackathon/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = Hackatrack;
+				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Hackathon/Hackathon-Bridging-Header.h";
+				"SWIFT_OBJC_BRIDGING_HEADER[arch=*]" = "Hackathon/Hackathon-Bridging-Header.h";
+			};
+			name = Release;
+		};
+		AF559AD01B4CF65000114F80 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = HackathonTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = HackatrackTests;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Hackatrack.app/Hackatrack";
+			};
+			name = Debug;
+		};
+		AF559AD11B4CF65000114F80 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = HackathonTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = HackatrackTests;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Hackatrack.app/Hackatrack";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		AF559AA81B4CF65000114F80 /* Build configuration list for PBXProject "Hackatrack" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AF559ACA1B4CF65000114F80 /* Debug */,
+				AF559ACB1B4CF65000114F80 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AF559ACC1B4CF65000114F80 /* Build configuration list for PBXNativeTarget "Hackatrack" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AF559ACD1B4CF65000114F80 /* Debug */,
+				AF559ACE1B4CF65000114F80 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AF559ACF1B4CF65000114F80 /* Build configuration list for PBXNativeTarget "HackatrackTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AF559AD01B4CF65000114F80 /* Debug */,
+				AF559AD11B4CF65000114F80 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = AF559AA51B4CF65000114F80 /* Project object */;
+}
