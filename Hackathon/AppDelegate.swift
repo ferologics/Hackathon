@@ -1,4 +1,4 @@
-//
+
 //  AppDelegate.swift
 //  Hackathon
 //
@@ -46,7 +46,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
     
-        
         Mixpanel.sharedInstanceWithToken(token)
         let mixpanel = Mixpanel.sharedInstance()
         mixpanel.track("App launched")
@@ -75,7 +74,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // 4
             // Otherwise set the LoginViewController to be the first
             let loginViewController = PFLogInViewController()
-            loginViewController.fields = .Facebook //.UsernameAndPassword | .LogInButton | .SignUpButton | .PasswordForgotten |
+            loginViewController.fields = .Facebook | .UsernameAndPassword | .LogInButton | .SignUpButton | .PasswordForgotten
             loginViewController.delegate = parseLoginHelper
             loginViewController.signUpController?.delegate = parseLoginHelper
             loginViewController.facebookPermissions = ["email","user_friends","public_profile"]

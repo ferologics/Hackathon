@@ -95,6 +95,9 @@ class CardViewController: UIViewController {
             updateCardView()
             watchlist.isTrackingHackathon(hackathon!, onComplete: { (isTracking) -> Void in
                 self.tracking = isTracking
+                println(self.tracking)
+                println(isTracking)
+                
                 self.initCardWithHackathon()
             })
         }
@@ -114,6 +117,7 @@ class CardViewController: UIViewController {
         if (tracking == true)
         {
             self.watchlist.stopTrackingHackathon(self.hackathon!, onComplete: { (tracking) -> Void in
+                println(tracking)
                 self.tracking = !tracking // tracking is false
                 NSNotificationCenter.defaultCenter().postNotificationName("reloadProfile", object: nil)
             })
@@ -328,7 +332,7 @@ extension CardViewController: MKMapViewDelegate
         
         if let point = hackathon?.geoPoint, title = hackathon?.name!, locName = locationName {
             centerMapOnLocation(point)
-            mapInfo = MapInfo(title: title, locationName: locName , address_2: address_2, coordinate: point)
+            mapInfo = MapInfo(title: title, locationName: locName, address_2: address_2, coordinate: point)
         }
         mapView.addAnnotation(mapInfo)
     }

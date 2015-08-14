@@ -78,6 +78,7 @@ class Watchlist : PFObject, PFSubclassing
         
         // store it inside the watchlist
         self.saveInBackgroundWithBlock({ (success, error) -> Void in
+            
             if (error == nil) { println("watchlist saved with user \(user?.description) and hackathon \(hack.name) ") }
             else { println("successfully saved")}
         })
@@ -90,12 +91,16 @@ class Watchlist : PFObject, PFSubclassing
         // remove the relation
         let trackingRelation = user?.relationForKey("tracking")
         trackingRelation?.removeObject(hack)
+        
         user?.saveInBackgroundWithBlock({ (success, error) -> Void in
-            if (error == nil)
+            if (success == true)
             {
-                onComplete(success) // return false (opposite of success)
+                println(self.objectId)
                 var toDelete = PFObject(withoutDataWithClassName: "Watchlist", objectId: self.objectId)
-                toDelete.deleteEventually() // also remove the object from the watchlist
+                toDelete.deleteInBackgroundWithBlock({ (success, error) -> Void in
+                    println(success)
+                    onComplete(success)
+                })
             }
             else { ErrorHandling.defaultErrorHandler(error!) }
         })
@@ -104,11 +109,15 @@ class Watchlist : PFObject, PFSubclassing
     func isTrackingHackathon(hack: Hackathon, onComplete: (Bool) -> Void )
     {
         // query users relations for current hackathon id and determine wether he's tracking the event
-        var query = PFUser.query()
-        query?.whereKey("tracking", equalTo: hack)
-        query?.getFirstObjectInBackgroundWithBlock({ (object, error) -> Void in
-            
-            (object != nil) ? onComplete(object!.isDataAvailable()) : onComplete(false)
+        var user = PFUser.currentUser()
+        var userRelation = user?.relationForKey("tracking")
+        var userQuery = userRelation?.query()
+//        userQuery?.whereKey("objectId", containsString: hack.objectId)
+//        userQuery?.whereKey("tracking", equalTo: hack)
+        userQuery?.whereKey("objectId", containsString: hack.objectId)
+        userQuery?.getFirstObjectInBackgroundWithBlock({ (object, error) -> Void in
+            println(object)
+            (object != nil) ? onComplete(true) : onComplete(false)
         })
     }
 }

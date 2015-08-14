@@ -38,32 +38,28 @@ class HackathonHelper
     
     static func queryForTable(searchCriteria: SearchCriteria, onComplete: (PFQuery) -> Void)
     {
-        var query:PFQuery?
+        var query: PFQuery?
         
+        // MARK: friends
         if ( searchCriteria.category == .Friends )
         {
-            var user = PFUser.currentUser()
-            query = PFQuery(className: "Watchlist") // if in Friends category -> set query source to "Watchlist" class
-            // get user ids for all friends
-            var relation = user?.relationForKey("tracking")
-            var relationQuery = relation?.query() // can also be further refined
-            relationQuery?.whereKeyExists("objectId")
-            
-            //query for friends
-            query?.whereKey("toUser", matchesQuery: relationQuery!)
+            // using parse cloud function ATM
+            query = PFQuery(className: "Hackathon")
             
             if (searchCriteria.searchString?.isEmpty == false) // if searchstring exists create subquery
             {
                 if let q = query { // there should always be a category before this happens so this is probably not needed
                     
-                    var searchQuery = PFQuery()
+                    var searchQuery = PFQuery(className: "Hackathon")
                     searchQuery.whereKey("name", matchesQuery: q) // create subquery
                     searchQuery.whereKey("name", matchesRegex: searchCriteria.searchString!, modifiers: "i") // make it match lowercase
                     onComplete(searchQuery)
                 }
             }
-            else { onComplete(query!) }
+            else { println("whoa") }
         }
+        
+        // MARK: curr loc or any other
         else
         {
             query = PFQuery(className: "Hackathon") // if in Current location or Global category -> set query source to "Hackathon" class
@@ -71,25 +67,20 @@ class HackathonHelper
             {
                 saveAndReturnCurrentLocation({ (point) -> Void in
                     
-                    //set the current location query
+                    //set the curr ent location query
                     query!.whereKey("geoPoint", nearGeoPoint: point, withinKilometers: searchCriteria.searchDistance)
                     
-                    if (searchCriteria.searchString != nil) // if searchstring exists create subquery
+                    if (searchCriteria.searchString?.isEmpty == false) // if searchstring exists create subquery
                     {
-                        if let q = query { // there should always be a category before this happens so this is probably not needed
-                            
-                            var searchQuery = PFQuery(className: "Hackathon")
-                            searchQuery.whereKey("name", matchesQuery: q) // create subquery
-                            searchQuery.whereKey("name", matchesRegex: searchCriteria.searchString!, modifiers: "i") // make it match lowercase
-                            onComplete(searchQuery)
-                        }
+                        
                     }
                     else { onComplete(query!) }
                 })
             }
-            else
+                
+            else // any other than current location
             {
-                if (searchCriteria.searchString != nil) // if searchstring exists create subquery
+                if (searchCriteria.searchString?.isEmpty == false) // if searchstring exists create subquery
                 {
                     if let q = query { // there should always be a category before this happens so this is probably not needed
                         
@@ -99,14 +90,22 @@ class HackathonHelper
                         onComplete(searchQuery)
                     }
                 }
-                else
-                { onComplete(query!) }
+                    
+                else { onComplete(query!) }
             }
         }
     }
     
 // MARK: -
 // MARK: supporting functions
+    
+    static func getHackathonsFromParse( onComplete: [Hackathon] -> Void )
+    {
+        PFCloud.callFunctionInBackground("getFriendHackathons", withParameters: nil) { (hackathons, error) -> Void in
+            if let hacks = hackathons as? [Hackathon] { onComplete(hacks) }
+            else { println(error) }
+        }
+    }
     
     static func getDistanceFromUser(geopoint: PFGeoPoint, complete: (String) -> Void ) {
         var distance:String?

@@ -109,10 +109,8 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                 self.search.becomeFirstResponder()
                 
                 searchCriteria.searchString = search?.text ?? nil
-                HackathonHelper.queryForTable(searchCriteria, onComplete: { (query) -> Void in
-                    println("Querying for type \(query.parseClassName)")
-                    self.deployQuery(query)
-                })
+                
+                if ( searchCriteria.searchString != nil ) { queryShizzle() }
             }
         }
     }
@@ -264,7 +262,8 @@ extension SearchViewController: LGPlusButtonsViewDelegate
             mixpanel.track("search", properties:["global":"current location"])
 
             //                self.viewDidLayoutSubviews()
-            if Reachability.isConnectedToNetwork(){ queryShizzle() }
+            
+            if Reachability.isConnectedToNetwork() { queryShizzle() }
             else { ErrorHandling.displayErrorForNetwork(self) }
             
         case 1:
@@ -413,9 +412,20 @@ extension SearchViewController
     
     func queryShizzle()
     {
-        HackathonHelper.queryForTable(searchCriteria, onComplete: { (query) -> Void in
-            self.deployQuery(query)
-        })
+        if self.searchCriteria.category == .Friends {
+            HackathonHelper.getHackathonsFromParse{ (hackathons) -> Void in
+                
+                self.hackathons = hackathons
+                self.tableView.reloadData()
+            }
+        }
+        else
+        {
+            HackathonHelper.queryForTable(searchCriteria, onComplete: { (query) -> Void in
+                
+                self.deployQuery(query)
+            })
+        }
     }
     
     func loadHackathons()

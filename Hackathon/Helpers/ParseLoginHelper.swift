@@ -60,12 +60,11 @@ extension ParseLoginHelper : PFLogInViewControllerDelegate {
                     let data = JSON(result!)
                     
                     user["fbID"]    = fbID
-                    user["picture"] = data["picture"]["data"]["url"].stringValue ?? "https://myspace.com/common/images/user.png"
-                    println(data["picture"]["data"]["url"].stringValue)
+                    user["picture"] = "http://graph.facebook.com/" + fbID! + "/picture?width=300&height=300"
                     user.email      = data["email"].stringValue
-                    user.username   = fbUsername// stored using swift native syntax
+                    user.username   = fbUsername // stored using swift native syntax
                     
-                    // store PFUser
+                    // store User
                     user.saveInBackgroundWithBlock({ (success: Bool, error: NSError?) -> Void in
                         if (success) {
                             // updated user could be stored -> call success
@@ -104,29 +103,56 @@ extension ParseLoginHelper : PFLogInViewControllerDelegate {
         
         FBSDKGraphRequest(graphPath: graphUrl, parameters: ["fields":"id,name,email,friends,picture"], HTTPMethod: "GET").startWithCompletionHandler { (connection: FBSDKGraphRequestConnection!, result: AnyObject?, error: NSError?) -> Void in
             if error == nil {
-                //                println(result)
+                
+                                println(result)
                 
                 let data    = JSON(result!)
                 let friends = data["friends"]["data"]
-                //                println(data)
+                                println(data)
                 
                 var toSave: [PFObject] = [PFObject]()
                 
                 for (key: String, subJson: JSON) in friends { // loop through the json based on keys to get friend ids and names
                     
-                    var facebookUsers = PFObject(className: "FBUser")
+                    // compare the ids to fb ids in the User class in parse
+                    var id = subJson["id"].stringValue
+                    println(id)
                     
-                    facebookUsers["uniqueID"] = subJson["id"].stringValue
-                    facebookUsers["name"]     = subJson["name"].stringValue
+                    var user = PFUser.currentUser()
+                    var userRelation = user?.relationForKey("friends")
+                    var friendsQuery = userRelation?.query()
                     
-                    toSave.append(facebookUsers) // add to array to save
+                    friendsQuery?.whereKey("fbID", equalTo: id) // find out if there's already a friend with the id or if we have to store him
+                    
+                    friendsQuery?.countObjectsInBackgroundWithBlock({ (count, error) -> Void in
+                        if (count == 0) // no friend with this id
+                        {
+                            var userQuery = PFQuery(className: "_User")
+                            userQuery.whereKey("fbID", equalTo: id) // find the user to store
+                            
+                            userQuery.getFirstObjectInBackgroundWithBlock({ (object, error) -> Void in
+                                if let friend = object
+                                {
+                                    // store the friend as relation to current user
+                                    userRelation?.addObject(friend)              // not sure wether I can use this inside asynch method (does it still exist?)
+                                    
+                                    toSave.append(user!) // add the user with a new friend relation to the toSave array that will be used in the saveAll function
+                                    
+                                    PFObject.saveAllInBackground( toSave, block: { (success, error) -> Void in
+                                        
+                                        if (success == true) { println("saved - \(toSave)") } /* \(toSave) */
+                                        else { println("\(toSave) - no new ones?") }
+                                    })
+                                }
+                            })
+                            
+                            // all of this under asumption that if it shows a new ID it must mean that there is actually a user with that fb ID, otherwise facebook wouldn't give us the ID at all
+                        }
+                    })
                 }
                 
-                PFObject.saveAllInBackground( toSave, block: { (success, error) -> Void in
-                    
-                    if (success == true) { println("saved!") } /* \(toSave) */
-                    else { println("\(toSave) - someone already exists.") }
-                })
+                println(toSave)
+                
                 
             } else {
                 Mixpanel.sharedInstanceWithToken(token)
@@ -139,6 +165,8 @@ extension ParseLoginHelper : PFLogInViewControllerDelegate {
             }
         }
     }
+    
+    
 }
 
 extension ParseLoginHelper : PFSignUpViewControllerDelegate {

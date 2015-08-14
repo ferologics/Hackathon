@@ -121,9 +121,13 @@ extension ProfileViewController
         var user = PFUser.currentUser()
         var relation = user?.relationForKey("tracking")
         var query = relation?.query() // can also be further refined
+        
         query?.findObjectsInBackgroundWithBlock({ (objects, error) -> Void in
-            self.hackathons = objects as! [Hackathon]
-            self.tableView.reloadData()
+            if let hackathons = objects as? [Hackathon]
+            {
+                self.hackathons = hackathons
+                self.tableView.reloadData()
+            }
         })
     }
     

@@ -22,7 +22,7 @@ var _ = require('underscore');
 var cities = ["San Francisco", "London", "New York", "Palo Alto","Redwood City",
               "Baltimore", "Boston","Sacramento","Los Angeles","Denver","San Diego",
               "St. Louis","Houston","Austin","Philadelphia","Kansas City","Portland"];
-              
+
 var searchKeyword = "hackathon";
 var searchURL = 'https://www.eventbriteapi.com/v3/events/search/';
 var venueURL = 'https://www.eventbriteapi.com/v3/venues/';
@@ -116,14 +116,15 @@ function hackathonForEvent(theEvent)
       /*console.log("httpresponse - " + venue);*/
 
       hackathon.set("uri",             theEvent["resource_uri"] + "?token=" + token);
+      hackathon.set("uriVenue",        venueURL + theEvent["venue_id"] + "?token=" + token);
       hackathon.set("url",             theEvent["url"]);
       hackathon.set("uniqueID",        theEvent["id"]);
       hackathon.set("name",            theEvent["name"]["text"]);
 
       hackathon.set("venueName",       venue["name"]);
-      hackathon.set("city",          ( venue["address"] != null ) ? venue["address"]["city"]      : "No city" );
-      hackathon.set("address_1",      ( venue["address"] != null ) ? venue["address"]["address_1"] : "No address_1" );
-      hackathon.set("address_2",     ( venue["address"] != null || venue["address"] != undefined) ? venue["address"]["address_2"] : "No address_2" );
+      hackathon.set("city",          ( venue["address"] != null || venue["address"] != undefined )                                          ? venue["address"]["city"]      : "No city" );
+      hackathon.set("address_1",     ( venue["address"] != null || venue["address"] != undefined || venue["address"]["address_1"] != null ) ? venue["address"]["address_1"] : "No address" );
+      hackathon.set("address_2",     ( venue["address"] != null || venue["address"] != undefined )                                          ? venue["address"]["address_2"] : "No address" );
 
       hackathon.set("geoPoint",    new Parse.GeoPoint( venue["address"]["latitude"],venue["address"]["longitude"] ) );
 
@@ -233,15 +234,88 @@ Parse.Cloud.beforeSave("Watchlist", function(request, response) {
     });
 });
 
-Parse.Cloud.beforeSave("FBUser", function(request, response) {
+Parse.Cloud.define("getFriendHackathons", function(request,response)
+{
+   Parse.Cloud.useMasterKey();
+
+   console.log("function trigered.");
+   var user = Parse.User.current();
+   var relation = user.relation("friends");
+   var relationQuery = relation.query();
+   relationQuery.exists("fbID");
+
+   // get objects for users friends
+   var userQuery = new Parse.Query(Parse.User);
+   userQuery.matchesKeyInQuery("fbID","fbID",relationQuery);
+
+   userQuery.find({
+      // use the user objects if success
+      success: function(friends)
+      {
+         console.log(friends);
+         // get watchlist objects for users friends
+         var watchlistQuery = new Parse.Query(Watchlist);
+         watchlistQuery.containedIn("toUser", friends);
+
+         watchlistQuery.find({
+            // use the watchlist objects if success
+            success: function(watchlistObjects)
+            {
+               console.log(watchlistObjects);
+               // get the unique hakcathon ids only
+               var uniqueHackathonIDs = [];
+
+               _.each(watchlistObjects, function(object){
+
+                  console.log(object)
+                  var toHackathonPointer = object.get("toHackathon");
+                  var hackathonID = toHackathonPointer.id;
+                  console.log(toHackathonPointer.id);
+
+
+                  if      ( uniqueHackathonIDs.length == 0 ) // in empty add the firstObject
+                     { uniqueHackathonIDs.push(hackathonID) }
+
+                  else if ( !( uniqueHackathonIDs.indexOf(hackathonID) > -1 ) ) // if not contained already add to array
+                     { uniqueHackathonIDs.push(hackathonID) };
+               });
+
+               console.log(uniqueHackathonIDs);
+               // get the hackathons from the unique ids
+               var hackathonQuery = new Parse.Query(Hackathon);
+               hackathonQuery.containedIn("objectId", uniqueHackathonIDs);
+
+               hackathonQuery.find({
+                     // return hackathons if success
+                     success: function(hackathons) { console.log(hackathons); response.success(hackathons) },
+                     // return error if failed
+                     error:   function(error)      { response.error("Error - " + error) }
+                  });
+            },
+            // return error if failed
+            error: function(error) { response.error("Error - " + error) }
+         });
+      },
+      // return error if failed
+      error: function(error) { response.error("Error - " + error) }
+   });
+});
+
+/*
+Parse.Cloud.beforeSave("User", function(request, response) {
 
     if (!request.object.isNew()) {
       // Let existing object updates go through
       response.success();
     }
-    var query = new Parse.Query(FBUsers);
+
+    // query current user for friends
+
+    // if there are any new friends using the app save them, if not dismiss
+    var query = new Parse.Query(U);
 
     // Add query filters to check for uniqueness
+
     query.equalTo("uniqueID", request.object.get("uniqueID"));
     query.first().then(function(existingObject) {
       if (existingObject)
@@ -277,4 +351,4 @@ Parse.Cloud.afterSave("FBUser", function(request, response) {
    }, function (error) {
      response.error("Error creating a relation for - " + object);
    });
-});
+});*/

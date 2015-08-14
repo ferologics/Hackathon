@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4F5744B9CDA89656827E4653"
+               BlueprintIdentifier = "BED27058DF3D9D74B8295E89"
                BuildableName = "Pods_Hackatrack.framework"
                BlueprintName = "Pods-Hackatrack"
                ReferencedContainer = "container:Pods.xcodeproj">

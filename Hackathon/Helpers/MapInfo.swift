@@ -38,6 +38,6 @@ class MapInfo: NSObject, MKAnnotation
     }
     
     var subtitle: String {
-        return locationName
+        return locationName ?? "no address"
     }
 }
