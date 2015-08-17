@@ -124,7 +124,7 @@ function hackathonForEvent(theEvent)
       hackathon.set("venueName",       venue["name"]);
       hackathon.set("city",          ( venue["address"] != null || venue["address"] != undefined )                                          ? venue["address"]["city"]      : "No city" );
       hackathon.set("address_1",     ( venue["address"] != null || venue["address"] != undefined || venue["address"]["address_1"] != null ) ? venue["address"]["address_1"] : "No address" );
-      hackathon.set("address_2",     ( venue["address"] != null || venue["address"] != undefined )                                          ? venue["address"]["address_2"] : "No address" );
+      hackathon.set("address_2",     ( venue["address"] != null || venue["address"] != undefined || venue["address"]["address_2"] != null ) ? venue["address"]["address_2"] : "No address" );
 
       hackathon.set("geoPoint",    new Parse.GeoPoint( venue["address"]["latitude"],venue["address"]["longitude"] ) );
 
@@ -269,7 +269,7 @@ Parse.Cloud.define("getFriendHackathons", function(request,response)
 
                   console.log(object)
                   var toHackathonPointer = object.get("toHackathon");
-                  var hackathonID = toHackathonPointer.id;
+                  var hackathonID = toHackathonPointer.idha;
                   console.log(toHackathonPointer.id);
 
 
