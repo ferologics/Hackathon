@@ -53,7 +53,8 @@ class Watchlist : PFObject, PFSubclassing
         let hackathonQuery = PFQuery(className: "Hackathon")
         hackathonQuery.whereKey("uniqueID", equalTo: hack.uniqueID!)
         hackathonQuery.getFirstObjectInBackgroundWithBlock({ (object, error) -> Void in
-            if (error == nil)
+            
+            if (error == nil) // tbt simon
             {
                 let user             = PFUser.currentUser()
                 let trackingRelation = user!.relationForKey("tracking")
@@ -64,17 +65,15 @@ class Watchlist : PFObject, PFSubclassing
                     onComplete(success) // return true
                 })
             }
-            else
-            { println("already tracking biach") }
-            
+            else { println("already tracking biach") }
         })
     }
     
     func addToWatchlist(hack: Hackathon)
     {
-        let user = PFUser.currentUser()         // declare curren user
-        self.toHackathon = hack            // get the hackathon
-        self.toUser = user          // get the user
+        let user         = PFUser.currentUser()// declare curren user
+        self.toHackathon = hack// get the hackathon
+        self.toUser      = user// get the user
         
         // store it inside the watchlist
         self.saveInBackgroundWithBlock({ (success, error) -> Void in
@@ -95,12 +94,19 @@ class Watchlist : PFObject, PFSubclassing
         user?.saveInBackgroundWithBlock({ (success, error) -> Void in
             if (success == true)
             {
-                println(self.objectId)
-                var toDelete = PFObject(withoutDataWithClassName: "Watchlist", objectId: self.objectId)
-                toDelete.deleteInBackgroundWithBlock({ (success, error) -> Void in
-                    println(success)
-                    onComplete(success)
+                let watchlistQuery = PFQuery(className: "Watchlist")
+                watchlistQuery.whereKey("toHackathon", equalTo: hack)
+                
+                watchlistQuery.getFirstObjectInBackgroundWithBlock({ (object, error) -> Void in
+                    
+                    if let watchlistObject = object
+                    {
+                        watchlistObject.deleteInBackgroundWithBlock({ (success, error) -> Void in
+                            if success { onComplete(success) }
+                        })
+                    }
                 })
+                
             }
             else { ErrorHandling.defaultErrorHandler(error!) }
         })
@@ -109,14 +115,13 @@ class Watchlist : PFObject, PFSubclassing
     func isTrackingHackathon(hack: Hackathon, onComplete: (Bool) -> Void )
     {
         // query users relations for current hackathon id and determine wether he's tracking the event
-        var user = PFUser.currentUser()
+        var user         = PFUser.currentUser()
         var userRelation = user?.relationForKey("tracking")
-        var userQuery = userRelation?.query()
-//        userQuery?.whereKey("objectId", containsString: hack.objectId)
-//        userQuery?.whereKey("tracking", equalTo: hack)
+        var userQuery    = userRelation?.query()
+
         userQuery?.whereKey("objectId", containsString: hack.objectId)
         userQuery?.getFirstObjectInBackgroundWithBlock({ (object, error) -> Void in
-            println(object)
+            
             (object != nil) ? onComplete(true) : onComplete(false)
         })
     }
@@ -132,12 +137,10 @@ extension Watchlist
     
     override class func initialize()
     {
-        var onceToken : dispatch_once_t = 0;
+        var onceToken : dispatch_once_t = 0
         dispatch_once(&onceToken)
             {
-                // inform Parse about this subclass
                 self.registerSubclass()
-                //            Hackathon.cellCache = NSCacheSwift<String, UIImage>()
         }
     }
 }

@@ -57,20 +57,18 @@ class CardViewController: UIViewController {
     var tracking = false {
         didSet {
             
-            if  tracking == true  {
-                
-                if let name = hackathon?.name {
-                self.mixpanel.track("tracking", properties: ["name":name])
-                }
+            if  tracking == true
+            {
+                if let name = hackathon?.name { self.mixpanel.track("tracking", properties: ["name":name]) }
                 
                 UIView.animateWithDuration(0.5, animations: { () -> Void in
                     self.track.highlighted = true
                     self.track.imageView!.transform = CGAffineTransformMakeRotation(CGFloat(2*M_PI))
                     self.view.layoutIfNeeded()
                 })
-                
-                
-            } else {
+            }
+            else
+            {
                 UIView.animateWithDuration(0.5, animations: { () -> Void in
                     self.track.highlighted = false
                     self.track.imageView!.transform = CGAffineTransformIdentity
@@ -80,13 +78,14 @@ class CardViewController: UIViewController {
         }
     }
     
-    override func viewDidLoad() {
+    override func viewDidLoad()
+    {
         super.viewDidLoad()
         Mixpanel.sharedInstanceWithToken(token)
     }
     
-    override func viewWillAppear(animated: Bool) {
-        
+    override func viewWillAppear(animated: Bool)
+    {
         UIApplication.sharedApplication().setStatusBarStyle(.LightContent, animated: true)
         
         if Reachability.isConnectedToNetwork() {
@@ -95,49 +94,47 @@ class CardViewController: UIViewController {
             updateCardView()
             watchlist.isTrackingHackathon(hackathon!, onComplete: { (isTracking) -> Void in
                 self.tracking = isTracking
-                println(self.tracking)
-                println(isTracking)
                 
                 self.initCardWithHackathon()
             })
         }
-        else{
-            ErrorHandling.displayErrorForNetwork(self)
-        }
+        else { ErrorHandling.displayErrorForNetwork(self) }
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(animated: Bool)
+    {
         UIApplication.sharedApplication().setStatusBarStyle(.Default, animated: true)
         self.mapView.delegate = nil
     }
     
-
-    @IBAction func trackTapped(sender: AnyObject) {
-            
+    @IBAction func trackTapped(sender: AnyObject)
+    {
         if (tracking == true)
         {
             self.watchlist.stopTrackingHackathon(self.hackathon!, onComplete: { (tracking) -> Void in
-                println(tracking)
-                self.tracking = !tracking // tracking is false
+                
                 NSNotificationCenter.defaultCenter().postNotificationName("reloadProfile", object: nil)
+                self.tracking = !tracking // tracking is false
             })
         }
         else
         {
             self.watchlist.startTrackingHackathon(self.hackathon!, onComplete: { (tracking) -> Void in
-                self.tracking = tracking // tracking is true
+                
                 NSNotificationCenter.defaultCenter().postNotificationName("reloadProfile", object: nil)
+                self.tracking = tracking // tracking is true
             })
         }
     }
     
-    @IBAction func expandTaped(sender: AnyObject) { // TODO: make the animation more natural somehow?
-        
+    @IBAction func expandTaped(sender: AnyObject)
+    { // TODO: make the animation more natural somehow?
         if (expanded == false)
         {
             expanded = true
             
-            UIView.animateWithDuration(0.5) {
+            UIView.animateWithDuration(0.5)
+            {
                 self.expand.imageView!.transform = CGAffineTransformMakeRotation(CGFloat(M_PI))
                 self.view.layoutIfNeeded()
             }
@@ -145,20 +142,21 @@ class CardViewController: UIViewController {
             let delay = 0.3 * Double(NSEC_PER_SEC)
             let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
             
-            dispatch_after(time, dispatch_get_main_queue()) {
-                
-                UIView.animateWithDuration(0.5) {
+            dispatch_after(time, dispatch_get_main_queue())
+            {
+                UIView.animateWithDuration(0.5)
+                {
                     self.descriptionHeight.active = false
                     self.view.layoutIfNeeded()
                 }
             }
-            
         }
         else
         {
             expanded = false
             
-            UIView.animateWithDuration(0.5) {
+            UIView.animateWithDuration(0.5)
+            {
                 self.expand.imageView!.transform = CGAffineTransformIdentity
                 self.view.layoutIfNeeded()
             }
@@ -166,15 +164,15 @@ class CardViewController: UIViewController {
             let delay = 0.3 * Double(NSEC_PER_SEC)
             let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
             
-            dispatch_after(time, dispatch_get_main_queue()) {
-                
-                UIView.animateWithDuration(0.5) {
+            dispatch_after(time, dispatch_get_main_queue())
+            {
+                UIView.animateWithDuration(0.5)
+                {
                     self.descriptionHeight.active = true
                     self.view.layoutIfNeeded()
                 }
             }
         }
-        
     }
 }
 
@@ -182,10 +180,8 @@ class CardViewController: UIViewController {
 
 extension CardViewController: UIGestureRecognizerDelegate
 {
-    
-    
-    @IBAction func dismissCard(sender: AnyObject) {
-        
+    @IBAction func dismissCard(sender: AnyObject)
+    {
         UIView.animateWithDuration(0.5, animations: { () -> Void in
             self.cancel.imageView?.transform = CGAffineTransformMakeRotation(-CGFloat(M_PI_2))
             
@@ -195,30 +191,21 @@ extension CardViewController: UIGestureRecognizerDelegate
         let delay = 0.3 * Double(NSEC_PER_SEC)
         let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
         
-        dispatch_after(time, dispatch_get_main_queue()) {
-            
+        dispatch_after(time, dispatch_get_main_queue())
+        {
             self.dismissViewControllerAnimated(true, completion: { () -> Void in
-                
                 println("dismissed by tap")
             })
         }
     }
     
-    func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
-    }
+    func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool { return true }
     
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
-        return true
-    }
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool { return true }
     
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
-    }
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool { return true }
     
-    @IBAction func gestureOutside(sender: AnyObject) {
-        dismissIfOutside(sender)
-    }
+    @IBAction func gestureOutside(sender: AnyObject) { dismissIfOutside(sender) }
     
     func dismissIfOutside(sender:AnyObject)
     {
@@ -242,31 +229,27 @@ extension CardViewController
     
     func initCardWithHackathon()
     {
-//        println(hackathon)
         self.name.text = hackathon?.name
         self.desc.text = hackathon?.descript
-//        println(hackathon?.descript)
-        if Reachability.isConnectedToNetwork() {
+
+        if Reachability.isConnectedToNetwork()
+        {
             HackathonHelper.setHackathonCellLogoAsynch(hackathon!, onComplete: { (image) -> Void in
                 self.logo.image = image
                 self.logo.contentMode = UIViewContentMode.ScaleAspectFit
             })
         } else { ErrorHandling.displayErrorForNetwork(self) }
         
-        if let start = hackathon?.start, end = hackathon?.end {
-            self.date.text = formatForCard(start, end: end)
-        }
+        if let start = hackathon?.start, end = hackathon?.end { self.date.text = formatForCard(start, end: end) }
         
         self.ticketNames.text = ticketClassNames()
         self.ticketCosts.text = ticketClassCost()
         self.ticketAvailability.text = ticketClassAvailability()
         self.url.text = hackathon?.url!
-        
-        // mapview
 }
     
-    func formatForCard(start: NSDate, end: NSDate) -> String {
-        
+    func formatForCard(start: NSDate, end: NSDate) -> String
+    {
         var dateFormatter = NSDateFormatter()
         var dayFormatter = NSDateFormatter()
         dayFormatter.dateFormat = "d"
@@ -281,8 +264,10 @@ extension CardViewController
     func ticketClassNames() -> String
     {
         var str = ""
-        if let classes = hackathon?.ticketClassesCosts {
-            for name in classes {
+        if let classes = hackathon?.ticketClassesCosts
+        {
+            for name in classes
+            {
                 str += "\(name)\n"
             }
         }
@@ -292,8 +277,10 @@ extension CardViewController
     func ticketClassCost() -> String
     {
         var str = ""
-        if let classes = hackathon?.ticketClassesNames {
-            for cost in classes {
+        if let classes = hackathon?.ticketClassesNames
+        {
+            for cost in classes
+            {
                 str += "\(cost)\n"
             }
         }
@@ -303,8 +290,10 @@ extension CardViewController
     func ticketClassAvailability() -> String
     {
         var str = ""
-        if let classes = hackathon?.ticketClassesOnSaleStatuses {
-            for availability in classes {
+        if let classes = hackathon?.ticketClassesOnSaleStatuses
+        {
+            for availability in classes
+            {
                 str += "\(availability.lowercaseString)\n"
             }
         }
@@ -328,12 +317,14 @@ extension CardViewController: MKMapViewDelegate
         var locationName = hackathon?.address_1!
         var address_2 = ""
         if let ad2 = hackathon?.address_2 { address_2 = ad2 }
-        else {  }
+        else {  } // no address
         
-        if let point = hackathon?.geoPoint, title = hackathon?.name!, locName = locationName {
+        if let point = hackathon?.geoPoint, title = hackathon?.name!, locName = locationName
+        {
             centerMapOnLocation(point)
             mapInfo = MapInfo(title: title, locationName: locName, address_2: address_2, coordinate: point)
         }
+        
         mapView.addAnnotation(mapInfo)
     }
     
@@ -345,7 +336,8 @@ extension CardViewController: MKMapViewDelegate
         mapView.setRegion(coordinateRegion, animated: true)
     }
     
-    func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
+    func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView!
+    {
         if let annotation = annotation as? MapInfo
         {
             let identifier = "pin"
@@ -369,12 +361,13 @@ extension CardViewController: MKMapViewDelegate
     }
     
     func mapView(mapView: MKMapView!, annotationView view: MKAnnotationView!,
-        calloutAccessoryControlTapped control: UIControl!) {
-            let location = view.annotation as! MapInfo
-            let launchOptions = [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving]
-            location.mapItem().openInMapsWithLaunchOptions(launchOptions)
-            
-            self.mixpanel.track("got directions")
+        calloutAccessoryControlTapped control: UIControl!)
+    {
+        let location = view.annotation as! MapInfo
+        let launchOptions = [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving]
+        location.mapItem().openInMapsWithLaunchOptions(launchOptions)
+        
+        self.mixpanel.track("got directions")
     }
 }
 
@@ -383,8 +376,10 @@ extension CardViewController: MKMapViewDelegate
 extension CardViewController
 {
     
-    @IBAction func addToCallendar(sender: AnyObject) {
+    @IBAction func addToCallendar(sender: AnyObject)
+    {
         updateAuthorizationStatusToAccessEventStore()
+        
         if accessGranted
         {
 //            store.saveEvent(event, span: EKSpanThisEvent, commit: true, error: &err)
@@ -405,26 +400,22 @@ extension CardViewController
             var err: NSError?
             
             store.saveEvent(event, span: EKSpanThisEvent, commit: true, error: &err)
-            if ( err == nil ) {
-                
+            if ( err == nil )
+            {
                 self.mixpanel.track("calendar access", properties: ["granted":true])
                 
                 let alert = UIAlertView(title: "Let's Hack!", message: "Event added. Do you want to see it in your calendar?", delegate: self, cancelButtonTitle: "No", otherButtonTitles: "Take me there")
                 alert.tag = 1
                 alert.show()
             }
-            else
-            {
-                mixpanel.track("error", properties:["category":"event"])
-            }
-            
-            
+            else { mixpanel.track("error", properties:["category":"event"]) }
         }
     }
     
     func updateAuthorizationStatusToAccessEventStore()
     {
         let authorizationStatus = EKEventStore.authorizationStatusForEntityType(EKEntityTypeEvent)
+        
         switch (authorizationStatus)
         {
             case EKAuthorizationStatus.Denied:
@@ -442,17 +433,16 @@ extension CardViewController
             
             case EKAuthorizationStatus.NotDetermined:
                 store.requestAccessToEntityType(EKEntityTypeEvent, completion: { (granted, error) -> Void in
-                    dispatch_async(dispatch_get_main_queue()) {
-                        self.accessGranted = granted
-                }
+                    
+                    dispatch_async(dispatch_get_main_queue()) { self.accessGranted = granted }
             })
         }
     }
     
     func openEventDayInCalendar()
     {
-        if let day = hackathon?.start {
-            
+        if let day = hackathon?.start
+        {
             let today = NSDate()
             let timeSince = NSDate.timeIntervalSinceReferenceDate() // this plus
             let todayToFutureDate = day.timeIntervalSinceDate(today)
@@ -467,14 +457,15 @@ extension CardViewController
 
 extension CardViewController: UIAlertViewDelegate
 {
-    func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
-        
-        if alertView.tag == 1 {
+    func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int)
+    {
+        if alertView.tag == 1
+        {
             switch buttonIndex
             {
-            case 0: self.mixpanel.track("calendar", properties: ["opened" : false])
-            case 1: openEventDayInCalendar()
-            default: return
+                case 0: self.mixpanel.track("calendar", properties: ["opened" : false])
+                case 1: openEventDayInCalendar()
+                default: return
             }
         }
     }

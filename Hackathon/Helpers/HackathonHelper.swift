@@ -46,7 +46,7 @@ class HackathonHelper
             // using parse cloud function ATM
             query = PFQuery(className: "Hackathon")
             
-            if (searchCriteria.searchString?.isEmpty == false) // if searchstring exists create subquery
+            if (searchCriteria.searchString != nil) // if searchstring exists create subquery
             {
                 if let q = query { // there should always be a category before this happens so this is probably not needed
                     
@@ -70,17 +70,24 @@ class HackathonHelper
                     //set the curr ent location query
                     query!.whereKey("geoPoint", nearGeoPoint: point, withinKilometers: searchCriteria.searchDistance)
                     
-                    if (searchCriteria.searchString?.isEmpty == false) // if searchstring exists create subquery
+                    if (searchCriteria.searchString != nil) // if searchstring exists create subquery
                     {
-                        
+                        if let q = query { // there should always be a category before this happens so this is probably not needed
+                            
+                            var searchQuery = PFQuery(className: "Hackathon")
+                            searchQuery.whereKey("name", matchesQuery: q) // create subquery
+                            searchQuery.whereKey("name", matchesRegex: searchCriteria.searchString!, modifiers: "i") // make it match lowercase
+                            onComplete(searchQuery)
+                        }
                     }
                     else { onComplete(query!) }
+                    
                 })
             }
                 
             else // any other than current location
             {
-                if (searchCriteria.searchString?.isEmpty == false) // if searchstring exists create subquery
+                if (searchCriteria.searchString != nil) // if searchstring exists create subquery
                 {
                     if let q = query { // there should always be a category before this happens so this is probably not needed
                         
@@ -99,11 +106,25 @@ class HackathonHelper
 // MARK: -
 // MARK: supporting functions
     
-    static func getHackathonsFromParse( onComplete: [Hackathon] -> Void )
+    static func getHackathonsFromParse( searchCriteria: SearchCriteria, onComplete: ([Hackathon] -> Void) )
     {
         PFCloud.callFunctionInBackground("getFriendHackathons", withParameters: nil) { (hackathons, error) -> Void in
             if let hacks = hackathons as? [Hackathon] { onComplete(hacks) }
             else { println(error) }
+        }
+        
+        if ( searchCriteria.searchString != nil ) // if searchstring exists create subquery
+        {
+            let query = PFQuery(className: "Watchlist") // only search within watchlist
+            query.whereKey("name", matchesRegex: searchCriteria.searchString!, modifiers: "i") // make it match lowercase
+            
+            query.findObjectsInBackgroundWithBlock({ (objects, error) -> Void in
+                if let hackathons = objects as? [Hackathon]
+                {
+                    onComplete(hackathons)
+                }
+            })
+            
         }
     }
     

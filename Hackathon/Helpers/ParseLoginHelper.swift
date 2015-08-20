@@ -98,17 +98,12 @@ extension ParseLoginHelper : PFLogInViewControllerDelegate {
     {
         let fbID     = PFUser.currentUser()?.objectForKey("fbID") as! String
         let graphUrl = "/" + fbID
-        //        println(graphUrl)
-        
         
         FBSDKGraphRequest(graphPath: graphUrl, parameters: ["fields":"id,name,email,friends,picture"], HTTPMethod: "GET").startWithCompletionHandler { (connection: FBSDKGraphRequestConnection!, result: AnyObject?, error: NSError?) -> Void in
             if error == nil {
                 
-                                println(result)
-                
                 let data    = JSON(result!)
                 let friends = data["friends"]["data"]
-                                println(data)
                 
                 var toSave: [PFObject] = [PFObject]()
                 
@@ -116,7 +111,6 @@ extension ParseLoginHelper : PFLogInViewControllerDelegate {
                     
                     // compare the ids to fb ids in the User class in parse
                     var id = subJson["id"].stringValue
-                    println(id)
                     
                     var user = PFUser.currentUser()
                     var userRelation = user?.relationForKey("friends")
@@ -134,9 +128,9 @@ extension ParseLoginHelper : PFLogInViewControllerDelegate {
                                 if let friend = object
                                 {
                                     // store the friend as relation to current user
-                                    userRelation?.addObject(friend)              // not sure wether I can use this inside asynch method (does it still exist?)
+                                    userRelation?.addObject(friend) //not sure wheter I can use this inside asynch method (does it still exist?)
                                     
-                                    toSave.append(user!) // add the user with a new friend relation to the toSave array that will be used in the saveAll function
+                                    toSave.append(user!) //add the user with a new friend relation to the toSave array that will be used in the saveAll function
                                     
                                     PFObject.saveAllInBackground( toSave, block: { (success, error) -> Void in
                                         
@@ -152,7 +146,6 @@ extension ParseLoginHelper : PFLogInViewControllerDelegate {
                 }
                 
                 println(toSave)
-                
                 
             } else {
                 Mixpanel.sharedInstanceWithToken(token)
